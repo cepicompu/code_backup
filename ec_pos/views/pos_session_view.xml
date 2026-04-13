@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="ec_pos_session_search_view" model="ir.ui.view">
+            <field name="name">qs.pos.session.search.view</field>
+            <field name="model">pos.session</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_session_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='status']" position="after">
+                    <filter string="Estado de Deposito" name="state_deposit" domain="[]" context="{'group_by': 'state_deposit'}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="ec_pos_session_tree_view" model="ir.ui.view">
+            <field name="name">qs.pos.session.tree.view</field>
+            <field name="model">pos.session</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_session_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="after">
+                    <field name="state_deposit" string="Estado Depósito" 
+                           decoration-success="state_deposit == 'done'"
+                           decoration-warning="state_deposit == 'partial'"
+                           decoration-muted="state_deposit == 'none'"
+                           widget="badge"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="ec_pos_session_form_view" model="ir.ui.view">
+            <field name="name">qs.pos.session.form.view</field>
+            <field name="model">pos.session</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+            <field name="priority" eval="20"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='show_journal_items']" position="after">
+                    <field name="state_deposit" invisible="1"/>
+                    <button
+                            name="show_move_deposits"
+                            type="object"
+                            class="oe_stat_button"
+                            attrs="{'invisible': [('state_deposit', '!=', 'done')]}"
+                            icon="fa-bars"
+                            string="Asientos de Depositos">
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="wizard_pos_deposit_cash_form_view">
+            <field name="name">wizard.pos.deposit.cash.form.view</field>
+            <field name="model">pos.deposit.cash</field>
+            <field name="arch" type="xml">
+                <form string="Deposito de Efectivo">
+                    <group>
+                        <field name="date" />
+                        <field name="description" />
+                        <field name="amount_total" />
+                        <field name="amount_surplus" readonly="1"/>
+                        <field name="bank_journal_id" options="{'no_create': True, 'no_open': True}" />
+                        <field name="number_ref" />
+                    </group>
+                    <notebook>
+                        <page string="Métodos de Pago">
+                            <field name="pos_method_ids" options="{'no_create': True, 'no_open': True}" readonly="1">
+                                <tree string="Métodos de Pago" edit="0" create="0" delete="0" editable="bottom">
+                                    <field name="name" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Sesiones">
+                            <field name="pos_session_ids" 
+                                   domain="[('state', '=', 'closed'), ('state_deposit', '!=', 'done')]"
+                                   options="{'no_create': True, 'no_open': True}" 
+                                   widget="many2many_tags"/>
+                        </page>
+                    </notebook>
+                    <footer>
+                        <div class="oe_left">
+                            <button string="Cerrar" special="cancel" type="object"
+                                    icon="fa-close" class="oe_link" />
+                            <button string="Depositar Efectivo" name="action_deposit"
+                                    type="object" icon="fa-close" class="oe_highlight" />
+                        </div>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+
+    </data>
+</odoo>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="ec_pos_res_config_inherit_form_view">
+            <field name="name">ec.pos.res.config.inherit.form.view</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//div[@id='pos_accounting_section']/div/div/div/div[@class='content-group mt16']" position="after">
+                    <div class="row mt16" >
+                        <label string="Establecimiento" for="pos_sale_shop_id" class="col-lg-3 o_light_label" options="{'no_open': True, 'no_create': True}"/>
+                        <field name="pos_sale_shop_id" />
+                    </div>
+                    <div class="row mt16" >
+                        <label string="Punto de Emisión" for="pos_sri_printer_point_id" class="col-lg-3 o_light_label" options="{'no_open': True, 'no_create': True}"/>
+                        <field name="pos_sri_printer_point_id" domain="[('shop_id', '=', pos_sale_shop_id)]" />
+                    </div>
+                    <div class="row mt16" >
+                        <label string="Factura por defecto" for="pos_to_invoice" class="col-lg-3 o_light_label" options="{'no_open': True, 'no_create': True}"/>
+                        <field name="pos_to_invoice" />
+                    </div>
+                </xpath>
+                <xpath expr="//div[@id='pos_inventory_section']" position="inside">
+                   <div class="col-12 col-lg-6 o_setting_box" id="pos_ship_later_default">
+                        <div class="o_setting_right_pane">
+                            <label for="pos_ship_later_default_value" string="Ship Later by Default"/>
+                            <div class="text-muted">
+                                Set the default state of the Ship Later button.
+                            </div>
+                            <div class="content-group mt16">
+                                <field name="pos_ship_later_default_value" />
+                            </div>
+                        </div>
+                   </div>
+                </xpath>
+                <xpath expr="//div[@id='pos_accounting_section']/div[2]/div[@class='o_setting_right_pane']/div" position="after">
+                    <br/>
+                    <div>
+                        <label string="Valor Máximo Permitido para Consumidor Final" for="pos_allowed_value_for_no_client"/>
+                        <div class="content-group mt16">
+                            <field name="pos_allowed_value_for_no_client"/>
+                        </div>
+                    </div>
+                    <div>
+                        <label string="Valor Máximo Permitido para no facturar" for="pos_allowed_value_for_no_invoice"/>
+                        <div class="content-group mt16">
+                            <field name="pos_allowed_value_for_no_invoice"/>
+                        </div>
+                    </div>
+                    <div>
+                        <label string="Cierre Ciego" for="pos_blind_closure"/>
+                        <div class="content-group mt16">
+                            <field name="pos_blind_closure"/>
+                        </div>
+                    </div>
+                    <div>
+                        <label string="Intentos de Cierre Ciego" for="pos_blind_closure_attempts"/>
+                        <div class="content-group mt16">
+                            <field name="pos_blind_closure_attempts"/>
+                        </div>
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='pos_journal_id']" position="attributes">
+                    <attribute name="domain">[]</attribute>
+                    <attribute name="domain">[('company_id', '=', company_id), ('type', 'in', ('general', 'sale'))]</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="payment_tc_config_settings_form_view">
+            <field name="name">payment.tc.config.settings.form.view</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id"
+                   ref="ec_sri_authorizathions.view_account_sri_config_settings" />
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='autorizaciones_sri']" position="before">
+                    <group string="Tarjetas De Credito" name="credit_card_sri">
+                        <field name="journal_tc_retention_id" options="{'no_create': True}" />
+                        <field name="account_comision_retention_id" options="{'no_create': True}"/>
+                        <field name="account_comision_invoice_id" options="{'no_create': True}"/>
+                        <field name="account_transit_retention_id" options="{'no_create': True}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

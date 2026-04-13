@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="PaymentScreenPaymentLines" t-inherit="point_of_sale.PaymentScreenPaymentLines" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('payment-amount')]" position="before">
+            <div class="payment-ref" t-if="line.payment_method.x_ask_lote_auth" style="margin-right: 10px; display: flex; align-items: center; gap: 5px;">
+                 <input type="text"
+                       t-on-change="(e) => line.set_lote_tc(e.target.value)"
+                       t-att-value="line.lote_tc"
+                       placeholder="Lote"
+                       style="width: 80px; border: 1px solid #ccc; padding: 4px; border-radius: 4px;"/>
+                 <input type="text"
+                       t-on-change="(e) => line.set_auth_tc(e.target.value)"
+                       t-att-value="line.auth_tc"
+                       placeholder="Auth."
+                       style="width: 80px; border: 1px solid #ccc; padding: 4px; border-radius: 4px;"/>
+            </div>
+            <div class="payment-ref" t-if="line.payment_method.x_ask_reference" style="margin-right: 10px; display: flex; align-items: center;">
+                <input type="text"
+                       t-on-change="(e) => line.set_payment_reference(e.target.value)"
+                       t-att-value="line.x_payment_reference"
+                       placeholder="Ref."
+                       style="width: 120px; border: 1px solid #ccc; padding: 4px; border-radius: 4px;"/>
+            </div>
+        </xpath>
+    </t>
+    <t t-name="PaymentScreenProforma" t-inherit="point_of_sale.PaymentScreen" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('payment-controls')]" position="inside">
+            <div class="button print-proforma" t-on-click="printProforma" style="margin-right: 10px;">
+                <i class="fa fa-print" role="img" aria-label="Print Proforma" title="Print Proforma"/> Proforma
+            </div>
+        </xpath>
+    </t>
+</templates>

@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="EcMedianetReceipt" t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('pos-receipt')]" position="after">
+            <!--                        TERMINA VOUCHER NORMAL-->
+            <!--            <p style="page-break-before:always;"> </p>-->
+            <!--            &lt;!&ndash;            ANULACION&ndash;&gt;-->
+            <!--                        <div class="pos-receipt">-->
+            <!--                                                                <h3 class="pos-receipt-center-align">Medianet</h3>-->
+            <!--                            <t t-if="receipt.company.business_name">&ndash;&gt;-->
+            <!--                                                                    <div class="pos-receipt-center-align"><t class="pos-receipt-center-align" t-esc="receipt.company.business_name" /></div>-->
+            <!--                                                                </t>-->
+            <!--                            <t t-else="">-->
+            <!--                                                                    <div class="pos-receipt-center-align"><t class="pos-receipt-center-align" t-esc="receipt.company.name" /></div>-->
+            <!--                                                                </t>-->
+            <!--                            <br/>-->
+            <!--                            <t t-if="receipt.company.street">-->
+            <!--                                                                    <div class="pos-receipt-center-align"><t t-esc="receipt.company.street" /></div>-->
+            <!--                                                                </t>-->
+            <!--                            <t t-if="receipt.company.vat">-->
+            <!--                                                                    <div class="pos-receipt-center-align"><t t-esc="receipt.company.vat" /></div>-->
+            <!--                                                                </t>-->
+            <!--                            <br/>-->
+            <!--                            <div class="pos-receipt-center-align">-->
+            <!--                                                                    <span>- CAPTURA ELECTRONICA-</span>-->
+            <!--                                                                </div>-->
+            <!--                            <br/>-->
+            <!--                            <table border="0" style="width:100%;font-size: 9px!important;">-->
+            <!--                                                                    <tbody>-->
+            <!--                                                                        <tr>-->
+            <!--                                                                            <td style="text-align:left;">ALIA</td>-->
+            <!--                                                                            <td style="text-align:right;">50587605XXXX0827</td>-->
+            <!--                                                                        </tr>-->
+
+            <!--                                                                        <tr>-->
+            <!--                                                                            <td style="text-align:left;">TRANSACCION # <t t-esc="receipt.medianet_reference" /></td>-->
+            <!--                                                                            <td style="text-align:right;">AUTORIZACION # <t t-esc="receipt.medianet_authorization" /></td>-->
+            <!--                                                                        </tr>-->
+            <!--                                                                        <tr>-->
+            <!--                                                                            <td style="text-align:left;">RED: MEDIANET</td>-->
+            <!--                                                                            <td style="text-align:right;"></td>-->
+            <!--                                                                        </tr>-->
+            <!--                                                                        <tr>-->
+            <!--                                                                            <td style="text-align:left;"><t t-esc="receipt.medianet_date" /></td>-->
+            <!--                                                                            <td style="text-align:right;"><t t-esc="receipt.medianet_hour" /></td>-->
+            <!--                                                                        </tr>-->
+            <!--                                                                    </tbody>-->
+            <!--                                                                </table>-->
+            <!--                            <br/>-->
+            <!--                            <div class="pos-receipt-center-align" style="font-size: 10px!important;">-->
+            <!--                                                                    <span>- ANULACION -</span>-->
+            <!--                                <br/>-->
+            <!--                                <span>- TRANSACCION ANULADA -</span>-->
+            <!--                                <br/>-->
+            <!--                                <span><t t-esc="receipt.medianet_code" /></span>-->
+            <!--                                                                </div>-->
+            <!--                            <table border="0" style="width:100%;font-size: 9px!important;">-->
+            <!--                                                                    <tbody>-->
+            <!--                                                                        <tr>-->
+            <!--                                                                            <td style="text-align:left;">TOTAL:</td>-->
+            <!--                                                                            <td style="text-align:center;">$</td>-->
+            <!--                                                                            <td style="text-align:right;"><t t-esc="receipt.medianet_amount_total" /></td>-->
+            <!--                                                                        </tr>-->
+            <!--                                                                    </tbody>-->
+            <!--                                                                </table>-->
+            <!--                            <br/>-->
+            <!--                                                            </div>-->
+            <!--            &lt;!&ndash;TERMINA ANULACION&ndash;&gt;-->
+            <!--            COMIENZA MEDIANET 1-->
+            <t t-if="receipt.medianet_receipt">
+                <t t-foreach="receipt.data_medianet" t-as="medianet" t-key="medianet.payment_id">
+                    <p style="page-break-before:always;"> </p>
+                    <div class="pos-receipt">
+                        <h3 class="pos-receipt-center-align">Medianet</h3>
+                        <t t-if="receipt.company.business_name">
+                            <div class="pos-receipt-center-align"><t t-esc="receipt.company.business_name" />
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="pos-receipt-center-align"><t t-esc="receipt.company.name" />
+                            </div>
+                        </t>
+                        <t t-if="receipt.sale_shop_street">
+                            <div class="pos-receipt-center-align"><t t-esc="receipt.sale_shop_street" />
+                            </div>
+                        </t>
+                        <t t-if="receipt.sale_shop_phone">
+                            <div class="pos-receipt-center-align">TELEFONO: <t t-esc="receipt.sale_shop_phone" />
+                            </div>
+                        </t>
+                        <t t-if="receipt.sale_shop_detail">
+                            <div class="pos-receipt-center-align"><t t-esc="receipt.sale_shop_detail" />
+                            </div>
+                        </t>
+                        <t t-if="receipt.company.vat">
+                            <div class="pos-receipt-center-align">RUC:<t t-esc="receipt.company.vat" />
+                            </div>
+                        </t>
+                        <br/>
+                        <div class="pos-receipt-center-align">
+                            <span>- CAPTURA ELECTRONICA -</span>
+                        </div>
+                        <br/>
+                        <table border="0" style="width:100%;font-size: 9px!important;">
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:left;" colspan="2">COMERCIO: <t t-esc="medianet.medianet_mid_base" /></td>
+                                    <td style="text-align:right;">TID: <t t-esc="medianet.medianet_tid" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;" colspan="2"><t t-esc="medianet.medianet_name_card" /></td>
+                                    <td style="text-align:right;"><t t-esc="medianet.medianet_number_card" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;">VENCE: XX/XXXX</td>
+                                    <td style="text-align:center;"><t t-esc="medianet.medianet_code" /></td>
+                                    <td style="text-align:right;">Lote: <t t-esc="medianet.medianet_lote" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;" colspan="2">TRANSACCION # <t t-esc="medianet.medianet_reference" /></td>
+                                    <td style="text-align:right;">AUTORIZACION # <t t-esc="medianet.medianet_authorization" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;" colspan="2"><t t-esc="medianet.medianet_date" /></td>
+                                    <td style="text-align:right;"><t t-esc="medianet.medianet_time" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;" colspan="2">RED: <t t-esc="medianet.medianet_type_red" /></td>
+                                    <td style="text-align:right;">COMERCIO2: <t t-esc="medianet.medianet_mid" /></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">AP. LABEL: <t t-esc="medianet.medianet_name_card" /></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <div class="pos-receipt-center-align">
+                            <t t-if="medianet.medianet_have_deferred">
+                                <div class="pos-receipt-center-align">
+                                    <span>- DIFERIDO -</span>
+                                    <br/>
+                                    <t t-if="medianet.medianet_with_interest">
+                                        <span>CON INTERESES</span>
+                                    </t>
+                                    <t t-else="">
+                                        <span>SIN INTERESES</span>
+                                    </t>
+                                    <br/>
+                                    <span>PLAZO MESES: <t t-esc="medianet.medianet_month_interest" /></span>
+                                    <t t-if="medianet.medianet_month_interest_free > 0">
+                                          <br/>
+                                        <span>MESES DE GRACIA: <t t-esc="medianet.medianet_month_interest_free" /></span>
+                                    </t>
+                                </div>
+
+                            </t>
+                            <t t-else="">
+                                <div class="pos-receipt-center-align">
+                                <span>- ROTATIVO -</span>
+                                </div>
+                            </t>
+                            <br/>
+                            <table border="0" style="width:100%;font-size: 9px!important;">
+                                <tbody>
+                                    <tr>
+                                        <td style="text-align:left;">BASE CONSUMO TARIFA <t t-esc="medianet.medianet_tax_base_diff_0_name" />:</td>
+                                        <td style="text-align:center;">$</td>
+                                        <td style="text-align:right;"><t t-esc="medianet.medianet_tax_base_diff_0" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:left;">BASE CONSUMO TARIFA 0:</td>
+                                        <td style="text-align:center;">$</td>
+                                        <td style="text-align:right;"><t t-esc="medianet.medianet_tax_base_0" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:left;">SUBTOTAL CONSUMOS:</td>
+                                        <td style="text-align:center;">$</td>
+                                        <td style="text-align:right;"><t t-esc="medianet.medianet_tax_base_diff_0" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:left;"><t t-esc="medianet.medianet_tax_diff_0_name" /></td>
+                                        <td style="text-align:center;">$</td>
+                                        <td style="text-align:right;"><t t-esc="medianet.medianet_tax_diff_0" /></td>
+                                    </tr>
+                                    <t t-if="medianet.medianet_have_deferred">
+                                        <t t-if="medianet.medianet_with_interest">
+                                            <tr>
+                                                <td style="text-align:left;">SUBTOTAL:</td>
+                                                <td style="text-align:center;">$</td>
+                                                <td style="text-align:right;"><t t-esc="medianet.medianet_amount_subtotal" /></td>
+                                            </tr>
+                                        </t>
+                                        <tr>
+                                            <td style="text-align:left;">INTERES</td>
+                                            <td style="text-align:center;">$</td>
+                                            <td style="text-align:right;"><t t-esc="medianet.medianet_interest_amount" /></td>
+                                        </tr>
+                                     </t>
+                                    <tr>
+                                        <td style="text-align:left;">TOTAL:</td>
+                                        <td style="text-align:center;">$</td>
+                                        <td style="text-align:right;"><t t-esc="medianet.medianet_amount_total" /></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br/>
+                            <div style="text-align:justify;font-size: 10px!important;">
+                                DEBO Y PAGARE EL EMISOR INCONDICIONALMENTE Y SIN PROTESTO EL TOTAL DE ESTE PAGARE MAS LOS INTERESES Y CARGOS DE SERVICIO. EN CASO DE MORA PAGARE LA TASA MAXIMO AUTORIZADAPARA EL EMISOR. DECLARO QUE EL PRODUCTO DE LA TRANSACCIÓN NO SERA UTILIZADO EN ACTIVIDADES DE LAVADO DE ACTIVOS, FINANCIAMIENTO DEL TERRORISMO Y OTROS DELITOS.
+                            </div>
+                            <br/>
+                            <table border="0" style="width:100%;font-size: 10px!important;">
+                                <tbody>
+                                    <tr>
+                                        <td style="text-align:left;" colspan="4">Firma:___________________________________________________________</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:left;" colspan="4">Nombre:_________________________________________________________</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:left;">CI:</td>
+                                        <td><span>___________________________</span></td>
+                                        <td style="text-align:left;">Teléfono:</td>
+                                        <td><span>___________________</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:justify;font-size: 10px!important;" colspan="4">El establecimiento certifica que la firma del cliente es auténtica.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br/>
+                            <div style="text-align:left;font-size: 10px!important;">
+                                <span style="text-align:left;"><t t-esc="medianet.medianet_aid_label" /></span>
+                                <br/>
+                                <span style="text-align:left;">AID: <t t-esc="medianet.medianet_aid" /></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--            TERMINA MEDIANET 1-->
+                    <!--            COMIENZA MEDIANET 2-->
+                    <p style="page-break-before:always;"> </p>
+                    <div class="pos-receipt">
+                        <h3 class="pos-receipt-center-align">Medianet</h3>
+                        <t t-if="receipt.company.business_name">-->
+                            <div class="pos-receipt-center-align"><t class="pos-receipt-center-align" t-esc="receipt.company.business_name" />
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="pos-receipt-center-align"><t class="pos-receipt-center-align" t-esc="receipt.company.name" />
+                            </div>
+                        </t>
+                        <br/>
+                        <t t-if="receipt.company.vat">
+                            <div class="pos-receipt-center-align">RUC: <t t-esc="receipt.company.vat" /></div>
+                        </t>
+                        <br/>
+                        <!--                <div class="pos-receipt-center-align">-->
+                        <!--                                <span>- DIFERIDO -</span>-->
+                        <!--                    <br/>-->
+                        <!--                    <span>CON INTERESES</span>-->
+                        <!--                    <br/>-->
+                        <!--                    <span>PLAZO MESES: 06</span>-->
+                        <!--                            </div>-->
+                        <!--                <br/>-->
+                        <div class="pos-receipt-center-align">
+                            <t t-if="medianet.medianet_have_deferred">
+                                <div class="pos-receipt-center-align">
+                                    <span>- DIFERIDO -</span>
+                                    <br/>
+                                    <t t-if="medianet.medianet_with_interest">
+                                        <span>CON INTERESES</span>
+                                    </t>
+                                    <t t-else="">
+                                        <span>SIN INTERESES</span>
+                                    </t>
+                                    <br/>
+                                    <span>PLAZO MESES: <t t-esc="medianet.medianet_month_interest" /></span>
+                                    <t t-if="medianet.medianet_month_interest_free > 0">
+                                          <br/>
+                                        <span>MESES DE GRACIA: <t t-esc="medianet.medianet_month_interest_free" /></span>
+                                    </t>
+                                </div>
+                            </t>
+                            <t t-else="">
+                                <div class="pos-receipt-center-align">
+                                <span>- ROTATIVO -</span>
+                                </div>
+                            </t>
+                        </div>
+                        <br/>
+                        <table border="0" style="width:100%;font-size: 9px!important;">
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:left;">TRANSACCION # <t t-esc="medianet.medianet_reference" /></td>
+                                    <td style="text-align:right;">AUTORIZACION # <t t-esc="medianet.medianet_authorization" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;">TOTAL:</td>
+                                    <td style="text-align:right;"><t t-esc="medianet.medianet_amount_total" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;"><t t-esc="medianet.medianet_name_card" /></td>
+                                    <td style="text-align:right;"><t t-esc="medianet.medianet_number_card" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;"><t t-esc="medianet.medianet_date" /></td>
+                                    <td style="text-align:right;"><t t-esc="medianet.medianet_time" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <div class="pos-receipt-center-align" style="font-size: 10px!important;">
+                            <span>GUAYAQUIL - ECUADOR</span>
+                        </div>
+                        <br/>
+                        <div class="pos-receipt-center-align" style="font-size: 10px!important;">
+                                <span>- COPIA -</span>
+                         </div>
+                        <br/>
+                        <div style="text-align:justify;font-size: 10px!important;">
+                            POLITICAS DE DEVOLUCION SEGUN EL COMERCIO
+                        </div>
+                        <div style="font-size: 10px!important;">
+                            <span><t t-esc="medianet.medianet_aid_label" /></span>
+                            <br/>
+                            <span>AID: <t t-esc="medianet.medianet_aid" /></span>
+                            <br/>
+                            <br/>
+                            <span>Nombre:</span>
+                        </div>
+                        <br/>
+                        <div class="pos-receipt-center-align">
+                            <span>- COMPROBANTE -</span>
+                        </div>
+                    </div>
+                    <!--            TERMINA MEDIANET 2-->
+                </t>
+            </t>
+        </xpath>
+    </t>
+</templates>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_mark_available_in_pos" model="ir.actions.server">
+            <field name="name">Disponible EN TPV</field>
+            <field name="model_id" ref="product.model_product_template"/>
+            <field name="binding_model_id" ref="product.model_product_template"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                for record in records:
+                    record['available_in_pos'] = True
+            </field>
+        </record>
+
+        <record id="action_mark_unavailable_in_pos" model="ir.actions.server">
+            <field name="name">No Disponible EN TPV</field>
+            <field name="model_id" ref="product.model_product_template"/>
+            <field name="binding_model_id" ref="product.model_product_template"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                for record in records:
+                    record['available_in_pos'] = False
+            </field>
+        </record>
+
+    </data>
+</odoo>

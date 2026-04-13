@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="ec_account_cash_deposit_form">
+            <field name="name">ec.account.cash.deposit.form</field>
+            <field name="model">account.cash.deposit</field>
+            <field name="inherit_id" ref="account_cash_deposit.account_cash_deposit_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='bank_journal_id']" position="after">
+                    <field name="from_pos" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='coin_amount']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('from_pos', '=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//group[@name='lines']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('from_pos', '=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='move_id']" position="attributes">
+                    <attribute name="string">Asiento Contable</attribute>
+                </xpath>
+                <xpath expr="//field[@name='notes']" position="replace"/>
+                <xpath expr="//field[@name='move_id']" position="after">
+                    <field name="notes" string="Descripción"/>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

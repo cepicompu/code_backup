@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_model_payment_tc_cab,access_model_account_payment_tc_cab,model_account_payment_tc_cab,account.group_account_invoice,1,1,1,1
+access_model_payment_tc_det,access_model_account_payment_tc_det,model_account_payment_tc_det,account.group_account_invoice,1,1,1,1
+access_wizard_conciliation_tc,wizard.conciliation.tc,model_wizard_conciliation_tc,account.group_account_invoice,1,1,1,1
+access_account_payment_tc_wizard,account.payment.tc.wizard,model_account_payment_tc_wizard,account.group_account_invoice,1,1,1,1
+access_account_payment_tc_files,account.payment.tc.files,model_account_payment_tc_files,account.group_account_invoice,1,1,1,1
+access_account_payment_tc_files_details,account.payment.tc.files.details,model_account_payment_tc_files_details,account.group_account_invoice,1,1,1,1
+access_account_payment_bank_payment,account.payment.bank.payment.details,model_account_payment_bank_payment,account.group_account_invoice,1,1,1,1
+access_account_payment_tc_invoice,account.payment.tc.invoice,model_account_payment_tc_invoice,account.group_account_invoice,1,1,1,1
+access_payment_tc_liq_wizard,payment.tc.liq.wizard,model_payment_tc_liq_wizard,account.group_account_invoice,1,1,1,1
+access_payment_tc_liq_wizard_line,payment.tc.liq.wizard.line,model_payment_tc_liq_wizard_line,account.group_account_invoice,1,1,1,1
+access_payment_tc_invoice_data,payment.tc.invoice.data,model_payment_tc_invoice_data,account.group_account_invoice,1,1,1,1
+access_payment_tc_invoice_data_line,payment.tc.invoice.data.line,model_payment_tc_invoice_data_line,account.group_account_invoice,1,1,1,1
+access_sale_shop_local_trade,sale.shop.local.trade,model_sale_shop_local_trade,account.group_account_invoice,1,1,1,1
+access_report_differences_by_load_wizard,report.differences.by.load.wizard,model_report_differences_by_load_wizard,base.group_user,1,1,1,1
+access_account_payment_tc_withhold,account.payment.tc.withhold,model_account_payment_tc_withhold,account.group_account_invoice,1,1,1,1

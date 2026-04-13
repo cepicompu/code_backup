@@ -1,0 +1,366 @@
+<odoo>
+    <data>
+
+
+        <!--        <record model="ir.ui.view" id="picking_auto_config_settings_form_view">-->
+        <!--            <field name="name">res.config.picking.auto.settings.form</field>-->
+        <!--            <field name="model">res.config.settings</field>-->
+        <!--            <field name="inherit_id" ref="base.res_config_settings_view_form" />-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <xpath expr="//div[hasclass('settings')]" position="inside">-->
+        <!--                    <h2>Cuenta Anticipo de Tarjeta Crédito</h2>-->
+        <!--                    <div class="row mt16 o_settings_container">-->
+        <!--                        <div class="col-12 col-lg-6 o_setting_box">-->
+        <!--                            <div class="o_setting_left_pane"/>-->
+        <!--                            <div class="o_setting_right_pane">-->
+
+        <!--                                <div class="text-muted">-->
+        <!--                                    Cuenta Anticipo TC-->
+        <!--                                </div>-->
+        <!--                                <div class="content-group">-->
+        <!--                                    <div class="row mt16">-->
+        <!--                                        <label for="account_advance_tc" class="col-lg-3 o_light_label"/>-->
+        <!--                                        <field name="account_advance_tc"/>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </xpath>-->
+        <!--            </field>-->
+        <!--        </record>-->
+
+
+        <!--        <record model="ir.ui.view" id="account_payment_inherit_form_view">-->
+        <!--            <field name="name">account.payment.form</field>-->
+        <!--            <field name="model">account.payment</field>-->
+        <!--            <field name="inherit_id"-->
+        <!--                   ref="account_check_printing.view_account_payment_form_inherited" />-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <field name="date_release" position="attributes">-->
+        <!--                    <attribute name="invisible">1</attribute>-->
+        <!--                </field>-->
+
+        <!--            </field>-->
+        <!--        </record>-->
+
+        <record id="ec_view_account_payment_tc_wizard" model="ir.ui.view">
+            <field name="name">ec.view.account.payment.tc.wizard</field>
+            <field name="model">account.payment.tc.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Cargar Pagos">
+                    <h2>Seleccione el archivo para importar</h2>
+                    <group>
+                        <field name="bank_id" options="{'no_create': True, 'no_open': True}" required="1"/>
+                        <field name="type_load_tc" invisible="1"/>
+                        <field name="journal_id" attrs="{'invisible': [('type_load_tc', '!=', 'bolivariano')],'required':[('type_load_tc', '=', 'bolivariano')]}"/>
+                        <field name="data_file" filename="filename" placeholder="Seleccione el archivo a importar..."/>
+                    </group>
+                    <field name="filename" invisible="1"/>
+                    <field name="process" invisible="1"/>
+                    <group col="1" attrs="{'invisible': [('process', '=', False)]}">
+                        <separator string="RESULTADOS"/>
+                        <newline />
+                        <field name="results" nolabel="1" placeholder="Resultados..." readonly="1"/>
+                    </group>
+                    <footer>
+                        <button name="load_file" string="Cargar" type="object" class="btn-primary" />
+                        <button string="Cancel" class="btn-default" special="cancel" attrs="{'invisible': [('process', '=', True)]}"/>
+                        <button string="Cerrar" class="btn-default" special="cancel" attrs="{'invisible': [('process', '=', False)]}"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_account_payment_tc_files_form" model="ir.ui.view">
+            <field name="name">view.account.payment_tc.files.form</field>
+            <field name="model">account.payment.tc.files</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                    </header>
+                    <group>
+                        <field name="date" readonly="1"/>
+                        <field name="name" readonly="1"/>
+                    </group>
+                    <field name="line_details" readonly="1">
+                        <tree>
+                            <field name="date"/>
+                            <field name="local_trade" optional="show"/>
+                            <field name="sale_shop_id" optional="show"/>
+                            <field name="bin" optional="show"/>
+                            <field name="lote"/>
+                            <field name="referencia"/>
+                            <field name="autorizacion"/>
+                            <field name="amount" sum="Total" optional="show"/>
+                            <field name="amount_net" sum="Total" optional="show"/>
+                            <field name="amount_pay" sum="Total" optional="show"/>
+                            <field name="amount_iva" sum="Total" optional="show"/>
+                            <field name="amount_renta" sum="Total" optional="show"/>
+                            <field name="amount_commission" sum="Total" optional="show"/>
+                            <field name="l10n_latam_document_number" sum="Total" optional="hide"/>
+                            <field name="found" optional="show"/>
+                        </tree>
+                    </field>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_account_payment_tc" model="ir.ui.view">
+            <field name="name">account.payment.tc</field>
+            <field name="model">account.payment.tc.cab</field>
+            <field name="arch" type="xml">
+                <form string="LIQUIDACION TARJETA DE CREDITO">
+                    <header>
+                        <button name="get_lines" states="draft"
+                                class="oe_highlight"
+                                string="Consultar" type="object" />
+                        <button name="action_close" states="draft"
+                                class="oe_highlight"
+                                string="Conciliar" type="object" />
+                        <button name="action_draft" states="done"
+                                confirm="¿Esta seguro/a?, este paso revertirá el asiento contable"
+                                string="Cambiar a Borrador" type="object" />
+                        <field name="state" widget="statusbar" />
+                    </header>
+
+                    <sheet>
+                        <div class="oe_button_box" name="button_box" modifiers="{}">
+                            <button class="oe_stat_button" name="button_journal_entries"
+                                    string="Apuntes contables"
+                                    type="object" attrs="{'invisible':[('state','!=','done')]}" icon="fa-bars"/>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="description"/>
+                            </group>
+                            <group>
+                                <field name="date_move"/>
+                            </group>
+                        </group>
+                        <group string="Criterio de Busqueda">
+                            <group>
+                                <field name="printer_ids"
+                                       options="{'no_create': True, 'no_open': True}"
+                                       widget="many2many_tags" />
+                                <field name="available_payment_method_line_ids" invisible="1"/>
+                                <field name="is_range_date"/>
+                                <field name="date" attrs="{'invisible': [('is_range_date', '=', True)]}"/>
+                                <field name="date_start" attrs="{'required': [('is_range_date', '=', True)], 'invisible': [('is_range_date', '=', False)]}"/>
+                                <field name="date_end" attrs="{'required': [('is_range_date', '=', True)], 'invisible': [('is_range_date', '=', False)]}"/>
+                                <field name="journal_filter" options="{'no_create': True, 'no_open': True}" domain="[('credit_card','=',True),]" />
+                                <field name="account_payment_method_line_id" options="{'no_create': True, 'no_open': True}" />
+                            </group>
+                            <group>
+                                <field name="lote_tc"/>
+                                <field name="auth_tc"/>
+                                <field name="reference_tc"/>
+                                <button name="get_lines" states="draft"
+                                        class="oe_highlight"
+                                        string="Consultar" type="object" />
+                            </group>
+                        </group>
+                        <group string="Datos para Conciliación">
+                            <group>
+                                <field name="bank_id" options="{'no_create': True}" required="1"/>
+                                <field name="journal_conciliation" options="{'no_create': True}" required="1"/>
+                                <field name="retention_id" widget="many2many_tags" options="{'no_create': True}" domain="[('transaction_type','=','sale'),('state','=','posted'),('tarjeta_credito','=',True)]"/>
+                                <field name="amount_iva"/>
+                                <field name="amount_renta"/>
+                            </group>
+                            <group>
+                                <field name="amount_retention"/>
+                                <field name="total_select_payment"/>
+                                <field name="amount_commission"/>
+                                <field name="amount_bank"/>
+                                <field name="ammount_diff"/>
+                                <field name="send_diff_account"/>
+                                <field name="diff_account_id" attrs="{'invisible': [('send_diff_account', '=', False)]}" options="{'no_create': True}"/>
+                                <field name="account_analytic_id" attrs="{'invisible': [('send_diff_account', '=', False)]}" options="{'no_create': True}"/>
+                                <field name="partner_journal_id" invisible="1"/>
+                                <field name="have_withholding" invisible="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Pagos">
+                                <button name="action_load_payments" string="Cargar archivo de pagos" type="object" class="oe_highlight"/>
+                                <button name="clear_lines" string="Limpiar NO seleccionadas" type="object" class="oe_highlight"/>
+                                <button name="select_all" string="Seleccionar Todo" type="object" class="oe_highlight"/>
+                                <button name="no_select_all" string="Quitar Seleccion" type="object" class="oe_highlight"/>
+                                <field name="line_ids" nolabel="1">
+                                    <tree editable="bottom" create="0">
+                                        <field name="payment_date" string="Fecha"/>
+                                        <field name="journal_id" string="Diario" optional="hide"/>
+                                        <field name="partner_id"/>
+                                        <field name="type_net" optional="hide"/>
+                                        <field name="auth_tc" optional="show"/>
+                                        <field name="lote_tc" optional="show"/>
+                                        <field name="reference_tc" optional="show"/>
+                                        <field name="select_row" optional="show"/>
+                                        <field name="amount_net" string="Monto Neto" sum="Total"/>
+                                        <field name="amount" string="Total Venta" sum="Total"/>
+                                        <field name="amount_payment" string="Monto Acreditado" sum="Total"/>
+                                        <field name="payment_cab_id" invisible="1"/>
+                                        <field name="bank_payment_id" domain="[('payment_tc_cab_id','=',payment_cab_id)]" options="{'no_create': True}" optional="hide"/>
+                                        <field name="invoice_payment_id" domain="[('payment_tc_cab_id','=',payment_cab_id)]" options="{'no_create': True}" optional="hide"/>
+                                        <field name="state_conciliation_tc" optional="hide"/>
+                                        <field name="date" optional="hide"/>
+                                        <field name="type_card_issue" optional="hide"/>
+                                        <field name="type_card" optional="hide"/>
+                                        <field name="payment_conciliation_tc" optional="hide"/>
+                                        <field name="is_credit_card" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Acreditacion por Banco">
+                                <field name="bank_payment_ids" options="{'no_open': True}">
+                                    <tree>
+                                        <field name="name_code_bank" optional="hide"/>
+                                        <field name="local_trade" optional="show" />
+                                        <field name="sale_shop_id" optional="show"/>
+                                        <field name="journal_id"/>
+                                        <field name="number_liq"/>
+                                        <field name="amount" sum="Total"/>
+                                        <field name="file_id" optional="hide"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Facturas">
+                                <field name="invoice_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="local_trade" />
+                                        <field name="sale_shop_id" />
+                                        <field name="l10n_latam_document_number"/>
+                                        <field name="electronic_authorization" optional="hide"/>
+                                        <field name="invoice_date" optional="hide"/>
+                                        <field name="amount_without_tax" sum="Total" optional="hide"/>
+                                        <field name="amount_total" sum="Total"/>
+                                        <field name="file_id" optional="hide"/>
+                                        <field name="need_create_invoice" optional="hide"/>
+                                        <field name="state" />
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Retenciones" attrs="{'invisible': [('have_withholding', '=', False)]}">
+                                <field name="withhold_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="withhold_date"/>
+                                        <field name="l10n_latam_document_number"/>
+                                        <field name="electronic_authorization"/>
+                                        <field name="base_iva"/>
+                                        <field name="percentage_iva"/>
+                                        <field name="amount_iva" sum="Total"/>
+                                        <field name="base_renta"/>
+                                        <field name="percentage_renta"/>
+                                        <field name="amount_renta" sum="Total"/>
+                                        <field name="local_trade" optional="hide"/>
+                                        <field name="sale_shop_id" optional="hide"/>
+                                        <field name="file_id" optional="hide"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Carga de Documentos">
+                                <field name="file_ids">
+                                    <tree>
+                                        <field name="date" readonly="1"/>
+                                        <field name="name" readonly="1"/>
+                                        <button name="view_data" type="object" class="oe_highlight" string="Ver Detalle"/>
+                                    </tree>
+                                    <form>
+                                        <group>
+                                            <field name="date" readonly="1"/>
+                                            <field name="name" readonly="1"/>
+                                        </group>
+                                        <field name="line_details" readonly="1">
+                                            <tree>
+                                                <field name="date"/>
+                                                <field name="local_trade" optional="show"/>
+                                                <field name="sale_shop_id" optional="show"/>
+                                                <field name="bin" optional="show"/>
+                                                <field name="lote"/>
+                                                <field name="referencia"/>
+                                                <field name="autorizacion"/>
+                                                <field name="amount" sum="Total" optional="show"/>
+                                                <field name="amount_net" sum="Total" optional="show"/>
+                                                <field name="amount_pay" sum="Total" optional="show"/>
+                                                <field name="amount_iva" sum="Total" optional="show"/>
+                                                <field name="amount_renta" sum="Total" optional="show"/>
+                                                <field name="amount_commission" sum="Total" optional="show"/>
+                                                <field name="l10n_latam_document_number" sum="Total" optional="hide"/>
+                                                <field name="found" optional="show"/>
+                                            </tree>
+                                        </field>
+                                    </form>
+                                </field>
+                            </page>
+                            <page string="Otra Información">
+                                <field name="payment_id" string="Pago Relacionado" readonly="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tree_account_payment_tc">
+            <field name="name">account.payment.tc.cab.tree</field>
+            <field name="model">account.payment.tc.cab</field>
+            <field name="arch" type="xml">
+                <tree string="Liquidación TC">
+                    <field name="name" />
+                    <field name="date_move" />
+                    <field name="journal_conciliation" />
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="action_account_conciliated_inherit_payments" model="ir.actions.server">
+            <field name="name">Regularizar Pagos TC</field>
+            <!-- <field name="type">ir.actions.server</field> -->
+            <field name="state">code</field>
+            <field name="model_id" ref="account.model_account_payment"/>
+            <field name="binding_model_id" ref="account.model_account_payment"/>
+            <field name="binding_view_types">list</field>
+            <field name="code">
+                if records:
+                    action=records._payment_tc()
+            </field>
+        </record>
+
+        <record id="account_payment_tc_cab_view_search" model="ir.ui.view">
+            <field name="name">account.payment.tc.cab.view.search</field>
+            <field name="model">account.payment.tc.cab</field>
+            <field name="arch" type="xml">
+                <search string="Busqueda Liquidacion TC">
+                    <field name="name"/>
+                    <field name="bank_id"/>
+                    <field name="date_move"/>
+                    <separator/>
+                    <group expand="1" string="Group By">
+                        <filter string="Bancos" name="bank_id" context="{'group_by': 'bank_id'}"/>
+                        <filter string="Estado" name="state" context="{'group_by': 'state'}"/>
+                        <filter string="Fecha" name="date_move" context="{'group_by': 'date_move:month'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="action_regularizacion_tc_tree_view">
+            <field name="name">Liquidación TC</field>
+            <field name="res_model">account.payment.tc.cab</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="tree_account_payment_tc" />
+            <field name="search_view_id" ref="account_payment_tc_cab_view_search"/>
+        </record>
+
+        <menuitem id="payment_tc_conciliation_menu" name="Liquidación de Tarjetas de Credito"
+                  sequence="190" parent="ec_sri_authorizathions.sri_tc" action="action_regularizacion_tc_tree_view" />/>
+    </data>
+</odoo>
+

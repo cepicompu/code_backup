@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+
+        <record id="view_account_payment_tc_pos" model="ir.ui.view">
+            <field name="name">account.payment.tc</field>
+            <field name="model">account.payment.tc.cab</field>
+            <field name="inherit_id" ref="ec_payment_tc.view_account_payment_tc"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='is_credit_card']" position="after">
+                    <field name="payment_rel_tc_pos_id"
+                           readonly="1" optional="hide"
+                           string="Pago POS"/>
+                    <field name="pos_order_id"
+                           readonly="1" optional="hide"
+                           string="Pedido POS"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
+

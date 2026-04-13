@@ -1,0 +1,75 @@
+<odoo>
+    <data>
+
+
+        <record id="ec_payment_tc_account_payment_form" model="ir.ui.view">
+            <field name="name">ec.payment.tc.account.payment.form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <field name="journal_id" position="after">
+                    <field name="is_credit_card" invisible="1"/>
+                    <field name="state_conciliation_tc" invisible="1"/>
+                    <field name="payment_conciliation_tc" invisible="1"/>
+                    <field name="lote_tc" attrs="{'invisible': [('is_credit_card', '!=', True)]}"/>
+                    <field name="auth_tc" attrs="{'invisible': [('is_credit_card', '!=', True)]}"/>
+                    <field name="reference_tc" attrs="{'invisible': [('is_credit_card', '!=', True)]}"/>
+                </field>
+                <xpath expr="//header//button[@name='action_post']" position="after">
+                    <button name="action_conciate" string="Regularizar TC" type="object"
+                            class="oe_highlight" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
+<!--        <record model="ir.ui.view" id="account_payment_inherit_form_view">-->
+<!--			<field name="name">account.payment.form</field>-->
+<!--			<field name="model">account.payment</field>-->
+<!--			<field name="inherit_id"-->
+<!--				ref="account_check_printing.view_account_payment_form_inherited" />-->
+<!--			<field name="arch" type="xml">-->
+<!--				<field name="payment_method_line_id" position="after">-->
+<!--					<field name="payment_method_for_reports" invisible="1" />-->
+<!--					<field name="payment_processor"-->
+<!--						attrs="{'invisible': [('payment_method_for_reports', '!=', 'tarjeta')], 'required': [('payment_method_for_reports', '=', 'tarjeta')]}" />-->
+<!--					-->
+<!--					<field name="bank_id"-->
+<!--						attrs="{'invisible': [('payment_method_for_reports', '!=', 'tarjeta')], 'required': [('payment_method_for_reports', '=', 'tarjeta')]}" />-->
+<!--&lt;!&ndash;					<field name="type_card_issue"&ndash;&gt;-->
+<!--&lt;!&ndash;						attrs="{'invisible': [('payment_method_for_reports', '!=', 'tarjeta')], 'required': [('payment_method_for_reports', '=', 'tarjeta')]}" />&ndash;&gt;-->
+
+<!--					<field name="type_card"-->
+<!--						attrs="{'invisible': [('payment_method_for_reports', '!=', 'tarjeta')], 'required': [('payment_method_for_reports', '=', 'tarjeta')]}" />-->
+
+
+<!--					<field name="payment_deferred"-->
+<!--						attrs="{'invisible': [('payment_method_for_reports', '!=', 'tarjeta')], 'required': [('payment_method_for_reports', '=', 'tarjeta')]}" />-->
+<!--					<field name="poseedor"-->
+<!--						attrs="{'invisible': [('payment_method_for_reports', '!=', 'tarjeta')], 'required': [('payment_method_for_reports', '=', 'tarjeta')]}" />-->
+<!--					<field name="payment_processor"-->
+<!--						attrs="{'invisible': [('payment_method_for_reports', '!=', 'tarjeta')], 'required': [('payment_method_for_reports', '=', 'tarjeta')]}" />-->
+<!--					<field name="lote_tc"-->
+<!--						attrs="{'invisible': [('payment_method_for_reports', '!=', 'tarjeta')], 'required': [('payment_method_for_reports', '=', 'tarjeta')]}" />-->
+
+<!--					<field name="bank_company_account_id" string="Cuenta Bancaria Empresa"-->
+<!--						attrs="{'invisible': [('payment_method_for_reports', '!=', 'transferencia')], 'required': [('payment_method_for_reports', '=', 'transferencia')]}" />-->
+<!--					<field name="type_transfer"-->
+<!--						attrs="{'invisible': [('payment_method_for_reports', 'not in', ('transferencia','deposito'))], 'required': [('payment_method_for_reports', 'in', ('transferencia','deposito'))]}" />-->
+
+<!--					<field name="date_pay_transfer_tc"-->
+<!--						attrs="{'invisible': [('payment_method_for_reports', 'not in', ('transferencia','deposito'))], 'required': [('payment_method_for_reports', 'in', ('transferencia','deposito'))]}" />-->
+<!--					-->
+<!--				-->
+<!--				-->
+<!--						-->
+
+<!--				-->
+<!--				</field>-->
+<!--			</field>-->
+<!--		</record>-->
+
+
+
+    </data>
+</odoo>
+

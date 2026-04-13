@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="ProductInfoPopup" t-inherit="point_of_sale.ProductInfoPopup" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('section-product-info-title')]" position="after">
+            <div t-if="props.product.x_pos_note" class="section-product-note mb-2" style="background-color: #fff3cd; padding: 10px; border-radius: 4px; border: 1px solid #ffeeba;">
+                <div class="column">
+                    <span class="global-info-title" style="color: #856404; font-weight: bold;">Nota:</span>
+                    <span t-esc="props.product.x_pos_note" style="display: block; white-space: pre-wrap; color: #856404;"/>
+                </div>
+            </div>
+        </xpath>
+        
+        <!-- Hide Cost -->
+        <xpath expr="//div[hasclass('section-financials-body')]//tr[td[text()='Cost:']]" position="replace"/>
+        
+        <!-- Hide Margin -->
+        <xpath expr="//div[hasclass('section-financials-body')]//tr[td[text()='Margin:']]" position="replace"/>
+        
+        <!-- Hide Total Cost -->
+        <xpath expr="//div[hasclass('section-order-body')]//tr[td[text()='Total Cost:']]" position="replace"/>
+
+        <!-- Hide Total Margin -->
+        <xpath expr="//div[hasclass('section-order-body')]//tr[td[text()='Total Margin:']]" position="replace"/>
+    </t>
+</templates>

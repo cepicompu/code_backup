@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!-- Copyright (c) 2022-Present Speeduplight (<https://speeduplight.com/>) -->
+<odoo>
+    <data>
+
+        <record id="ec_view_pos_payment_search" model="ir.ui.view">
+            <field name="name">ec.view.pos.payment.search</field>
+            <field name="model">pos.payment</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_payment_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <filter string="Pago Medianet" name="is_medianet" domain="[('is_medianet', '=', True)]"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="ec_medianet_pos_payment_form" model="ir.ui.view">
+            <field name="name">ec.pos.payment.form</field>
+            <field name="model">pos.payment</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="before">
+                    <header>
+                        <button name="cancel_payment_medianet"
+                                attrs="{'invisible': [('credit_card_information', '!=', True)]}"
+                                class="oe_highlight" string="Anular Pago" type="object"/>
+                        <button name="reverse_payment_medianet"
+                                attrs="{'invisible': [('credit_card_information', '!=', True)]}"
+                                class="oe_highlight" string="Reversar Pago" type="object"/>
+                        <button name="print_cancel_payment"
+                                attrs="{'invisible': [('is_canceled', '!=', True)]}"
+                                class="oe_highlight" string="Imprimir Comprobante de Anulacion" type="object"/>
+                    </header>
+                </xpath>
+                <xpath expr="//group" position="after">
+                    <field name="is_canceled"/>
+                    <group string="Comprobante Anulado" attrs="{'invisible': [('is_canceled', '=', False)]}">
+                        <field name="date_cancel"/>
+                        <field name="credit_card_authorization_cancel"/>
+                        <field name="credit_card_lote_cancel"/>
+                        <field name="credit_card_reference_cancel"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="ec_medianet_pos_session_form" model="ir.ui.view">
+            <field name="name">ec.medianet.pos.session.form</field>
+            <field name="model">pos.session</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='open_frontend_cb']" position="after">
+                    <field name="have_close_session_medianet" invisible="1"/>
+                    <button name="close_session_medianet" states="closed"
+                            string="Cerrar Sesión Medianet" type="object"
+                            class="oe_highlight"/>
+                    <button name="report_session_pinpad" string="Reporte Pinpad"
+                            type="object" class="oe_highlight" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="ec_pos_payment_method_form" model="ir.ui.view">
+            <field name="name">ec.pos.payment.method.form</field>
+            <field name="model">pos.payment.method</field>
+            <field name="inherit_id" ref="point_of_sale.pos_payment_method_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name='payment_medianet'/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="ec_medianet_view_res_bank_inherit">
+            <field name="name">ec.medianet.view.res.bank.inherit</field>
+            <field name="model">res.bank</field>
+            <field name="inherit_id" ref="base.view_res_bank_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[last()]" position="after">
+                    <group>
+                        <field name="is_medianet"/>
+                        <field name="have_deferred" attrs="{'invisible': [('is_medianet', '=', False)]}"/>
+                    </group>
+                    <field name="line_interests_ids" nolabel="1" attrs="{'invisible': [('have_deferred', '=', False)]}">
+                        <tree editable="bottom">
+                            <field name="month_interest"/>
+                            <field name="with_interest"/>
+                            <field name="month_interest_free"/>
+                            <field name="actived"/>
+                        </tree>
+                    </field>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="ec_medianet_form_view" model="ir.ui.view">
+            <field name="name">ec.medianet.form.view</field>
+            <field name="model">ec.payment.medianet</field>
+            <field name="arch" type="xml">
+                <form string="Medianet">
+                    <sheet>
+                        <group col="4">
+                            <field name="name"/>
+                            <field name="port"/>
+                            <field name="bank_id"/>
+                        </group>
+                        <notebook>
+                            <page string="Ubicaciones">
+                                <field name="location_ids">
+                                    <tree edit="bottom">
+                                        <field name="ip"/>
+                                        <field name="mid"/>
+                                        <field name="tid"/>
+                                        <field name="warehouse_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+
+
+        <record model="ir.actions.act_window" id="action_medianet_pos">
+            <field name="name">Medianet</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ec.payment.medianet</field>
+            <field name="view_mode">tree,form</field>
+            <!--			<field name="view_id" ref="account_period_tree_view" />-->
+        </record>
+
+        <menuitem id="ec_menu_medianet_pos" name="Medianet" parent="point_of_sale.menu_point_config_product"
+                  action="action_medianet_pos" />
+
+
+
+
+    </data>
+</odoo>

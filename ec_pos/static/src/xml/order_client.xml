@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-inherit="point_of_sale.PartnerDetailsEdit" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('partner-details-right')]/div[1]" position="replace"/>
+        <xpath expr="//div[hasclass('partner-details-right')]/div[hasclass('partner-detail')]/input[@name='vat']/../span" position="replace">
+        <span class="label">Cedula/RUC</span>
+        </xpath>
+        <xpath expr="//div[hasclass('partner-details-right')]/div[hasclass('partner-detail')]/input[@name='vat']/.." position="before">
+            <div class="partner-detail">
+                <span class="label">Tipo de Id.</span>
+                <select class="detail" name="l10n_latam_identification_type_id" t-model="changes.l10n_latam_identification_type_id" t-on-change="captureChange">
+                    <option value="">None</option>
+                    <t t-foreach="env.pos.l10n_latam_identification_types" t-as="l10n_latam_id_type" t-key="l10n_latam_id_type.id">
+                        <option t-att-value="l10n_latam_id_type.id">
+                            <t t-esc="l10n_latam_id_type.name" />
+                        </option>
+                    </t>
+                </select>
+            </div>
+        </xpath>
+        <xpath expr="//div[hasclass('partner-details-right')]/div[hasclass('partner-detail')]/input[@name='barcode']/.." position="replace"/>
+        <xpath expr="//div[hasclass('partner-details-left')]/div[hasclass('partner-detail')]/input[@name='street']/../span" position="replace">
+             <span class="label">Dirección</span>
+        </xpath>
+        <xpath expr="//div[hasclass('partner-details-left')]/div[hasclass('partner-detail')]/input[@name='street']" position="replace">
+            <input class="detail" name="street"
+                   t-model="changes.street"
+                   t-on-change="captureChange"
+                   placeholder="Dirección" />
+        </xpath>
+        <xpath expr="//div[hasclass('partner-details-left')]/div[hasclass('partner-detail')]/select[@name='country_id']/.." position="replace"/>
+        <xpath expr="//div[hasclass('partner-details-left')]/div[hasclass('partner-detail')]/select[@name='state_id']/.." position="replace"/>
+        <xpath expr="//div[hasclass('partner-details-left')]/div[hasclass('partner-detail')]/input[@name='city']/.." position="replace">
+            <div class="partner-detail">
+                <span class="label">Country</span>
+                <select class="detail" name="country_id" t-model="changes.country_id" t-on-change="captureChange">
+                    <option value="">None</option>
+                    <t t-foreach="env.pos.countries" t-as="country" t-key="country.id">
+                        <option t-att-value="country.id">
+                            <t t-esc="country.name" />
+                        </option>
+                    </t>
+                </select>
+            </div>
+            <div class="partner-detail" t-if="env.pos.states.some((state) => state.country_id[0] == changes.country_id)">
+                <span class="label">State</span>
+                <select class="detail" name="state_id" t-model="changes.state_id" t-on-change="captureChange">
+                    <option value="">None</option>
+                    <t t-foreach="env.pos.states" t-as="state" t-key="state.id">
+                        <option t-if="changes.country_id == state.country_id[0]" t-att-value="state.id">
+                            <t t-esc="state.name" />
+                        </option>
+                    </t>
+                </select>
+            </div>
+            <div class="partner-detail" t-if="env.pos.res_citys.some((res_city) => res_city.state_id[0] == changes.state_id)">
+                <span class="label">Ciudad</span>
+                <select class="detail" name="city_id" t-model="changes.city_id" t-on-change="captureChange">
+                    <option value="">None</option>
+                    <t t-foreach="env.pos.res_citys" t-as="res_city" t-key="res_city.id">
+                        <option t-if="changes.state_id == res_city.state_id[0]" t-att-value="res_city.id">
+                            <t t-esc="res_city.name" />
+                        </option>
+                    </t>
+                </select>
+            </div>
+        </xpath>
+    </t>
+    <t t-name="EcPartnerListScreen" t-inherit="point_of_sale.PartnerListScreen" t-inherit-mode="extension" owl="1">
+        <xpath expr="//section[@class='subwindow list']/div/div/table/thead/tr/th[2]" position="replace">
+            <th t-if="!env.isMobile">Dirección</th>
+        </xpath>
+        <xpath expr="//section[@class='subwindow list']/div/div/table/thead/tr/th[3]" position="after">
+            <th t-if="!env.isMobile">Identificación</th>
+            <th t-if="!env.isMobile" class="partner-line-balance" style="text-align: right;">Saldo</th>
+        </xpath>
+    </t>
+    <t t-inherit="point_of_sale.PartnerLine" t-inherit-mode="extension" owl="1">
+        <xpath expr="//tr/td[4]" position="after">
+            <td class="client-line-ref">
+                <t t-esc="props.partner.vat or ''" />
+                <span t-if="highlight"><br/></span>
+            </td>
+            <td class="client-line-balance" style="text-align: right; font-weight: bold;">
+                <t t-set="balance" t-value="props.partner.credit - props.partner.debit"/>
+                <span t-att-style="balance &gt; 0 ? 'color: red;' : (balance &lt; 0 ? 'color: #00008B;' : '')">
+                    <t t-esc="env.pos.format_currency(balance)" />
+                </span>
+            </td>
+        </xpath>
+    </t>
+</templates>

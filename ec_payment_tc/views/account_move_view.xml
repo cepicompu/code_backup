@@ -1,0 +1,69 @@
+<odoo>
+    <data>
+
+
+        <record id="wizard_reconcile_account_payment_tc_view_form" model="ir.ui.view">
+            <field name="name">wizard.reconcile.account.payment.tc.view.form</field>
+            <field name="model">payment.tc.liq.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Cruzar cuenta Liquidación de TC">
+                    <group>
+                        <field name="date"/>
+                    </group>
+                    <field name="line_ids" nolabel="1" readonly="1">
+                        <tree>
+                            <field name="account_payment_tc_id"/>
+                            <field name="amount_total"/>
+                        </tree>
+                    </field>
+                    <footer>
+                        <button name="payment_with_tc_liq" string="Pagar" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="wizard_payment_tc_invoice_data_form" model="ir.ui.view">
+            <field name="name">wizard.payment.tc.invoice.data.form</field>
+            <field name="model">payment.tc.invoice.data</field>
+            <field name="arch" type="xml">
+                <form string="Facturas con Liquidacion TC">
+                    <field name="lines" readonly="1" nolabel="1">
+                        <tree>
+                            <field name="payment_tc_cab_id" readonly="1"/>
+                            <field name="amount" readonly="1"/>
+                            <field name="sale_shop_id" readonly="1"/>
+                            <field name="local_trade" readonly="1"/>
+                        </tree>
+                    </field>
+                    <group>
+                        <field name="amount_total" readonly="1"/>
+                        <field name="dif" readonly="1"/>
+                    </group>
+                    <footer>
+                        <button string="Cancel" class="btn-default" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="ec_account_payment_tc_view_form">
+            <field name="name">ec.account.payment.view.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_post']" position="after">
+                    <button name="payment_with_tc_liq" string="Pagar con Liquidación de TC"
+                            attrs="{'invisible':['|',('state','!=','posted'),('amount_residual','=',0)]}"
+                            type="object" class="oe_highlight"/>
+                    <button name="search_payment_tc" string="Buscar Liquidación de TC"
+                            states="draft"
+                            type="object" class="oe_highlight"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
+

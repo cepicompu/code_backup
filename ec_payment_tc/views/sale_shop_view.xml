@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="view_tc_sale_shop_form_inherit" model="ir.ui.view">
+			<field name="name">tc.sale.shop.inherid.form</field>
+			<field name="model">sale.shop</field>
+			<field name="inherit_id" ref="ec_sri_authorizathions.sale_shop_multi_form_view"/>
+			<field name="arch" type="xml">
+				<xpath expr="//notebook/page[last()]" position="after">
+					<page name="local_trade_tc" string="Codigo de Comercios Comercios">
+						<field name="local_trade_ids">
+							<tree editable="bottom">
+								<field name="bank_id"/>
+								<field name="local_trade"/>
+							</tree>
+						</field>
+					</page>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

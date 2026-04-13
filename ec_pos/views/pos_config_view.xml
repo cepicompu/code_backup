@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="set_action_desposit_cash" model="ir.actions.server">
+            <field name="name">Deposito de Efectivo</field>
+            <field name="model_id" ref="point_of_sale.model_pos_session"/>
+            <field name="binding_model_id" ref="point_of_sale.model_pos_session"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                    action = records.set_action_desposit_cash()
+            </field>
+        </record>
+
+
+
+        <record model="ir.ui.view" id="ec_pos_pos_config_inherit_form_view">
+            <field name="name">ec.pos.pos.config.inherit.form.view</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="point_of_sale.pos_config_view_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//div[@class='row mt16 o_settings_container'][last()]" position="after">
+                    <div class="row mt16" >
+                        <label string="Establecimiento" for="sale_shop_id" class="col-lg-3 o_light_label" options="{'no_open': True, 'no_create': True}"/>
+                        <field name="sale_shop_id" required="1" />
+                    </div>
+                    <div class="row mt16" >
+                        <label string="Punto de Emisión" for="sri_printer_point_id" class="col-lg-3 o_light_label" options="{'no_open': True, 'no_create': True}"/>
+                        <field name="sri_printer_point_id" required="1" domain="[('shop_id', '=', sale_shop_id)]" />
+                    </div>
+                    <div class="row mt16" >
+                        <label string="Factura por defecto" for="to_invoice" class="col-lg-3 o_light_label" options="{'no_open': True, 'no_create': True}"/>
+                        <field name="to_invoice" />
+                    </div>
+                    <div class="row mt16" >
+                        <label string="Valor Máximo Permitido para Consumidor Final" for="allowed_value_for_no_client" class="col-lg-3 o_light_label"/>
+                        <field name="allowed_value_for_no_client" />
+                    </div>
+                    <div class="row mt16" >
+                        <label string="Valor Máximo Permitido para no facturar" for="allowed_value_for_no_invoice" class="col-lg-3 o_light_label" />
+                        <field name="allowed_value_for_no_invoice" />
+                    </div>
+                     <div class="row mt16" >
+                        <label string="Cierre Ciego" for="blind_closure" class="col-lg-3 o_light_label" />
+                        <field name="blind_closure" />
+                    </div>
+                    <div class="row mt16" >
+                        <label string="Intentos de Cierre Ciego" for="blind_closure_attempts" class="col-lg-3 o_light_label" />
+                        <field name="blind_closure_attempts" />
+                    </div>
+                </xpath>
+                <!--                <xpath expr="//field[@name='journal_id']" position="attributes">-->
+                <!--                    <attribute name="domain">[]</attribute>-->
+                <!--                    <attribute name="domain">[('company_id', '=', company_id), ('type', 'in', ('general', 'sale'))]</attribute>-->
+                <!--                </xpath>-->
+            </field>
+        </record>
+    </data>
+</odoo>

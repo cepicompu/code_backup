@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+acces_ec_payment_medianet,ec.payment.medianet,model_ec_payment_medianet,base.group_user,1,1,1,1
+acces_ec_payment_medianet_location,ec.payment.medianet.location,model_ec_payment_medianet_location,base.group_user,1,1,1,1
+
+
+acces_ec_medianet.transaction,ec.medianet.transaction.location,model_ec_medianet_transaction,base.group_user,1,1,1,1
+
+acces_pos_payment_cancel_medianet,pos.payment.cancel.medianet,model_pos_payment_cancel_medianet,base.group_user,1,1,1,1
+
+
+
+
+acces_ec_payment_medianet_bank_interests,ec.payment.medianet.bank.interests,model_ec_payment_medianet_bank_interests,base.group_user,1,1,1,1

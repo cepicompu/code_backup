@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2022-Present Speeduplight (<https://speeduplight.com/>) -->
+<templates id="template" xml:space="preserve">
+
+	<t t-name="MedianetPaymentScreenPaymentLines" t-inherit="point_of_sale.PaymentScreenPaymentLines" t-inherit-mode="extension"
+	   owl="1">
+        <xpath expr="//div/t/t[1]/div/div[hasclass('payment-amount')]" position="before">
+			<t t-if="line.payment_method.payment_medianet">
+				<div class="bank-button" t-on-click="() => this.trigger('medianet', { cid: line.cid })">
+					<i class="fa fa-shopping-cart" style="font-size:25px;margin-top:14px;"/>
+				</div>
+			</t>
+        </xpath>
+    </t>
+
+	<t t-name="MedianetInformationPopup" owl="1">
+		<div class="modal-dialog">
+			<div class="popup popup-confirm" style="height: 430px !important;">
+				<p class="title" style="background-color: rgb(110,200,155); color: #fff;">Información Medianet</p>
+				<div class="body" style="height: 275px !important;">
+					<div class='div-container'>
+						<table>
+<!--							<thead>-->
+							<!--								<tr>-->
+							<!--									<th style="width: 45%; "/>-->
+							<!--									<th style="width: 45%;"/>-->
+							<!--									<th style="width: 10%;"/>-->
+							<!--								</tr>-->
+							<!--							</thead>-->
+							<tbody>
+								<tr>
+									<td>Referencia</td>
+									<td style="padding: 3px;">
+										<input id="ref" type="text" t-ref="input-ref" readonly="True"
+											   class="input-field" name="ref"/>
+									</td>
+								</tr>
+								<tr>
+									<td>Lote</td>
+									<td style="padding: 3px;">
+										<input id="lote" type="text" t-ref="input-lote" readonly="True"
+											   class="input-field" name="lote"/>
+									</td>
+								</tr>
+								<tr>
+									<td>Autorización</td>
+									<td style="padding: 3px;">
+										<input id="authorization" type="text" t-ref="input-auth" readonly="True"
+											   value=""
+											   class="input-field" name="authorization"/>
+									</td>
+								</tr>
+								<tr>
+									<td>Intereses</td>
+									<td style="padding: 3px;">
+										<select class="select_interes_id" name='select_interes'
+												style="height: 40px; margin-top: 30px;width: 162px;" t-ref="input-selected">
+											<option disabled="1" selected="1" value="">Escoger</option>
+											<option selected="2" value="0">Corriente</option>
+											<t t-foreach="props.interes" t-as="interes" t-key="interes.id">
+												<option t-att-value='interes.id' t-on-click="() => this.selectItem(interes.id)">
+													<t t-esc='interes.month_interest' class="entered_info"></t> Meses <t t-if="interes.with_interest">con interes</t> <t t-else="">sin interes</t><t t-if="interes.month_interest_free"> con <t t-esc='interes.month_interest_free' class="entered_info"/> Mes(es) de Gracia</t>
+												</option>
+											</t>
+										</select>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="footer" style="background-color: rgb(110,200,155); color: #fff;">
+					<div class="button cancel" style="background-color: #0075AC; color: #fff;" t-on-click="cancel">
+						Cerrar
+					</div>
+					<div class="button confirm" id="generate_qr" style="background-color: #0075AC; color: #fff;"
+						 t-on-click="sendTrama">
+						Solicitar Pago
+					</div>
+					<div class="button confirm" id="void_qr" style="background-color: #0075AC; color: #fff;"
+						 t-on-click="getDatos">
+						Aceptar Pago
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+</templates>

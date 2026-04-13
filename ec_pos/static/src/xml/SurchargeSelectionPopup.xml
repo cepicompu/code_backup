@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="SurchargeSelectionPopup" owl="1">
+        <div class="modal-dialog">
+            <div class="popup popup-widget" style="background-color: #fff !important; color: #000;">
+                <header class="title">
+                    <t t-esc="props.title" />
+                </header>
+                <div class="body">
+                    <div class="selection-list" style="max-height: 300px; overflow-y: auto; text-align: left; padding: 10px;">
+                        <div class="selection-item" style="margin-bottom: 10px; border-bottom: 1px solid #ccc; padding-bottom: 5px; font-weight: bold; display: flex;">
+                            <span style="flex-grow: 1;">Producto</span>
+                            <span style="width: 80px; text-align: right;">Precio</span>
+                            <span style="width: 20px; text-align: center;">-></span>
+                            <span style="width: 80px; text-align: right;">Nuevo</span>
+                        </div>
+                        <t t-foreach="state.lines" t-as="line" t-key="line.id">
+                            <div class="selection-item" style="margin-bottom: 5px; display: flex;">
+                                <span t-esc="line.product_name" style="flex-grow: 1;"/>
+                                <span t-esc="env.pos.format_currency(line.price)" style="width: 80px; text-align: right;"/>
+                                <span style="width: 20px; text-align: center;">-></span>
+                                <span t-esc="env.pos.format_currency(line.new_price)" style="width: 80px; text-align: right; font-weight: bold;"/>
+                            </div>
+                        </t>
+                    </div>
+                    <div class="footer">
+                        <div class="button cancel" t-on-click="cancel">
+                            <t t-esc="props.cancelText" />
+                        </div>
+                        <div class="button confirm" t-on-click="confirm">
+                            <t t-esc="props.confirmText" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

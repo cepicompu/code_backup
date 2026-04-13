@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2022-Present Speeduplight (<https://speeduplight.com/>) -->
+<templates id="template" xml:space="preserve">
+
+	<t t-name="CreditCardPaymentScreenPaymentLines" t-inherit="point_of_sale.PaymentScreenPaymentLines" t-inherit-mode="extension"
+	   owl="1">
+        <xpath expr="//div/t/t[1]/div/div[hasclass('payment-name')]" position="before">
+			<t t-if="line.payment_method.credit_card_information">
+				<div class="bank-button" t-on-click="() => this.trigger('credit-card', { cid: line.cid })">
+					<i class="fa fa-bank" style="font-size:25px;margin-top:14px;"/>
+					<br/>
+					<span>C-POS</span>
+				</div>
+			</t>
+        </xpath>
+    </t>
+
+	<t t-name="CreditCardInformationPopup" owl="1">
+		<div class="modal-dialog">
+			<div class="popup popup-confirm" style="height: 430px !important;">
+				<p class="title" style="background-color: rgb(110,200,155); color: #fff;">Información Tarjeta de Credito</p>
+				<div class="body" style="height: 275px !important;">
+					<div class='div-container'>
+						<table>
+<!--							<thead>-->
+							<!--								<tr>-->
+							<!--									<th style="width: 45%; "/>-->
+							<!--									<th style="width: 45%;"/>-->
+							<!--									<th style="width: 10%;"/>-->
+							<!--								</tr>-->
+							<!--							</thead>-->
+							<tbody>
+<!--								<tr>-->
+								<!--									<td>Tipo de Red</td>-->
+								<!--									<td style="padding: 3px;">-->
+								<!--										<select class="select_type_net" name='select_type_net'-->
+								<!--												style="height: 40px; margin-top: 30px;width: 162px;" t-ref="input-selected">-->
+								<!--											<option disabled="1" selected="1" value="">Escoger..</option>-->
+								<!--											<option t-att-value='medianet'-->
+								<!--													t-on-click="() => this.selectItem('medianet')"><span>Medianet</span>-->
+								<!--											</option>-->
+								<!--											<option t-att-value='datafast'-->
+								<!--													t-on-click="() => this.selectItem('datafast')"><span>Datafast</span>-->
+								<!--											</option>-->
+								<!--										</select>-->
+								<!--									</td>-->
+								<!--								</tr>-->
+								<tr>
+									<td>Autorización</td>
+									<td style="padding: 3px;">
+										<input id="authorization" type="text" t-ref="input-auth"
+											   class="input-field" name="authorization"/>
+									</td>
+								</tr>
+								<tr>
+									<td>Lote</td>
+									<td style="padding: 3px;">
+										<input id="lote" type="number" t-ref="input-lote"
+											   class="input-field" name="lote"/>
+									</td>
+								</tr>
+								<tr>
+									<td>Referencia</td>
+									<td style="padding: 3px;">
+										<input id="ref" type="number" t-ref="input-ref"
+											   class="input-field" name="ref"/>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="footer" style="background-color: rgb(110,200,155); color: #fff;">
+					<div class="button cancel" style="background-color: #0075AC; color: #fff;" t-on-click="cancel">
+						Cancel
+					</div>
+					<div class="button confirm" id="apply_order" style="background-color: #0075AC; color: #fff;"
+						 t-on-click="getValue">
+						Apply
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+	<!--	<t t-name="OrderReceiptInherit" t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension" owl="1">-->
+	<!--		<xpath expr="//div[hasclass('receipt-change')]" position="after">-->
+	<!--			<br/>-->
+	<!--			<div>-->
+	<!--				Cheque No.-->
+	<!--				<span t-esc="env.pos.get_order().cheque_number" class="pos-receipt-right-align"/>-->
+	<!--			</div>-->
+	<!--		</xpath>-->
+	<!--	</t>-->
+
+</templates>

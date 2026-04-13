@@ -1,0 +1,10 @@
+    <t t-name="EcSetPartnerButton" t-inherit="point_of_sale.ActionpadWidget" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[hasclass('set-partner')]//t[@t-esc='props.partner.name']" position="after">
+             <t t-if="props.partner.credit or props.partner.debit">
+                 <t t-set="balance" t-value="props.partner.credit - props.partner.debit"/>
+                 <span t-att-style="balance &gt; 0 ? 'color: red;' : (balance &lt; 0 ? 'color: #00008B;' : '')">
+                     (<t t-esc="env.pos.format_currency(balance)" />)
+                 </span>
+             </t>
+        </xpath>
+    </t>

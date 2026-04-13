@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+<!--    <t t-inherit="point_of_sale.OrderSummary" t-inherit-mode="extension" owl="1">-->
+<!--         <xpath expr="//div[hasclass('line')]" position="replace">-->
+<!--             <div class="line">-->
+<!--                <div class="entry total">-->
+<!--                    <span class="badge">Total: </span>-->
+<!--                    <span class="value">-->
+<!--                        <t t-esc="_total" />-->
+<!--                    </span>-->
+<!--                    <div t-if="_tax.hasTax" class="subentry">-->
+<!--                        Taxes:-->
+<!--                        <span class="value">-->
+<!--                            <t t-esc="_tax.displayAmount" />-->
+<!--                        </span>-->
+<!--                    </div>-->
+<!--                    <div class="subentry">-->
+<!--                        Iva 12%:-->
+<!--                        <t t-esc="_tax.displayAmount12" />-->
+<!--                    </div>-->
+<!--                     <div class="subentry">-->
+<!--                        Iva 0%:-->
+<!--                         <t t-esc="_tax.displayAmount0" />-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--         </xpath>-->
+<!--    </t>-->
+</templates>

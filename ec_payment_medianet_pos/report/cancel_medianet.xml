@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!-- Copyright (c) 2022-Present Speeduplight (<https://speeduplight.com/>) -->
+<odoo>
+    <data>
+        <record id="ec_action_report_cancel_medianet_pos" model="ir.actions.report">
+            <field name="name">Comprobante Anulado</field>
+            <field name="model">ec.medianet.transaction</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ec_payment_medianet_pos.ec_report_cancel_medianet_pos</field>
+            <field name="report_file">ec_payment_medianet_pos.ec_report_cancel_medianet_pos</field>
+            <field name="paperformat_id" ref="ec_tools.ec_paperformat_pos" />
+        </record>
+
+        <template id="ec_report_cancel_medianet_pos">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <!--            ANULACION-->
+                        <div class="row">
+                            <div style="text-align:center;">
+                                <h3>Medianet</h3>
+                            </div>
+                            <t t-if="company.partner_id.business_name">
+                                <div style="text-align:center;"><t t-esc="company.partner_id.business_name" /></div>
+                            </t>
+                            <t t-else="">
+                                <div style="text-align:center;"><t t-esc="company.partner_id.name" /></div>
+                            </t>
+                            <br/>
+                            <t t-if="company.partner_id.street">
+                                <div style="text-align:center;"><t t-esc="company.partner_id.street" /></div>
+                            </t>
+                            <t t-if="company.partner_id.vat">
+                                <div style="text-align:center;"><t t-esc="company.partner_id.vat" /></div>
+                            </t>
+                            <br/>
+                            <div style="text-align:center;">
+                                <span>- CAPTURA ELECTRONICA -</span>
+                            </div>
+                            <br/>
+                            <table border="0" style="width:100%;font-size: 9px!important;">
+                                <tbody>
+                                    <tr>
+                                        <td  style="text-align:left;padding-left:35px" colspan="2"><t t-esc="medianet_name_card" /></td>
+                                        <td style="text-align:right;padding-right:35px"><t t-esc="medianet_number_card" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:left;padding-left:35px">VENCE: XX/XXXX</td>
+                                        <td style="text-align:center;"><t t-esc="medianet_code" /></td>
+                                        <td style="text-align:right;padding-right:35px">Lote: <t t-esc="o.credit_card_lote_cancel" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:left;padding-left:35px" colspan="2">TRANSACCION # <t t-esc="o.credit_card_reference_cancel" /></td>
+                                        <td style="text-align:right;padding-right:35px">AUTORIZACION # <t t-esc="o.credit_card_authorization_cancel" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:left;padding-left:35px" colspan="3">RED: <t t-esc="medianet_type_red" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:left;padding-left:35px" colspan="3"><t t-esc="o.date_cancel" /></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <br/>
+                            <div style="font-size: 10px!important;text-align:center;">
+                                <span>- ANULACION -</span>
+                                <br/>
+                                <span>- TRANSACCION ANULADA -</span>
+                                <br/>
+                                <span><t t-esc="medianet_reference" /></span>
+                            </div>
+                            <table border="0" style="width:100%;font-size: 9px!important;">
+                                <tbody>
+                                    <tr>
+                                        <td style="text-align:left;padding-left:35px">TOTAL:</td>
+                                        <td style="text-align:center;">$</td>
+                                        <td style="text-align:right;padding-right:35px"><t t-esc="o.amount" /></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br/>
+                        </div>
+                        <!--TERMINA ANULACION-->
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="ec_view_pos_order_filter" model="ir.ui.view">
+            <field name="name">ec.view.pos.order.filter</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_order_filter"/>
+            <field name="arch" type="xml">
+                <search position="inside">
+                    <field name="number_invoice" string="Número de Factura"/>
+                    <field name="lines" string="Linea de Pedido"/>
+                </search>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="ec_pos_pos_order_tree_view">
+            <field name="name">ec.pos.pos.order.tree.view</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_order_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="number_invoice"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="ec_pos_pos_order_form_view">
+            <field name="name">ec.pos.pos.order.form.view</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_pos_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_ids']/tree/field[@name='payment_date']" position="replace">
+                    <field name="date"/>
+                </xpath>
+
+                <xpath expr="//button[@name='action_pos_order_invoice']" position="after">
+                    <field name="is_refund" invisible="1"/>
+                    <button name="action_pos_order_invoice" string="Nota de Credito" type="object"
+                            attrs="{'invisible': [('state','!=','paid'),('is_refund','=',False)]}"/>
+                </xpath>
+                <xpath expr="//button[@name='action_pos_order_invoice']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                    <attribute name="attrs">{'invisible': [('state','!=','paid'),('is_refund','=',True)]}</attribute>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

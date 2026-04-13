@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<odoo>
+
+    <record id="wizard_conciliation_tc_view" model="ir.ui.view">
+        <field name="name">Liquidación de Pagos TC</field>
+        <field name="model">wizard.conciliation.tc</field>
+        <field name="arch" type="xml">
+            <form string="Liquidación de Pagos TC">
+                <p></p>
+                <group>
+                    <field name="journal_id" required="1" domain="[('type','in',('cash','bank'))]"/>
+                    <field name="partner_id" />
+                    <field name="amount_bank" readonly="1"/>
+                    <field name="amount_retention"  readonly="1"/>
+                    <field name="amount_commission" readonly="1"/>
+                    <field name="amount_select" readonly="1"/>
+                    <field name="have_amount_diff" readonly="1" invisible="1"/>
+                    <field name="amount_diff" readonly="1" attrs="{'invisible':[('have_amount_diff','=',False)]}"/>
+                </group>
+                <footer>
+                    <button name="validate" string="Regularizar" type="object" class="oe_highlight"/>
+
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_wizard_pay_tc" model="ir.actions.act_window">
+        <field name="name">Liquidación de Pagos</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.conciliation.tc</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!--  <menuitem name="Liquidación TC" action="action_wizard_pay_tc"
+         sequence="95" id="menu_regularizacion" parent="ec_sri_authorizathions.sri_anexos" groups="base.group_system"/> -->
+
+</odoo>
