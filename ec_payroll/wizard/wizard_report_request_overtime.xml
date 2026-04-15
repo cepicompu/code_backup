@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_request_overtime_report_wizard" model="ir.ui.view">
+            <field name="name">request.overtime.report.wizard.form</field>
+            <field name="model">request.overtime.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Reporte de Horas Extras">
+                    <group>
+                        <group>
+                            <field name="period_type"/>
+                            <field name="single_month" attrs="{'invisible': [('period_type', '!=', 'single')], 'required': [('period_type', '=', 'single')]}"/>
+                            <field name="fiscalyear_config_id" attrs="{'invisible': [('period_type', '!=', 'single')], 'required': [('period_type', '=', 'single')]}" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="start_date" attrs="{'invisible': [('period_type', '=', 'single')], 'required': [('period_type', '=', 'range')]}"/>
+                            <field name="end_date" attrs="{'invisible': [('period_type', '=', 'single')], 'required': [('period_type', '=', 'range')]}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="company_id" invisible="1"/>
+                        <field name="employee_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                        <field name="department_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                    </group>
+                    <footer>
+                        <button name="action_export_xlsx" type="object" class="btn-primary" string="Exportar XLSX"/>
+                        <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_request_overtime_report_wizard" model="ir.actions.act_window">
+            <field name="name">Reporte Horas Extras</field>
+            <field name="res_model">request.overtime.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_request_overtime_report_wizard"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_request_overtime_report" name="Reporte Horas Extras" parent="hr_payroll.menu_hr_payroll_report" action="ec_payroll.action_request_overtime_report_wizard" sequence="30"/>
+    </data>
+</odoo>

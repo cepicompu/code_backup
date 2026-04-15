@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+		<record model="ir.ui.view" id="request_overtime_tree_view">
+			<field name="name">request.overtime.tree</field>
+			<field name="model">request.overtime</field>
+			<field name="arch" type="xml">
+				<tree string=" Solicitud de Horas Extras" default_order="employee_id">
+					<field name="employee_id"/>
+					<field name="cant_hours_ext" sum="Total"/>
+					<field name="cant_hours_suple" sum="Total"/>
+					<field name="cant_hours_night" sum="Total"/>
+					<field name="wage_hours_ext" sum="Total"/>
+					<field name="wage_hours_suple" sum="Total"/>
+					<field name="wage_hours_night" sum="Total"/>
+					<field name="reason" invisible="1"/>
+					<field name="department_id" invisible="1"/>
+					<field name="state" />
+					<field name="number" invisible="1"/>
+					<field name="aprobador_id" invisible="1"/>
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="request_overtime_form_view">
+			<field name="name">request.overtime.form</field>
+			<field name="model">request.overtime</field>
+			<field name="arch" type="xml">
+				<form string=" Solicitud de Horas Extras">
+					<header>
+						<button name="action_done" type="object"
+								string="Aprobado" states="request" class="oe_highlight"/>
+						<button name="action_rejected" type="object" string="Rechazado" states="request"
+								class="oe_highlight"/>
+						<button name="action_draft" type="object"
+								string="Regresar a Borrador"
+								states="request" />
+						<button name="action_request" type="object" string="Solicitar"
+								states="draft" />
+						<button name="%(ec_payroll.action_report_request_overtime)d"
+								string="Imprimir Solicitud" type="action" attrs="{'invisible': [('state', '=', 'draft')]}" />
+						<field name="state" widget="statusbar"/>
+					</header>
+					<sheet>
+						<div class="oe_button_box" name="button_box">
+							<field name="transaction_ids" invisible="1" />
+							<button type="object" name="action_view_transaction"
+									class="oe_stat_button" icon="fa-file-text"
+									attrs="{'invisible': [('trasaccion_count', '=', 0)]}">
+								<field name="trasaccion_count" widget="statinfo"
+									   string="Transacciones Programadas" />
+							</button>
+						</div>
+						<div class="oe_title">
+							<h1>
+
+								<field name="number" />
+							</h1>
+						</div>
+						<group>
+							<group>
+								<field name="employee_id" required="True" />
+								<field name="date_from" required="True"/>
+								<field name="date_to" required="False"/>
+								<field name="aprobador_id" />
+								<field name="recibido_id" />
+								<field name="reason" />
+								<field name="activitie_infor" required="False"/>
+							</group>
+							<group>
+								<field name="contract_id" domain="[('employee_id','=',employee_id)]"  required="False" />
+								<field name="cant_hours_suple" widget="float_time"/>
+								<field name="cant_hours_ext" widget="float_time"/>
+								<field name="cant_hours_night" widget="float_time"/>
+								<separator string="Valores"/>
+								<field name="wage_hours_suple"  readonly="True" attrs="{'invisible': [('cant_hours_suple', '=', 0)]}"/>
+								<field name="wage_hours_ext"  readonly="True" attrs="{'invisible': [('cant_hours_ext', '=', 0)]}"/>
+								<field name="wage_hours_night"  readonly="True" attrs="{'invisible': [('cant_hours_night', '=', 0)]}"/>
+							</group>
+						</group>
+
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="request_overtime_search_view">
+			<field name="name">request.overtime.search</field>
+			<field name="model">request.overtime</field>
+			<field name="arch" type="xml">
+				<search string=" Solicitud de Horas Extras">
+					<field name="number"/>
+				</search>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="action_request_overtime_tree_view">
+			<field name="name"> Solicitud de Horas Extras</field>
+			<field name="res_model">request.overtime</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="request_overtime_tree_view"/>
+		</record>
+
+		<record id="cen_action_server_done_overtime_1" model="ir.actions.server">
+			<field name="name">Aprobar Horas extras</field>
+			<field name="type">ir.actions.server</field>
+			<field name="model_id" ref="model_request_overtime" />
+			<field name="binding_model_id" ref="model_request_overtime" />
+			<field name="binding_view_types">list</field>
+			<field name="state">code</field>
+			<field name="code">
+				if records:
+					action = records.action_done()
+			</field>
+		</record>
+
+		<menuitem id="request_overtime_menu"
+				  name="Horas Extras"
+				  parent="hr_payroll.menu_hr_payroll_payslips"
+				  sequence='100'
+				  action="action_request_overtime_tree_view"/>
+</odoo>

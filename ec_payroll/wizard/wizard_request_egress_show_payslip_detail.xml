@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record model="ir.ui.view" id="wizard_request_egress_show_payslip_detail_form_view">
+			<field name="name">wizard.request.egress.show.payslip.detail.form</field>
+			<field name="model">wizard.request.egress.show.payslip.detail</field>
+			<field name="arch" type="xml">
+				<form string="Asistente de solicitud de egreso">
+					<sheet>
+						<field name="line_ids" colspan="4" nolabel="1" readonly="True">
+							<tree>
+								<field name="name" />
+								<field name="code" />
+								<field name="category_transaction_id" />
+								<field name="quantity" />
+								<field name="rate" />
+								<field name="amount" />
+								<field name="total" />
+								<field name="salary_rule_id" />
+							</tree>
+						</field>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="action_wizard_request_egress_show_payslip_detail">
+			<field name="name">Asistente detalle solicitud de egreso</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">wizard.request.egress.show.payslip.detail</field>
+			<!-- 		<field name="view_type">form</field> -->
+			<field name="view_mode">tree,form</field>
+			<field name="target">new</field>
+			<field name="view_id" ref="wizard_request_egress_show_payslip_detail_form_view" />
+		</record>
+	</data>
+</odoo>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>    
+         <template id="report_expense_template">
+	            <t t-foreach="docs" t-as="doc">
+	                <t t-call="web.external_layout">
+	                    <div class="page">
+	                     	<table style="margin-bottom: -1%;" class="table table-bordered">
+							      <tr>
+							          <td style="text-align: center;color: white;background-color:#4CAF50;"><strong style="font-size: 135%;">SOLICITUD DE REPOSICIÓN DE GASTOS</strong></td>
+								  </tr>
+						   </table>
+	                        <br/><br/>
+	                        <div>
+			                   	<table class="table table-bordered">
+								    <tbody>
+								      <tr>
+								        <td  width="30%"><strong>Descripción del Gasto: </strong></td>
+								        <td><span  t-field="doc.name" /></td>
+								      </tr>
+								      <tr>
+								        <td><strong>Empleado: </strong></td>
+								        <td><span  t-field="doc.employee_id.display_name" /></td>
+								      </tr>
+								      <tr>
+								        <td><strong>Pagado por: </strong></td>
+								        <td><span  t-field="doc.payment_mode" /></td>								        
+								      </tr>
+								      <tr>
+									      <td><strong>Fecha: </strong></td>
+									      <td><span  t-field="doc.date" /></td>								      
+								      </tr>
+								    </tbody>
+								</table>								
+							</div>					
+							<h4 style="margin-top: 5% !important; margin-bottom: 1%;"><strong>Detalles de Gasto</strong></h4>
+	                        <t t-if="doc.invoice_data_ids">	                        	 
+							     <table style="margin-top: 5%" class="table table-bordered">
+			                       	 <thead>
+				                       	 <tr>
+											<th class="text-center">
+												<strong>Tipo de Gasto</strong>
+											</th>
+											<th class="text-center">
+												<strong>Proveedor</strong>
+											</th>
+											<th class="text-center">
+												<strong>Descripción</strong>
+											</th>
+											<th class="text-center">
+												<strong>Producto</strong>
+											</th>
+											<th class="text-center">
+												<strong>Cuenta Analítica</strong>
+											</th>
+											<th class="text-center">
+												<strong>Etiqueta Analítica</strong>
+											</th>
+											<th class="text-center">
+												<strong>Cantidad</strong>
+											</th>
+											<th class="text-center">
+												<strong>Precio Unitario</strong>
+											</th>
+											<th class="text-center">
+												<strong>Subtotal</strong>
+											</th>
+										 </tr>
+									 </thead>
+									 <tbody>
+										 <t t-foreach="doc.invoice_data_ids" t-as="line">
+											<tr style="page-break-inside:avoid; page-break-after:auto">
+												<td class="text-center">
+													<span t-field="line.type" />
+												</td>
+												<td class="text-center">
+													<span t-field="line.partner_id.display_name" />
+												</td>
+												<td class="text-center">
+													<span t-field="line.description" />
+												</td>											
+												<td class="text-center">
+													<span t-field="line.product_id" />
+												</td>
+												<td class="text-center">
+													<span t-field="line.account_analytic_id.display_name" />
+												</td>
+												<td class="text-right text-nowrap">
+													<span t-field="line.quantity" />
+												</td>
+												<td class="text-right text-nowrap">
+													<span t-field="line.price_unit" />
+												</td>
+												<td class="text-right text-nowrap">
+													<span t-field="line.subtotal" />
+												</td>											
+											</tr>
+										</t>
+									</tbody>
+								  </table>
+							   </t>
+							   <table class="table">
+									<tbody>
+										<tr style="page-break-inside:avoid; page-break-after:auto;">
+											<td style="width: 60%;" >
+											</td>
+											<td style="width: 40%;  font-size:12px; padding:12px 0px 0 0;">
+												<table class="table">
+													<tbody>
+														<tr>
+															<td><strong>Con Factura</strong></td>
+															<td class="text-right text-nowrap"><span t-esc="doc.total_expense_invoice"/></td>
+														</tr>
+														<tr>
+															<td><strong>Sin Factura</strong></td>
+															<td class="text-right text-nowrap"><span t-esc="doc.total_expense_no_invoice"/></td>
+														</tr>
+														<tr>
+															<td><strong>Total Gastos</strong></td>
+															<td class="text-right text-nowrap"><span t-esc="doc.total_expense"/></td>
+														</tr>
+													</tbody>
+												</table>		
+											</td>
+										</tr>
+									</tbody>
+							</table>
+							<div  />
+							<div style="page-break-inside:avoid; page-break-after:auto; margin-top: 18% !important;">
+								<center><span style="margin-top: 10% !important;">___________________________</span></center>
+							 	<center><strong><span style="margin-top: 1% !important;">Realizado por</span></strong></center>				 
+							</div>
+					 </div>
+	                </t>
+	            </t>
+	    </template>
+	    
+	    <report 
+            id="action_report_expense"
+            string="Reporte Gastos"
+            model="hr.expense"
+            report_type="qweb-pdf"
+            file="ec_payroll.report_expense_template" 
+            name="ec_payroll.report_expense_template"
+         />         
+         <record 
+         	id="action_report_expense" 
+         	model="ir.actions.report">
+			<field name="paperformat_id" ref="expense_paperformats" />
+ 		</record>
+ 		
+    </data>
+</odoo>

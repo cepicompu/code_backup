@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="ec_payroll_wizard_report_advance_form" model="ir.ui.view">
+            <field name="name">report.advance.wizard.form</field>
+            <field name="model">report.advance.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Reporte de Anticipos">
+                    <group col="4">
+                        <field name="name" options="{'no_create': True, 'no_open': True}" required="1"/>
+                        <field name="month_period" options="{'no_create': True, 'no_open': True}" required="1"/>
+                        <field name="type_advance" options="{'no_create': True, 'no_open': True}" required="1"/>
+                    </group>
+                    <footer>
+                        <button type="object" name="print_pdf_report" string="PDF"
+                                class="btn-primary"/>
+                        <button type="object" name="print_xls_report" string="XLS"
+                                class="btn-primary"/>
+                        <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_wiz_report_advance" model="ir.actions.act_window">
+            <field name="name">Reporte de Anticipos</field>
+            <field name="res_model">report.advance.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+                id="menu_report_advance"
+                name="Reporte de Anticipos"
+                parent="hr_payroll.menu_hr_payroll_report"
+                action="ec_payroll.action_wiz_report_advance"
+                sequence="12"/>
+    </data>
+</odoo>

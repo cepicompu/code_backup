@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="paperformat_account_standard_for_employee" model="report.paperformat">
+            <field name="name">A4 Landscape listado de empleados</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">25</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">20</field>
+            <field name="dpi">150</field>
+        </record>
+
+
+        <record id="action_report_employee_general" model="ir.actions.report">
+            <field name="name">Listado de Empleados pdf</field>
+            <field name="model">report.ec_payroll.report_employee_general</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ec_payroll.report_employee_general</field>
+            <field name="paperformat_id" ref="paperformat_account_standard_for_employee"/>
+        </record>
+
+        <template id="report_employee_general">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div>
+                        <h6 class="text-right" t-esc="current_date"/>
+                    </div>
+                    <div class="page" style="font-size:10px">
+                        <br/><br/><br/>
+                        <t t-if="employee_type == 'open'">
+                            <h2 class="text-center">Listado de Empleados Activos</h2>
+                        </t>
+                        <t t-if="employee_type == 'close'">
+                            <h2 class="text-center">Listado de Empleados Inactivos</h2>
+                        </t><t t-set="currency" t-value="currency_id"/>
+
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">ID</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Identificación</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Empleado</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Cargo</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Sexo</th>
+                                    <th style="background-color: #0F1570; color: white"  class="col-xs-1">Clasificación</th>
+                                    <th style="background-color: #0F1570; color: white"  class="col-xs-1">Departamento</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Sede</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">C.Costos</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">F.Ingreso</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">T.Contrato</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Dias IESS</th>
+                                    <th style="background-color: #0F1570; color: white"  class="col-xs-1">F.Baja</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Motivo Salida</th>
+
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Tiene Discapacidad?</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Discapacidad</th>
+                                    <th style="background-color: #0F1570; color: white" class="col-xs-1">%Disc.</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Sueldo Contrato</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Acum. 13ero.</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Acum. 14to.</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Acum. F.Reserva</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Horas Contrato</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Jornada</th>
+                                    <th style="background-color: #0F1570; color: white"  class="col-xs-1">Jefe Inmediato</th>
+
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Forma Pago</th>
+                                    <th style="background-color: #0F1570; color: white"  class="col-xs-1">Tipo Cuenta</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Banco</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">#Cuenta</th>
+
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Dirección</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Teléfono</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Celular</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Estado Civil</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">F.Nacimiento</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Edad</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Mes Cumple.</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Tipo Sangre</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Correo Personal</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">País Nac.</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Provincia</th>
+                                    <th  style="background-color: #0F1570; color: white" class="col-xs-1">Región</th>
+
+                                </tr>
+                            </thead>
+                            <tbody style="border-bottom: 1px solid;margin-bottom:9px">
+                                <tr class="text-center" t-foreach="vals" t-as='l'>
+                                    <td><t t-esc="l['id']" /></td>
+                                    <td><t t-esc="l['identification']" /></td>
+                                    <td><t t-esc="l['employee']" /></td>
+                                    <td><t t-esc="l['cargo']" /></td>
+                                    <td><t t-esc="l['gender']" /></td>
+                                    <td><t t-esc="l['clasificacion']" /></td>
+                                    <td><t t-esc="l['department']" /></td>
+                                    <td><t t-esc="l['sede']" /></td>
+                                    <td><t t-esc="l['ccostos']" /></td>
+                                    <td><t t-esc="l['begin_date']" /></td>
+                                    <td><t t-esc="l['type_contract']" /></td>
+                                    <td><t t-esc="l['iess_days']" /></td>
+                                    <td><t t-esc="l['departure_date']" /></td>
+                                    <td><t t-esc="l['departure_motive']" /></td>
+
+                                    <td><t t-esc="l['has_disability']" /></td>
+                                    <td><t t-esc="l['disability']" /></td>
+                                    <td><t t-esc="l['percent_disability']" /></td>
+                                    <td><t t-esc="l['contract_salary']" t-options='{"widget": "monetary", "display_currency": currency}' /></td>
+                                    <td><t t-esc="l['thirteenth']" /></td>
+                                    <td><t t-esc="l['fourteenth']" /></td>
+                                    <td><t t-esc="l['reserve']" /></td>
+                                    <td><t t-esc="l['contract_time']" /></td>
+                                    <td><t t-esc="l['workday']" /></td>
+                                    <td><t t-esc="l['immediate_boss']" /></td>
+
+                                    <td><t t-esc="l['payment_method']" /></td>
+                                    <td><t t-esc="l['payment_type']" /></td>
+                                    <td><t t-esc="l['bank']" /></td>
+                                    <td><t t-esc="l['bank_number']" /></td>
+
+                                    <td><t t-esc="l['address_home']" /></td>
+                                    <td><t t-esc="l['phone']" /></td>
+                                    <td><t t-esc="l['cell_phone']" /></td>
+                                    <td><t t-esc="l['civil_status']" /></td>
+                                    <td><t t-esc="l['birth_date']" /></td>
+                                    <td><t t-esc="l['birth_age']" /></td>
+                                    <td><t t-esc="l['birth_month']" /></td>
+                                    <td><t t-esc="l['type_blood']" /></td>
+                                    <td><t t-esc="l['emailp']" /></td>
+                                    <td><t t-esc="l['country']" /></td>
+                                    <td><t t-esc="l['state_country']" /></td>
+                                    <td><t t-esc="l['region']" /></td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+
+</odoo>

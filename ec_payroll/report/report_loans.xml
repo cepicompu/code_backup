@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_report_loans" model="ir.actions.report">
+            <field name="name">Reporte de Préstamos Entregados</field>
+            <field name="model">report.ec_payroll.report_loans</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ec_payroll.report_loans</field>
+        </record>
+
+        <template id="report_loans">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-size:10px">
+                        <h2 class="text-center">Reporte de Préstamos Entregados</h2>
+                        <br/><br/><br/>
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th class="col-xs-1">Empleado</th>
+                                    <th class="col-xs-1">Monto Préstamo</th>
+                                    <th class="col-xs-1">Monto Pagado</th>
+                                    <th class="col-xs-1">Monto Pendiente</th>
+                                    <th class="col-xs-1">Número de Cuotas</th>
+                                    <th class="col-xs-1">F.Ultima Cuota</th>
+                                    <th class="col-xs-1"># Pago Entregado</th>
+                                    <!-- <th class="col-xs-1">Estado</th> -->
+                                </tr>
+                            </thead>
+                            <tbody style="border-bottom: 1px solid;margin-bottom:9px">
+                                <tr class="text-center" t-foreach="vals" t-as='l'>
+                                    <td><t t-esc="l['employee_id'].name" /></td>
+                                    <td class="text-right"><t t-esc="l['amount_loan']" /></td>
+                                    <td class="text-right"><t t-esc="l['amount_pay']" /></td>
+                                    <td class="text-right"><t t-esc="l['amount_pending']" /></td>
+                                    <td><t t-esc="l['number_payments']" /></td>
+                                    <td><t t-esc="l['end_payment']" /></td>
+                                    <td><t t-esc="l['payment_id'].name" /></td>
+                                    <!-- <td><t t-esc="l['state']" /></td> -->
+                               
+
+
+                                 
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+
+</odoo>

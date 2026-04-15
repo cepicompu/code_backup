@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_report_loans_payment" model="ir.actions.report">
+            <field name="name">Reporte de Anticipos Entregados</field>
+            <field name="model">report.ec_payroll.report_loans_payment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ec_payroll.report_loans_payment</field>
+        </record>
+
+        <template id="report_loans_payment">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-size:10px">
+                        <h2 class="text-center">Reporte de Anticipos Entregados</h2>
+                        <br/><br/><br/>
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th class="col-xs-1">Código</th>
+                                    <th class="col-xs-1">Fecha Pago</th>
+                                    <th class="col-xs-1">Nombre</th>
+                                    <th class="col-xs-1">Identificación</th>
+                                    <th class="col-xs-1">Ubicación</th>
+                                    <th class="col-xs-1">Clasificación</th>
+                                    <th class="col-xs-1">Establecimiento</th>
+                                    <th class="col-xs-1">Forma Pago</th>
+                                    <th class="col-xs-1">Banco</th>
+                                    <th class="col-xs-1">Tipo Cuenta</th>
+                                    <th class="col-xs-1">Número Cuenta</th>
+                                    <th class="col-xs-1">Sueldo Nominal</th>
+                                    <th class="col-xs-1">Monto Quincena</th>
+                                    <!-- <th class="col-xs-1">Estado</th> -->
+                                </tr>
+                            </thead>
+                            <tbody style="border-bottom: 1px solid;margin-bottom:9px">
+                                <tr class="text-center" t-foreach="vals" t-as='l'>
+                                    <td><t t-esc="l['employee_id'].codigo_empleado" /></td>
+                                    <td><t t-esc="l['payment_date']" /></td>
+                                    <td><t t-esc="l['employee_id'].name" /></td>
+                                    <td><t t-esc="l['employee_id'].identification_id" /></td>
+                                    <td>
+                                        <t t-if="l['employee_id'].employee_type=='admin'">
+                                            <span>ADMINISTRATIVO</span>
+                                        </t>
+                                        <t t-if="l['employee_id'].employee_type=='academic'">
+                                            <span>ACADEMICO</span>
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <t t-if="l['employee_id'].employee_type=='admin'">
+                                            <span>ADMINISTRATIVO</span>
+                                        </t>
+                                        <t t-if="l['employee_id'].employee_type=='academic'">
+                                            <span>ACADEMICO</span>
+                                        </t>
+                                    </td>
+                                    <td><t t-esc="l['employee_id'].sede_id.name" /></td>
+                                    <td>
+                                        <t t-if="l['employee_id'].payment_method=='CUE'">
+                                            <span>DEPOSITO CUENTA</span>
+                                        </t>
+                                         <t t-if="l['employee_id'].payment_method=='EFE'">
+                                            <span>EFECTIVO</span>
+                                        </t>
+                                         <t t-if="l['employee_id'].payment_method=='CHE'">
+                                            <span>CHEQUE</span>
+                                        </t>
+                                         <t t-if="l['employee_id'].payment_method=='TRA'">
+                                            <span>TRANSFERENCIA</span>
+                                        </t>
+                                    </td>
+                                     <td>
+                                        <t t-if="l['employee_id'].bank_account_id">
+                                            <t t-esc="l['employee_id'].bank_account_id.bank_id.name" />
+                                        </t>
+                                    </td>
+                                    <td><t t-if="l['employee_id'].bank_account_id.type_account=='savings'">
+                                            <span>AHORRO</span>
+                                        </t>
+                                        <t t-if="l['employee_id'].bank_account_id.type_account=='current'">
+                                            <span>CORRIENTE</span>
+                                        </t>
+                                        <t t-if="l['employee_id'].bank_account_id.type_account=='vitual'">
+                                            <span>VIRTUAL</span>
+                                        </t>
+                                    </td>   
+
+                            
+                                    <td><t t-esc="l['employee_id'].bank_account_id.acc_number" /></td>
+
+
+                                    <td class="text-right"><t t-esc="l['sueldo_nominal']" /></td>
+                                    <td class="text-right"><t t-esc="l['amount_pay']" /></td>
+                                   
+                               
+
+
+                                 
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+
+</odoo>

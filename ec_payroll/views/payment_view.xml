@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+<!--		<record model="ir.ui.view" id="account_payment_form_view">-->
+<!--			<field name="name">account.payment.form</field>-->
+<!--			<field name="model">account.payment</field>-->
+<!--			<field name="inherit_id"-->
+<!--				ref="account.view_account_payment_form" />-->
+<!--			<field name="arch" type="xml">-->
+<!--				<field name="ref" position="after">-->
+<!--					<field name="employee" invisible="1" />-->
+<!--					<field name="employee_id" invisible="1" />-->
+<!--					<field name="request_egress_id" invisible="1"-->
+<!--						domain="[('employee_id', '=', employee_id)]" />-->
+<!--					<field name="request_loan_payment_id" invisible="1"-->
+<!--						domain="[('employee_id', '=', employee_id)]" />-->
+<!--					<field name="hr_liquidation_id" invisible="1"-->
+<!--						domain="[('employee_id', '=', employee_id)]" />-->
+<!--					<field name="hr_payment_type"-->
+<!--						placeholder="Defina como tratar este pago al empleado"-->
+<!--						attrs="{'invisible': ['|', ('employee', '=', False), ('payment_type', '!=', 'outbound')], 'required': [('employee', '=', True), ('payment_type', '=', 'outbound')], 'readonly': ['|', ('request_egress_id', '!=', False), ('hr_liquidation_id', '!=', False)]}"-->
+<!--						force_save="1" />-->
+<!--					<field name="hr_collection_payment_type"-->
+<!--						placeholder="Defina como tratar este cobro al empleado"-->
+<!--						attrs="{'invisible': ['|', ('employee', '=', False), ('payment_type', '!=', 'inbound')], 'required': [('employee', '=', True), ('payment_type', '=', 'inbound')], 'readonly': [('request_loan_payment_id', '!=', False)]}"-->
+<!--						force_save="1" />-->
+<!--					<field name="slip_id"-->
+<!--						domain="[('paid', '=', False), ('employee_id', '=', employee_id)]"-->
+<!--						attrs="{'invisible': ['|', ('employee', '=', False), '|', ('payment_type', '!=', 'outbound'), ('hr_payment_type', '!=', 'pago_nomina')], 'required': [('employee', '=', True), ('payment_type', '=', 'outbound'), ('hr_payment_type', '=', 'pago_nomina')], 'readonly': [('request_egress_id', '!=', False)]}"-->
+<!--						force_save="1" />-->
+<!--					<field name="category_transaction_id"-->
+<!--						placeholder="Escoja el tipo de descuento"-->
+<!--						attrs="{'invisible': ['|', ('employee', '=', False), '|', ('payment_type', '!=', 'outbound'), ('hr_payment_type', '!=', 'descuento_rol')], 'required': [('employee', '=', True), ('payment_type', '=', 'outbound'), ('hr_payment_type', '=', 'descuento_rol')], 'readonly': ['|', ('request_egress_id', '!=', False), ('hr_liquidation_id', '!=', False)]}"-->
+<!--						force_save="1" />-->
+<!--					<field name="tipo_desglose"-->
+<!--						placeholder="Escoja en cuantas cuotas pagara el empleado"-->
+<!--						attrs="{'invisible': ['|', ('employee', '=', False), '|', ('payment_type', '!=', 'outbound'), ('hr_payment_type', '!=', 'descuento_rol')], 'required': [('employee', '=', True), ('payment_type', '=', 'outbound'), ('hr_payment_type', '=', 'descuento_rol')], 'readonly': [('request_egress_id', '!=', False)]}"-->
+<!--						force_save="1" />-->
+<!--					<field name="cantidad_descuentos"-->
+<!--						attrs="{'invisible': ['|', ('employee', '=', False), '|', ('payment_type', '!=', 'outbound'), '|', ('hr_payment_type', '!=', 'descuento_rol'), ('tipo_desglose', '!=', 'multi_payment')], 'required': [('employee', '=', True), ('payment_type', '=', 'outbound'), ('hr_payment_type', '=', 'descuento_rol'), ('tipo_desglose', '=', 'multi_payment')], 'readonly': [('request_egress_id', '!=', False)]}"-->
+<!--						force_save="1" />-->
+<!--				</field>-->
+<!--				<field name="amount" position="attributes">-->
+<!--					<attribute name="attrs">{'readonly': ['|', ('state', '!=', 'draft'), '|', ('request_egress_id', '!=', False), ('hr_liquidation_id', '!=', False)]}</attribute>-->
+<!--					<attribute name="force_save">1</attribute>-->
+<!--				</field>-->
+<!--				<field name="partner_id" position="attributes">-->
+<!--					<attribute name="attrs">{'required': [('state', '=', 'draft'), ('payment_type', 'in', ('inbound', 'outbound'))], 'invisible': [('payment_type', 'not in', ('inbound', 'outbound'))], 'readonly': [('state', '!=', 'draft')], 'readonly': ['|', ('request_egress_id', '!=', False), ('hr_liquidation_id', '!=', False)]}</attribute>-->
+<!--					<attribute name="force_save">1</attribute>-->
+<!--				</field>-->
+<!--				<field name="partner_type" position="attributes">-->
+<!--					<attribute name="attrs">{'required': [('payment_type', 'in', ('inbound', 'outbound'))], 'invisible': [('payment_type', 'not in', ('inbound', 'outbound'))], 'readonly': [('state', '!=', 'draft')], 'readonly': ['|', ('request_egress_id', '!=', False), ('hr_liquidation_id', '!=', False)]}</attribute>-->
+<!--					<attribute name="force_save">1</attribute>-->
+<!--				</field>-->
+<!--				<field name="payment_type" position="attributes">-->
+<!--					<attribute name="attrs">{'readonly': ['|', ('state', '!=', 'draft'), '|', ('request_egress_id', '!=', False), ('hr_liquidation_id', '!=', False)]}</attribute>-->
+<!--					<attribute name="force_save">1</attribute>-->
+<!--				</field>-->
+<!--			</field>-->
+<!--		</record>-->
+
+
+		<!-- MIGRACION REVISAR -->
+
+<!--		<record model="ir.ui.view"-->
+<!--			id="account_payment_check_printing_form_view">-->
+<!--			<field name="name">account.payment.form</field>-->
+<!--			<field name="model">account.payment</field>-->
+<!--			<field name="inherit_id" ref="ec_payment_check.account_payment_check_printing_form_view" />-->
+<!--			<field name="arch" type="xml">-->
+<!--				<xpath expr="//form/sheet" position="before">-->
+
+<!--					<notebook colspan="4">-->
+
+<!--					<page id="transacciones_programadas_id" string="Transacciones R.H. Programados"-->
+<!--						name="transacciones_programadas"-->
+<!--						attrs="{'invisible': [('hr_transaction_ids', '=', [])], 'readonly': [('request_egress_id', '!=', False)]}">-->
+<!--		 				<label for="hr_transaction_ids"-->
+<!--							string="Las transacciones tienen inicialmente las fechas del pago, es recomendable que edite las fechas y si es necesario los montos, el sistema evaluará que el monto coincida exactamente con el pago" />-->
+<!--						<br />-->
+<!--			-->
+<!--						<field name="hr_transaction_ids"-->
+<!--							options="{'no_create': True}" />-->
+<!--					</page>-->
+<!--					<page id="transacciones_programadas_2_id" string="Prestamos / Anticipos a pagar" name="transacciones_programadas_2"-->
+<!--						attrs="{'invisible': [('hr_collection_payment_type', '!=', 'loan_payment')]}">-->
+<!--						<field name="state" invisible="1"/>-->
+<!--						<field name="request_loan_payment_id" invisible="1"/>-->
+<!--						<field name="collection_register_ids" nolabel="1" force_save="1"-->
+<!--							attrs="{'readonly': ['|', ('state', '!=', 'draft'), ('request_loan_payment_id', '!=', False)]}">-->
+<!--							<tree string="Registros">-->
+<!--					&lt;!&ndash; 			<field name="transaction_id"-->
+<!--									domain="[('category_id.code', '=', 'EGRE'), ('employee_id', '=', parent.employee_id), ('processed', '=', False)]" />-->
+<!--								<field name="amount_pending" force_save="1" />-->
+<!--								<field name="amount" sum="Total Pagado" /> &ndash;&gt;-->
+<!--								&lt;!&ndash; <field name="amount"  /> &ndash;&gt;-->
+<!--			-->
+<!--							</tree>-->
+<!--							&lt;!&ndash; <form>-->
+<!--								<group>-->
+<!--									<field name="transaction_id" readonly="1"/>-->
+<!--									<field name="amount_pending" readonly="1"/>-->
+<!--									<field name="amount" readonly="1"/>-->
+<!--								</group>-->
+<!--							</form> &ndash;&gt;-->
+<!--						</field>-->
+<!--					</page>-->
+<!--			-->
+<!--				</notebook>-->
+<!--			</xpath>-->
+<!--			</field>-->
+<!--		</record>-->
+
+	</data>
+</odoo>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_report_vacations" model="ir.actions.report">
+            <field name="name">Reporte de Vacaciones</field>
+            <field name="model">report.ec_payroll.report_vacations</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ec_payroll.report_vacations</field>
+        </record>
+
+        <template id="report_vacations">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div>
+                        <h6 class="text-right" t-esc="current_date"/>
+                    </div>
+                    <div class="page" style="font-size:10px">
+                        <h3 class="text-center">REPORTE DE VACACIONES DE TRABAJADORES</h3>
+                        <h3 class="text-center" t-esc="employee_type"/>
+                        <br/><br/>
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th style="background-color: #0F1570; color: white" class="col-xs-1 text-left">Empleado</th>
+                                    <th style="background-color: #0F1570; color: white" class="col-xs-1 text-left">Identificación</th>
+                                    <th style="background-color: #0F1570; color: white" class="col-xs-1 text-left">Clasificación</th>
+                                    <th style="background-color: #0F1570; color: white" class="col-xs-1 text-left">Estado</th>
+                                    <th style="background-color: #0F1570; color: white" class="col-xs-1 text-left">Días de Vacaciones</th>
+                                    <th style="background-color: #0F1570; color: white" class="col-xs-1 text-left">Periodo</th>
+                                 
+                                </tr>
+                            </thead>
+                            <tbody style="border-bottom: 1px solid;margin-bottom:9px">
+                                <tr class="text-left" t-foreach="vals" t-as='l'>
+                                    <td><t t-esc="l['employee']" /></td>
+                                    <td><t t-esc="l['identification']" /></td>
+                                    <td><t t-esc="l['state']" /></td>
+                                    <td><t t-esc="l['holidays']" /></td>
+                                    <td><t t-esc="l['period']" /></td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+
+</odoo>

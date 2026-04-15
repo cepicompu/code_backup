@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+		<record model="ir.ui.view" id="hr_contract_type_rule_tree_view">
+			<field name="name">hr.contract.type.rule.tree.view</field>
+			<field name="model">hr.contract.type.rule</field>
+			<field name="arch" type="xml">
+				<tree string="Reglas para Contratos">
+					<field name="name" />
+					<field name="structure_id" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="hr_contract_type_rule_form_view">
+			<field name="name">hr.contract.type.rule.form.view</field>
+			<field name="model">hr.contract.type.rule</field>
+			<field name="arch" type="xml">
+				<form string="Reglas para Contratos">
+					<header>
+						<!--						<button name="action_to_send" type="object" -->
+						<!--							string="Enviar" states="draft" class="oe_highlight" />-->
+						<!--						<button name="action_done" type="object" string="Aprobar"-->
+						<!--							states="send" class="oe_highlight" />-->
+						<!--&lt;!&ndash;						<button name="action_rejected" type="object"&ndash;&gt;-->
+						<!--&lt;!&ndash;							string="Rechazar" states="send" class="oe_highlight" />&ndash;&gt;-->
+						<!--						<button name="action_draft" type="object"-->
+						<!--							string="Regresar a Borrador" states="send,done" class="oe_highlight" />							-->
+
+						<!--						<field name="state" widget="statusbar" />-->
+					</header>
+					<sheet>
+						<group>
+							<group>
+								<field name="name" required="1" />
+							</group>
+							<group>
+								<field name="structure_id" required="1"/>
+							</group>
+						</group>
+						<notebook>
+							<page string="Reglas">
+								<field name="rule_ids">
+									<tree editable="bottom">
+										<field name="rule_id" domain="[('struct_id','=',struct_id),('active','=',True)]"/>
+										<field name="amount"/>
+										<field name="is_for_advances"/>
+										<field name="active"/>
+										<field name="contract_type_rule_id" invisible="1"/>
+										<field name="struct_id" invisible="1"/>
+									</tree>
+								</field>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+
+		<record model="ir.actions.act_window" id="action_contract_type_rule">
+			<field name="name">Reglas para Contratos</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.contract.type.rule</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="hr_contract_type_rule_tree_view" />
+		</record>
+
+
+		<menuitem id="hr_contract_type_rule_menu"
+				  name="Reglas Para Contratos"
+				  parent="hr_payroll.menu_hr_payroll_payslips"
+				  sequence='140'
+				  action="action_contract_type_rule" />
+
+	</data>
+</odoo>

@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+		<record model="ir.ui.view" id="employee_department_historytwo">
+			<field name="name">departmenthistorytwo.tree</field>
+			<field name="model">department.history</field>
+			<field name="inherit_id" ref="history_employee.employee_department_history"/>
+			<field name="arch" type="xml" >
+				<xpath expr="//tree" position="attributes">
+					<attribute name="edit">0</attribute>
+					<attribute name="delete">0</attribute>
+					<attribute name="create">0</attribute>
+				</xpath>
+				<xpath expr="//field[@name='updated_date']" position="attributes">
+					<attribute name="string">Fecha de cambio</attribute>
+				</xpath>
+				<xpath expr="//field[@name='updated_date']" position="after">
+					<field name="cargo_id"/>
+				</xpath>
+				<xpath expr="//field[@name='updated_date']" position="before">
+					<field name="departamento_id"/>
+					<field name="area_id"/>
+				</xpath>
+
+				<xpath expr="//field[@name='changed_field']" position="attributes">
+					<attribute name="invisible">True</attribute>
+				</xpath>
+				<xpath expr="//field[@name='current_value']" position="attributes">
+					<attribute name="invisible">True</attribute>
+				</xpath>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="employee_salary_historytwo">
+			<field name="name">salaryhistorytwo.tree</field>
+			<field name="model">salary.history</field>
+			<field name="inherit_id" ref="history_employee.employee_salary_history"/>
+			<!--            <field name="view_mode">tree</field>-->
+			<field name="arch" type="xml">
+				<xpath expr="//tree" position="attributes">
+					<attribute name="edit">0</attribute>
+					<attribute name="delete">0</attribute>
+					<attribute name="create">0</attribute>
+				</xpath>
+				<xpath expr="//field[@name='updated_date']" position="attributes">
+					<attribute name="string">Fecha de actualización</attribute>
+				</xpath>
+				<xpath expr="//field[@name='updated_date']" position="after">
+					<field name="contrato_id"/>
+					<field name="cargo_id"/>
+					<field name="sueldo"/>
+				</xpath>
+				<xpath expr="//field[@name='current_value']" position="attributes">
+					<attribute name="invisible">True</attribute>
+				</xpath>
+			</field>
+		</record>
+
+
+		<record model="ir.ui.view" id="employee_contract_historytwo">
+			<field name="name">contracthistory.tree</field>
+			<field name="model">contract.history</field>
+			<field name="inherit_id" ref="history_employee.employee_contract_history"/>
+			<!--            <field name="view_mode">tree</field>-->
+			<field name="arch" type="xml">
+				<xpath expr="//tree" position="attributes">
+					<attribute name="editable">bottom</attribute>
+					<attribute name="string">Historial de Contratos</attribute>
+				</xpath>
+				<xpath expr="//field[@name='updated_date']" position="attributes">
+					<attribute name="string">Fecha de actualización</attribute>
+				</xpath>
+				<xpath expr="//field[@name='updated_date']" position="after">
+					<field name="tipo_documento" required="1"/>
+					<field name="observacion" required="1"/>
+					<field name="contrato_id" force_save="1" readonly="1"/>
+				</xpath>
+				<xpath expr="//field[@name='current_value']" position="attributes">
+					<attribute name="invisible">True</attribute>
+				</xpath>
+				<xpath expr="//field[@name='changed_field']" position="attributes">
+					<attribute name="invisible">True</attribute>
+				</xpath>
+			</field>
+		</record>
+
+
+		<!--		<record model="ir.ui.view" id="view_employee_form_inherit_extension_inherit_view">-->
+		<!--			<field name="name">hr.employee.inherit.form.extension</field>-->
+		<!--			<field name="model">hr.employee</field>-->
+		<!--			<field name="inherit_id" ref="hr_employee_service.view_employee_form_inherit_extension"/>-->
+		<!--			<field name="arch" type="xml">-->
+
+		<!--				<xpath expr="//group[@name='service_information']" position="attributes">-->
+		<!--					<attribute name="string">Fechas de Re-Ingreso</attribute>-->
+		<!--				</xpath>-->
+
+		<!--				<xpath expr="//group[@name='service_information']/field[@name='service_start_date']" position="attributes">-->
+		<!--					<attribute name="string">Fecha de Re-Ingreso</attribute>-->
+		<!--				</xpath>-->
+
+		<!--			</field>-->
+		<!--		</record>-->
+
+		<record model="ir.ui.view" id="hr_employee_form_view">
+			<field name="name">hr.employee.form</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_form" />
+			<field name="arch" type="xml">
+				<field name="work_location_id" position="after">
+					<field name="cod_sectorial_iess"/>
+				</field>
+				<field name="country_id" position="before">
+					<field name="foreign"/>
+				</field>
+				<field name="country_id" position="after">
+					<field name="state_id"/>
+				</field>
+				<field name="phone" position="after">
+					<field name="email_private"/>
+				</field>
+
+
+
+				<field name="address_id" position="attributes">
+					<attribute name="invisible">True</attribute>
+				</field>
+				<!--				<field name="work_location" position="attributes">-->
+				<!--					<attribute name="invisible">True</attribute>-->
+				<!--				</field>-->
+				<field name="address_home_id" position="attributes">
+					<attribute name="invisible">True</attribute>
+				</field>
+				<field name="private_email" position="attributes">
+					<attribute name="invisible">True</attribute>
+				</field>
+				<field name="barcode" position="attributes">
+					<attribute name="invisible">True</attribute>
+				</field>
+				<!--				<field name="service_hire_date" position="attributes">-->
+				<!--					<attribute name="invisible">True</attribute>-->
+				<!--				</field>-->
+				<field name="pin" position="attributes">
+					<attribute name="invisible">True</attribute>
+				</field>
+				<field name="user_id" position="attributes">
+					<attribute name="invisible">True</attribute>
+				</field>
+				<field name="study_field" position="attributes">
+					<attribute name="invisible">True</attribute>
+				</field>
+				<field name="study_school" position="attributes">
+					<attribute name="string">Institución Educativa</attribute>
+				</field>
+				<xpath expr="//page[@name='history'][last()]" position="attributes">
+					<attribute name="invisible">True</attribute>
+				</xpath>
+				<xpath expr="//button[@name='time_sheet'][last()]" position="attributes">
+					<attribute name="invisible">True</attribute>
+				</xpath>
+				<xpath expr="//div/h2/field[@name='job_title']" position="attributes">
+					<attribute name="invisible">True</attribute>
+				</xpath>
+
+				<xpath expr="//group[@name='identification_group']" position="attributes">
+					<attribute name="invisible">True</attribute>
+				</xpath>
+
+				<field name="identification_id" position="replace" />
+				<field name="category_ids" position="before">
+					<div class="oe_title">
+						<label for="identification_id" class="oe_edit_only" groups="hr.group_hr_user" string="Cédula / Pasaporte"/>
+						<h1>
+							<field name="identification_id" placeholder="Cédula / Pasaporte" groups="hr.group_hr_user"/>
+						</h1>
+					</div>
+				</field>
+				<!-- <field name="address_home_id" position="attributes">
+					<attribute name="string">Dirección Particular / Empresa Relacionada</attribute>
+				</field> -->
+				<!--				<field name="user_id" position="after">-->
+				<!--					<field name="asumir_antiguedad" />-->
+				<!--				</field>-->
+				<page name="public" position="after">
+					<page string="Cargas Familiares" groups="hr.group_hr_user,hr.group_hr_manager">
+						<label for="wife_id" />
+						<field name="wife_id" context="{'default_relationship': 'wife_husband'}"/>
+						<br />
+						<label for="family_burden_ids" />
+						<field name="family_burden_ids" nolabel="1"
+							   context="{'form_view_ref': 'ec_payroll.hr_family_burden_form_view', 'tree_view_ref': 'ec_payroll.hr_family_burden_tree_view'}" />
+					</page>
+				</page>
+				<field name="bank_account_id" position="replace">
+					<field name="street" />
+					<field name="bank_account_id"/>
+					<field name="payment_method" required="1"/>
+					<field name="bank_id" options="{'no_create': True, 'no_open': True}"
+						   attrs="{'invisible': [('payment_method','!=','CUE')]}"/>
+					<field name="account_number" attrs="{'invisible': [('payment_method','!=','CUE')]}"/>
+					<field name="type_account" attrs="{'invisible': [('payment_method','!=','CUE')]}"/>
+					<field name="third_payment" invisible="1"/>
+					<field name="pay_with_check" />
+				</field>
+
+				<field name="bank_account_id" position="attributes">
+					<attribute name="context">{'default_partner_id':address_home_id}</attribute>
+					<attribute name="options">{'no_create':False}</attribute>
+					<attribute name="invisible">1</attribute>
+				</field>
+				<field name="job_id" position="attributes">
+					<attribute name="string">Cargo</attribute>
+				</field>
+
+				<xpath expr="//group[@name='managers']" position="attributes">
+					<attribute name="string">Jefe Inmediato</attribute>
+				</xpath>
+
+				<field name="parent_id" position="attributes">
+					<attribute name="string">Jefe Inmediato</attribute>
+				</field>
+
+
+
+				<xpath expr="//page[@name='personal_information']" position="inside">
+					<group string="Discapacidad">
+						<field name="is_discapacitado" />
+						<field name="discapacidad" attrs="{'invisible':[('is_discapacitado','=',False)]}"/>
+						<field name="type_disability" attrs="{'invisible':[('is_discapacitado','=',False)]}"/>
+						<field name="nombre_discapacidad" invisible="1"/>
+					</group>
+
+				</xpath>
+
+				<xpath expr="//page[last()]" position="before">
+					<group string="Otra Información" groups="ec_payroll.group_hr_employee_other_inf">
+
+						<field name="address_id"  string="Dirección"/>
+						<field name="address_home_id"  string="Dirección Proveedor Relacionado"/>
+						<field name="user_id" string="Usuario relacionado" />
+
+					</group>
+
+				</xpath>
+
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="hr_employee_tree_view">
+			<field name="name">hr.employee.tree</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_tree" />
+			<field name="arch" type="xml">
+				<field name="name" position="after">
+					<field name="identification_id" />
+				</field>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="hr_employee_search_view">
+			<field name="name">hr.employee.search</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_filter" />
+			<field name="arch" type="xml">
+				<field name="name" position="replace">
+					<field name="name" string="Empleados"
+						   filter_domain="['|','|',('work_email','ilike',self),('name','ilike',self),('identification_id', 'ilike',self)]" />
+				</field>
+			</field>
+		</record>
+
+	</data>
+</odoo>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="report_request_loan_payment">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="oe_structure"/>
+                            <br/>
+                            <br/>
+                            <h3 style="text-align: center;font-weight: bolder;">
+                                SOLICITUD DE PAGO ANTICIPO / PRESTAMO
+                                <span t-field="doc.number"/>
+                            </h3>
+                            <br/>
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <strong>Transaccion Programada</strong>
+                                        </td>
+                                        <td colspan="3">
+                                            <span t-field="doc.rule_id.name"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Fecha Solicitud:</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="doc.request_date"/>
+                                        </td>
+                                        <td>
+                                            <strong>Usuario que Solicita:</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="doc.request_user_id"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table width="100%" class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="text-center">
+                                            <strong>Identificacion</strong>
+                                        </th>
+                                        <th scope="col" class="text-center">
+                                            <strong>Empleado</strong>
+                                        </th>
+                                        <!--										<th scope="col" class="text-center">-->
+                                        <!--											<strong>Region</strong>-->
+                                        <!--										</th>-->
+                                        <!--										<th scope="col" class="text-center">-->
+                                        <!--											<strong>Empleado</strong>-->
+                                        <!--										</th>-->
+                                        <th scope="col" class="text-center">
+                                            <strong>Monto Pendiente</strong>
+                                        </th>
+                                        <th scope="col" class="text-center">
+                                            <strong>Total a Recibir</strong>
+                                        </th>
+                                        <th scope="col" class="text-center">
+                                            <strong>F. de Pago</strong>
+                                        </th>
+                                        <th scope="col" class="text-center">
+                                            <strong>No. CTA/Cheque</strong>
+                                        </th>
+                                        <th scope="col" class="text-center">
+                                            <strong>Tipo de Cta.</strong>
+                                        </th>
+                                        <th scope="col" class="text-center">
+                                            <strong>Bco. Empleado</strong>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="doc.line_ids" t-as="line">
+                                        <td class="text-left">
+                                            <span t-field="line.employee_id.identification_id"/>
+                                        </td>
+                                        <td class="text-left">
+                                            <span t-field="line.employee_id.name"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="line.amount_pending"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.amount"/>
+                                        </td>
+
+                                        <td class="text-right">
+                                            <span t-if="line.employee_id.payment_method == 'CUE'">Transferencia</span>
+                                            <span t-if="line.employee_id.payment_method == 'EFE'">Efectivo</span>
+                                            <span t-if="line.employee_id.payment_method == 'CHE'">cheque</span>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-if="line.employee_id.bank_account_id"
+                                                  t-esc="line.employee_id.bank_account_id.acc_number"/>
+                                            <span t-else="">
+                                                <span>-</span>
+                                            </span>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-if="line.employee_id.bank_account_id.type_account == 'savings'">
+                                                Ahorros
+                                            </span>
+                                            <span t-if="line.employee_id.bank_account_id.type_account  == 'current'">
+                                                Corriente
+                                            </span>
+                                            <span t-if="line.employee_id.bank_account_id.type_account  == 'virtual'">
+                                                Virtual
+                                            </span>
+                                        </td>
+                                        <td class="text-right">
+                                            <span  t-if="line.employee_id.bank_account_id"
+                                                    t-esc="line.employee_id.bank_account_id.bank_id.name"/>
+                                            <span t-else="">
+                                                <span>-</span>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" class="text-right">TOTAL PAGO</td>
+                                        <td class="text-right">
+                                            <span t-field="doc.amount"/>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">
+                                            <strong>________________________</strong>
+                                        </td>
+                                        <td class="text-center">
+                                            <strong>________________________</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center">
+                                            <strong>Elaborado por</strong>
+                                        </td>
+                                        <td class="text-center">
+                                            <strong>Aprobado por</strong>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <report id="action_report_request_loan_payment"
+                string="Reporte Solicitud de Pago de Anticipo / Prestamo"
+                model="request.loan.payment" report_type="qweb-pdf"
+                file="ec_payroll.report_request_loan_payment"
+                name="ec_payroll.report_request_loan_payment"/>
+
+
+    </data>
+</odoo>

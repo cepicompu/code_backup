@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>    
+         <template id="report_request_overtime">
+	        <t t-call="web.html_container">
+	           <t t-call="web.external_layout">
+                    <div class="page">	                    
+                     	<div class="oe_structure"/>
+                     	<br/>
+                     	<br/>
+                     	<h3 style="text-align: center;font-weight: bolder;">SOLICITUD DE HORAS EXTRAS</h3>
+	                    <br/>
+	                    <table class="table table-striped" style="page-break-inside:auto">
+		                    <thead class="thead-default">
+								<th>CEDULA</th>
+								<th>NOMBRE</th>
+								<th>TOTAL HORAS EXTRAORDINARIAS</th>
+								<th>TOTAL HORAS SUPLEMENTARIAS</th>
+								<th>TOTAL MONTO EXTRAORDINARIAS</th>
+								<th>TOTAL MONTO SUPLEMENTARIAS</th>
+								<th>RECIBI CONFORME</th>
+							</thead>
+		                    <tbody>
+								<tr t-foreach="lines.keys()" t-as="empleado_id"
+									style="page-break-inside:avoid; page-break-after:auto">
+									<td>
+										<span t-esc="lines[empleado_id]['cedula']" />
+									</td>
+									<td >
+										<span t-esc="lines[empleado_id]['nombre_empleado']" />
+									</td>
+									<td>
+										<span t-esc="lines[empleado_id]['total_h_extra']"/>
+									</td>
+									<td>
+										<span t-esc="lines[empleado_id]['total_h_suple']"/>
+									</td>
+									<td>
+										<span t-esc="lines[empleado_id]['total_monto_h_extra']" />
+									</td>
+									<td>
+										<span t-esc="lines[empleado_id]['total_monto_h_suple']" />
+									</td>
+									<td>
+										<span></span>
+									</td>
+								</tr>									
+							</tbody>
+						</table>
+                    </div>
+                </t>	            
+	        </t>           	                 
+	    </template>
+	    
+	    <report 
+            id="action_report_request_overtime"
+            string="Reporte Solicitud de Horas Extras"
+            model="request.overtime"
+            report_type="qweb-pdf"
+            file="ec_payroll.report_request_overtime" 
+            name="ec_payroll.report_request_overtime"
+         />         
+         <record 
+         	id="action_report_request_overtime" 
+         	model="ir.actions.report">
+			<field name="paperformat_id" ref="request_overtime_paperformats" />
+ 		</record>
+
+        <record id="action_report_request_overtime_xlsx" model="ir.actions.report">
+            <field name="name">Reporte Horas Extras XLSX</field>
+            <field name="model">request.overtime.report.wizard</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">ec_payroll.request_overtime_xlsx</field>
+            <field name="report_file">ec_payroll.request_overtime_xlsx</field>
+            <field name="binding_model_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

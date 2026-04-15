@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="1">
+	<!-- Ticket related subtypes for messaging / Chatter -->
+    <record id="mt_req_created" model="mail.message.subtype">
+        <field name="name">Request Overtime Created</field>
+        <field name="sequence">0</field>
+        <field name="res_model">request.overtime</field>
+        <field name="default" eval="False"/>
+        <field name="hidden" eval="True"/>
+        <field name="description">Solicitud de Horas Extras Creado</field>
+    </record>
+    <record id="mt_req_created_2" model="mail.message.subtype">
+        <field name="name">Request overtime Created</field>
+        <field name="sequence">0</field>
+        <field name="res_model">request.overtime</field>
+        <field name="default" eval="True"/>
+        <field name="parent_id" eval="ref('mt_req_created')"/>
+        <field name="relation_field">employee_id</field>
+    </record>    
+</data>
+</odoo>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- 
+        Ejemplo de herencia de menú.
+        Se hace referencia al ID externo original: 'ec_payroll.menu_report_employee_simplified'
+    -->
+    <menuitem id="ec_payroll.menu_report_employee_simplified"
+              name="Reporte de Empleados (Excel)"
+              groups="base.group_user"/>
+
+</odoo>

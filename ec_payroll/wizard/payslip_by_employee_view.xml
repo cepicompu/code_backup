@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="hr_payroll.view_hr_payslip_by_employees" model="ir.ui.view">
+            <field name="name">hr_payroll_payslip_employees</field>
+            <field name="model">hr.payslip.employees</field>
+            <field name="arch" type="xml">
+                <form string="Payslips by Employees">
+                    <group>
+                        <!--  <label colspan="4" nolabel="1" string="This wizard will generate payslips for all selected employee(s) based on the dates and credit note specified on Payslips Run." /> -->
+                        <field name="date_start" invisible="0"/>
+                        <field name="date_end" invisible="0"/>
+                    </group>
+                    <separator string="Employees" colspan="4"/>
+                    <field name="employee_ids" nolabel="1" context="{'date_start': date_start, 'date_end': date_end}">
+                        <tree create="0">
+                            <field name="name"/>
+                            <field name="identification_id"/>
+                            <field name="department_id"/>
+                            <field name="job_id"/>
+                            <field name="company_id" invisible="1"/>
+                        </tree>
+                    </field>
+                    <footer>
+                        <div class="oe_left">
+                            <button icon="fa-cogs" string="Generar" name="compute_sheet" type="object" class="oe_highlight"  />
+                            <button string="Descartar" special="cancel" type="object"
+                                    icon="fa-close" class="oe_link" />
+                        </div>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

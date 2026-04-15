@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_report_thenths" model="ir.actions.report">
+            <field name="name">Reporte de Décimos Tercero</field>
+            <field name="model">report.ec_payroll.report_thenths</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ec_payroll.report_thenths</field>
+        </record>
+
+        <template id="report_thenths">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-size:10px">
+                        <h2 class="text-center">Reporte Décimo Tercero</h2>
+                        <br/><br/><br/>
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th class="col-xs-1">Código</th>
+                                    <th class="col-xs-1">Nombres</th>
+                                    <th class="col-xs-1">Identificación</th>
+                                    <th class="col-xs-1">Diciembre</th>
+                                    <th class="col-xs-1">Enero</th>
+                                    <th class="col-xs-1">Febrero</th>
+                                    <th class="col-xs-1">Marzo</th>
+                                    <th class="col-xs-1">Abril</th>
+                                    <th class="col-xs-1">Mayo</th>
+                                    <th class="col-xs-1">Junio</th>
+                                    <th class="col-xs-1">Julio</th>
+                                    <th class="col-xs-1">Agosto</th>
+                                    <th class="col-xs-1">Septiembre</th>
+                                    <th class="col-xs-1">Octubre</th>
+                                    <th class="col-xs-1">Noviembre</th>
+                                    <th class="col-xs-1">Décimo 13</th>
+                                    <!-- <th class="col-xs-1">Estado</th> -->
+                                </tr>
+                            </thead>
+                            <tbody style="border-bottom: 1px solid;margin-bottom:9px">
+                                <tr class="text-center" t-foreach="vals" t-as='l'>
+                                    <td><t t-esc="l['employee_id'].codigo_empleado" /></td>
+                                    <td><t t-esc="l['employee_id'].name" /></td>
+                                    <td><t t-esc="l['employee_id'].identification_id" /></td>
+                                    <td class="text-right"><t t-esc="l['diciembre']" /></td>
+                                    <td class="text-right"><t t-esc="l['enero']" /></td>
+                                    <td class="text-right"><t t-esc="l['febrero']" /></td>
+                                    <td class="text-right"><t t-esc="l['marzo']" /></td>
+                                    <td class="text-right"><t t-esc="l['abril']" /></td>
+                                    <td class="text-right"><t t-esc="l['mayo']" /></td>
+                                    <td class="text-right"><t t-esc="l['junio']" /></td>
+                                   <td class="text-right"><t t-esc="l['julio']" /></td>
+                                   <td class="text-right"><t t-esc="l['agosto']" /></td>
+                                   <td class="text-right"><t t-esc="l['septiembre']" /></td>
+                                   <td class="text-right"><t t-esc="l['octubre']" /></td>
+                                    <td class="text-right"><t t-esc="l['noviembre']" /></td>
+                                    <td class="text-right"><t t-esc="l['amount_total']" /></td>
+
+                                 
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+
+
+        <record id="action_report_thenths_14" model="ir.actions.report">
+            <field name="name">Reporte de Décimos Cuarto</field>
+            <field name="model">report.ec_payroll.report_thenths_14</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ec_payroll.report_thenths_14</field>
+        </record>
+
+        <template id="report_thenths_14">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-size:10px">
+                        <h2 class="text-center">Reporte de Décimo Cuarto</h2>
+                        <br/><br/><br/>
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th class="col-xs-1">Código</th>
+                                    <th class="col-xs-1">Nombres</th>
+                                    <th class="col-xs-1">Identificación</th>
+                                    <th class="col-xs-1">Marzo</th>
+                                    <th class="col-xs-1">Abril</th>
+                                    <th class="col-xs-1">Mayo</th>
+                                    <th class="col-xs-1">Junio</th>
+                                    <th class="col-xs-1">Julio</th>
+                                    <th class="col-xs-1">Agosto</th>
+                                    <th class="col-xs-1">Septiembre</th>
+                                    <th class="col-xs-1">Octubre</th>
+                                    <th class="col-xs-1">Noviembre</th>
+                                    <th class="col-xs-1">Diciembre</th>
+                                    <th class="col-xs-1">Enero</th>
+                                    <th class="col-xs-1">Febrero</th>
+                                    <th class="col-xs-1">Décimo 14</th>
+                                    <!-- <th class="col-xs-1">Estado</th> -->
+                                </tr>
+                            </thead>
+                            <tbody style="border-bottom: 1px solid;margin-bottom:9px">
+                                <tr class="text-center" t-foreach="vals" t-as='l'>
+                                    <td><t t-esc="l['employee_id'].codigo_empleado" /></td>
+                                    <td><t t-esc="l['employee_id'].name" /></td>
+                                    <td><t t-esc="l['employee_id'].identification_id" /></td>
+                                    <td class="text-right"><t t-esc="l['marzo']" /></td>
+                                    <td class="text-right"><t t-esc="l['abril']" /></td>
+                                    <td class="text-right"><t t-esc="l['mayo']" /></td>
+                                    <td class="text-right"><t t-esc="l['junio']" /></td>
+                                   <td class="text-right"><t t-esc="l['julio']" /></td>
+                                   <td class="text-right"> <t t-esc="l['agosto']" /> </td>
+                                   <td class="text-right"> <t t-esc="l['septiembre']"/> </td>
+                                   <td class="text-right"><t t-esc="l['octubre']" /></td>
+                                    <td class="text-right"><t t-esc="l['noviembre']" /></td>
+                                    <td class="text-right"><t t-esc="l['diciembre']" /></td>
+                                    <td class="text-right"><t t-esc="l['enero']" /></td>
+                                    <td class="text-right"><t t-esc="l['febrero']" /></td>
+                                    <td class="text-right"><t t-esc="l['amount_total']" /></td>
+
+                                 
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+
+
+    </data>
+
+</odoo>

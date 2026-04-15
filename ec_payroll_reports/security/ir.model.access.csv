@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_wizard_ministry_report,wizard.ministry.report,model_wizard_ministry_report,base.group_user,1,1,1,1
+access_ec_payroll_report_user,ec.payroll.report (user),model_ec_payroll_report,hr_payroll.group_hr_payroll_user,1,1,1,0
+access_ec_payroll_report_manager,ec.payroll.report (manager),model_ec_payroll_report,hr_payroll.group_hr_payroll_manager,1,1,1,1
+access_ec_payroll_report_line_user,ec.payroll.report.line (user),model_ec_payroll_report_line,hr_payroll.group_hr_payroll_user,1,1,1,0
+access_ec_payroll_report_line_manager,ec.payroll.report.line (manager),model_ec_payroll_report_line,hr_payroll.group_hr_payroll_manager,1,1,1,1

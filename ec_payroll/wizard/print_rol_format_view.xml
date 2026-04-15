@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="ec_payroll_wizard_print_roll_form" model="ir.ui.view">
+            <field name="name">hr.print.roll.format.wizard.form</field>
+            <field name="model">hr.print.roll.format</field>
+            <field name="arch" type="xml">
+                <form string="Imprimir Rol de Pagos">
+                    <group col="2">
+                        <field name="type_report" widget="radio"/>
+                    </group>
+                    <group attrs="{'invisible' : [('type_report', '!=', 'pdf')]}">
+                        <field name="format_type" widget="radio"/>
+                    </group>
+                    <footer>
+                        <button type="object" name="print_pdf_report" string="PDF"
+                                attrs="{'invisible' : [('type_report', '!=', 'pdf')]}"
+                                class="btn-primary"/>
+                        <button type="object" name="print_excel_report" string="EXCEL"
+                                attrs="{'invisible' : [('type_report', '!=', 'excel')]}"
+                                class="btn-primary"/>
+
+                        <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_report_nomina_departamentos_1" model="ir.actions.act_window">
+            <field name="name">Reporte Roll A4</field>
+            <field name="res_model">hr.print.roll.format</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+       <!--  <menuitem
+                id="menu_report_deduction"
+                name="Reporte de Deducciones"
+                parent="hr_payroll.menu_hr_payroll_report"
+                action="ec_payroll.action_report_deduction"
+                sequence="19"/> -->
+    </data>
+</odoo>

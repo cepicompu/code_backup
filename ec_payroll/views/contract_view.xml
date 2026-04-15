@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+		<record id="view_hr_payroll_account_view_form" model="ir.ui.view">
+			<field name="name">view.hr.payroll.account.view.form</field>
+			<field name="model">hr.contract</field>
+			<field name="inherit_id" ref="hr_payroll_account.hr_contract_view_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='analytic_account_id']" position="before">
+					<field name="analytic_distribution" string="Distribución Analítica"
+						   widget="analytic_distribution"/>
+					<field name="business_contract"/>
+				</xpath>
+				<xpath expr="//field[@name='analytic_account_id']" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+			</field>
+		</record>
+
+
+		<record model="ir.ui.view" id="hr_contract_form_view">
+			<field name="name">hr.contract.form</field>
+			<field name="model">hr.contract</field>
+			<field name="inherit_id" ref="hr_contract.hr_contract_view_form" />
+			<field name="arch" type="xml">
+
+				<!-- 	<xpath expr="//header" position="inside">
+                       <button name="action_send_link" string="Enviar Notificación" type="object" class="oe_highlight" />
+
+                  </xpath> -->
+
+				<field name="job_id" position="before">
+					<field name="type_rule_ids" options="{'no_create': True}"
+						   string="Tipo de Reglas" widget="many2many_tags"/>
+				</field>
+
+				<field name="wage" position="replace">
+					<field name="wage" string="Sueldo IESS"/>
+					<!-- 	<attribute name="string">Sueldo</attribute> -->
+				</field>
+
+				<field name="hr_responsible_id" position="after">
+					<field name="type_day"/>
+					<field name="type_slip"/>
+					<field name="partial_hours" attrs="{'required': [('type_day','=','partial')], 'invisible':[('type_day','!=','partial')]}" invisible="0"/>
+					<field name="days_iess" attrs="{'required': [('type_day','=','partial')], 'invisible':[('type_day','!=','partial')]}"/>
+					<field name="contracted_hours" attrs="{'required': [('type_day','=','partial')], 'invisible':[('type_day','!=','partial')]}"/>
+				</field>
+
+				<xpath expr="//page[@name='other']" position="after">
+					<page string="Datos para calculo">
+						<strong>Seleccione las reglas salariales que formaran parte del calculo de la nomina</strong>
+						<!--						<field name="salary_rule_ids"/>-->
+						<field name="contract_line_rule_ids">
+							<tree editable="bottom">
+								<field name="rule_id" domain="[('struct_id','=',struct_id),('active','=',True)]"/>
+								<field name="amount"/>
+								<field name="is_for_advances"/>
+								<field name="active"/>
+								<field name="contract_id" invisible="1"/>
+								<field name="struct_id" invisible="1"/>
+							</tree>
+						</field>
+					</page>
+				</xpath>
+				<field name="calendar_mismatch" position="before">
+					<field name="struct_id" domain="[('type_id','=',structure_type_id)]"/>
+				</field>
+				<!--				<group name="salary_and_advantages" position="after">-->
+				<!--					<group string="Valores Parciales">-->
+				<!--						<field name="daily_value" />-->
+				<!--						<field name="total_hours_day" />-->
+				<!--						<field name="hour_value" />-->
+				<!--					</group>-->
+				<!--				</group>-->
+
+				<!--				<xpath expr="//notebook/page[@name='other']/group/group[@name='duration_group']/label[@for='resource_calendar_id']" position="attributes">-->
+				<!--					<attribute name="invisible">1</attribute>-->
+				<!--				</xpath>-->
+				<!--				<xpath expr="//notebook/page[@name='other']/group/group[@name='duration_group']/div/field[@name='resource_calendar_id']" position="attributes">-->
+				<!--					<attribute name="invisible">1</attribute>-->
+				<!--				</xpath>-->
+
+				<!--				<xpath expr="//notebook/page[@name='information']/group[@name='main_info']/group[@name='salary_and_advantages']" position="attributes">-->
+				<!--					<attribute name="string">Parámetros Generales</attribute>-->
+				<!--				</xpath>-->
+
+
+			</field>
+		</record>
+
+
+
+		<record model="ir.ui.view" id="hr_contract_form_ecu_inherit">
+			<field name="name">hr.contract.form</field>
+			<field name="model">hr.contract</field>
+			<field name="inherit_id" ref="hr_payroll.hr_contract_form_inherit" />
+			<field name="arch" type="xml">
+				<field name="wage_type" position="after">
+					<field name="marital_extension" />
+					<field name="region_decimos" />
+					<field name="reserve_payment" />
+					<field name="define_date_reserve_payment" />
+					<field name="date_reserve_payment" attrs="{'invisible':[('define_date_reserve_payment','!=',True)]}"/>
+					<field name="thirteenth_payment" />
+					<field name="fourteenth_payment" />
+					<field name="value_for_parcial"  attrs="{'invisible':[('type_day','!=','partial')]}"/>
+				</field>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="hr_contract_view_tree_ecu_inherit">
+			<field name="name">hr.contract.tree.inherit.expense</field>
+			<field name="model">hr.contract</field>
+			<field name="inherit_id" ref="hr_contract.hr_contract_view_tree" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='resource_calendar_id']" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+				<xpath expr="//field[@name='resource_calendar_id']" position="after">
+					<field name="analytic_distribution" optional="hide"/>
+				</xpath>
+			</field>
+		</record>
+
+
+
+		<record id="hr_contract_type_view_form" model="ir.ui.view">
+			<field name="name">hr.contract.type.form</field>
+			<field name="model">hr.contract.type</field>
+			<field name="arch" type="xml">
+				<form string="Tipo de Contrato">
+					<group col="4">
+						<field colspan="4" name="name"/>
+						<field name="allow_notifications" />
+						<field name="is_eventual"/>
+						<field name="periodo_eventual"  attrs="{'invisible': [('is_eventual','!=',True)]}"/>
+						<field name="calculate_date_end"/>
+						<field name="dias_prueba" attrs="{'invisible': [('calculate_date_end','!=',True)]}"/>
+					</group>
+				</form>
+			</field>
+		</record>
+
+		<record id="hr_contract_type_view_tree" model="ir.ui.view">
+			<field name="name">hr.contract.type.tree</field>
+			<field name="model">hr.contract.type</field>
+			<field name="arch" type="xml">
+				<tree string="Contract Type">
+					<field name="sequence" widget="handle"/>
+					<field colspan="4" name="name"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="hr_contract_type_view_search" model="ir.ui.view">
+			<field name="name">hr.contract.type.search</field>
+			<field name="model">hr.contract.type</field>
+			<field name="arch" type="xml">
+				<search string="Tipos de Contrato">
+					<field name="name" string="Tipo de Contrato"/>
+					<field name="sequence" string="Secuencia"/>
+				</search>
+			</field>
+		</record>
+
+
+		<record id="action_hr_contract_type" model="ir.actions.act_window">
+			<field name="name">Tipos de Contrato</field>
+			<field name="res_model">hr.contract.type</field>
+			<field name="view_mode">tree,form</field>
+			<field name="search_view_id" ref="hr_contract_type_view_search"/>
+		</record>
+
+
+
+		<menuitem
+				id="hr_menu_contract_type"
+				action="action_hr_contract_type"
+				parent="hr.menu_human_resources_configuration"
+				sequence="3"
+				groups="hr.group_hr_manager"/>
+
+
+	</data>
+</odoo>

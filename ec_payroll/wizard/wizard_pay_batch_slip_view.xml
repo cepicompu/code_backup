@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record model="ir.ui.view" id="wizard_pay_batch_slip_form_view">
+			<field name="name">wizard.pay.batch.slip.form</field>
+			<field name="model">wizard.pay.batch.slip</field>
+			<field name="arch" type="xml">
+				<form string="Asistente para Pago de Nóminas">
+					<sheet>
+						<group>
+							<group>
+								<field name="date" />
+								<field name="ref" />
+								<field name="journal_type" invisible="1" />
+							</group>
+							<group>
+								<field name="journal_id" domain="[('type', 'in', ('cash', 'bank'))]" />
+								<field name="available_payment_method_line_ids" invisible="1"/>
+								<field name="payment_method_line_id" domain="[('id', 'in', available_payment_method_line_ids)]"/>
+								<field name="bank_reference" attrs="{'invisible': [('journal_type', '!=', 'bank')]}"/>
+							</group>
+						</group>
+						<p>Si no selecciona ningún empleado, se crearán los pagos de todos los empleados activos</p>
+						<notebook>
+							<page string="Empleados">
+								<field name="employee_ids"/>
+							</page>
+						</notebook>
+					</sheet>
+					<footer>
+						<div class="oe_left">
+							<button string="Generar Pagos" name="action_pay" type="object"
+									icon="fa-gear" class="oe_highlight" />
+							<button string="Generar Pagos y confirmar" name="action_pay_and_confirm" type="object"
+									icon="fa-gear" class="oe_highlight" />
+							<button string="Cancel" special="cancel" type="object"
+									icon="fa-close" class="oe_link" />
+						</div>
+					</footer>
+				</form>
+			</field>
+		</record>
+
+
+		<record model="ir.actions.act_window" id="action_wizard_pay_batch_slip_view">
+			<field name="name">Asistente de pago de Lotes de Nóminas</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">wizard.pay.batch.slip</field>
+			<field name="view_mode">tree,form</field>
+			<field name="target">new</field>
+			<field name="view_id" ref="wizard_pay_batch_slip_form_view" />
+		</record>
+
+	</data>
+</odoo>

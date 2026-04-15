@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+		<template id="report_hr_liquidation">
+			<t t-call="web.html_container">
+				<t t-foreach="docs" t-as="doc">
+					<t t-call="web.external_layout">
+						<div class="page">
+							<div class="oe_structure" />
+							<h2 style="text-align: center;font-weight: bolder;">
+								LIQUIDACIÓN DE HABERES
+								<span t-field="doc.number" />
+							</h2>
+							<table class="table">
+								<tr>
+									<td>EMPLEADO:</td>
+									<td>
+										<span t-field="doc.employee_id" />
+									</td>
+									<td>FECHA DE PROCESO:</td>
+									<td>
+										<span t-field="doc.date" />
+									</td>
+								</tr>
+								<tr>
+									<td>FECHA DE INGRESO:</td>
+									<td>
+										<span t-field="doc.date_start_contract" />
+									</td>
+									<td>FECHA DE SALIDA:</td>
+									<td>
+										<span t-field="doc.date_end_contract" />
+									</td>
+								</tr>
+								<tr>
+									<td>TIPO DE LIQUIDACIÓN:</td>
+									<td>
+										<span t-field="doc.category_id" />
+									</td>
+									<td>ÚLTIMA REMUNERACIÓN:</td>
+									<td>
+										<span t-field="doc.last_remuneration" />
+									</td>
+								</tr>
+							</table>
+							<h3 style="text-align: center;font-weight: bolder;">
+								DETALLE DE LIQUIDACIÓN
+								<span t-field="doc.number" />
+							</h3>
+
+							<t t-set="d13"
+								t-value="[l for l in doc.line_ids if l.type == 'thirteenth' and l.amount != 0]" />
+							<t t-set="d14"
+								t-value="[l for l in doc.line_ids if l.type == 'fourteenth' and l.amount != 0]" />
+							<t t-set="v"
+								t-value="[l for l in doc.line_ids if l.type == 'vacation' and l.amount != 0]" />
+							<t t-set="d"
+								t-value="[l for l in doc.line_ids if l.type == 'pending_discount' and l.amount != 0]" />
+							<t t-set="b"
+								t-value="[l for l in doc.line_ids if l.type == 'other' and l.amount != 0]" />
+							<!-- <t t-set="o"
+								t-value="[l for l in doc.line_ids if l.type == 'other' and l.amount != 0]" /> -->
+
+							<!-- Decimo Tercero -->
+							<t t-if="d13">
+								<br />
+								<h3 style="text-align: center;font-weight: bolder;">
+									DÉCIMO TERCERO
+								</h3>
+								<table class="table table-condensed table-striped">
+									<thead>
+										<tr>
+											<th class="text-center">DESDE:</th>
+											<th class="text-center">HASTA:</th>
+											<th class="text-center">DIAS TRABAJADOS:</th>
+											<th class="text-center">MONTO BASE:</th>
+											<th class="text-center">PROVISION:</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr t-foreach="d13[0].payslip_line_ids" t-as="p"
+											style="page-break-inside:avoid; page-break-after:auto;">
+											<td class="text-center">
+												<span t-field="p.date_from" />
+											</td>
+											<td class="text-center">
+												<span t-field="p.date_to" />
+											</td>
+											<td class="text-center">
+												<span t-field="p.days_worked" />
+											</td>
+											<td class="text-right">
+												<span t-field="p.amount" />
+											</td>
+											<td class="text-right">
+												<span t-field="p.total" />
+											</td>
+										</tr>
+										<tr t-if="d13[0].difference != 0"
+											style="page-break-inside:avoid; page-break-after:auto;">
+											<td class="text-right" colspan="4">AJUSTE:</td>
+											<td class="text-right">
+												<span t-field="d13[0].difference" />
+											</td>
+										</tr>
+									</tbody>
+									<tfoot>
+										<tr>
+											<td colspan="4" class="text-right">TOTAL:</td>
+											<td class="text-right">
+												<span t-field="d13[0].amount" />
+											</td>
+										</tr>
+									</tfoot>
+								</table>
+							</t>
+
+							<!-- Decimo Cuarto -->
+							<t t-if="d14">
+								<br />
+								<h3 style="text-align: center;font-weight: bolder;">
+									DÉCIMO CUARTO
+								</h3>
+								<table class="table table-condensed table-striped">
+									<thead>
+										<tr>
+											<th class="text-center">DESDE:</th>
+											<th class="text-center">HASTA:</th>
+											<th class="text-center">DIAS TRABAJADOS:</th>
+											<th class="text-center">MONTO BASE:</th>
+											<th class="text-center">PROVISION:</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr t-foreach="d14[0].payslip_line_ids" t-as="p"
+											style="page-break-inside:avoid; page-break-after:auto;">
+											<td class="text-center">
+												<span t-field="p.date_from" />
+											</td>
+											<td class="text-center">
+												<span t-field="p.date_to" />
+											</td>
+											<td class="text-center">
+												<span t-field="p.days_worked" />
+											</td>
+											<td class="text-right">
+												<span t-field="p.amount" />
+											</td>
+											<td class="text-right">
+												<span t-field="p.total" />
+											</td>
+										</tr>
+										<tr t-if="d14[0].difference != 0"
+											style="page-break-inside:avoid; page-break-after:auto;">
+											<td class="text-right" colspan="4">AJUSTE:</td>
+											<td class="text-right">
+												<span t-field="d14[0].difference" />
+											</td>
+										</tr>
+									</tbody>
+									<tfoot>
+										<tr>
+											<td colspan="4" class="text-right">TOTAL:</td>
+											<td class="text-right">
+												<span t-field="d14[0].amount" />
+											</td>
+										</tr>
+									</tfoot>
+								</table>
+							</t>
+
+							<!-- Vacaciones -->
+							<t t-if="v">
+								<br />
+								<h3 style="text-align: center;font-weight: bolder;">
+									VACACIONES
+								</h3>
+								<table class="table table-condensed table-striped">
+									<thead>
+										<tr>
+											<th class="text-center">DESDE:</th>
+											<th class="text-center">HASTA:</th>
+											<th class="text-center">DIAS TRABAJADOS:</th>
+											<th class="text-center">MONTO BASE:</th>
+											<th class="text-center">PROVISION:</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr t-foreach="v[0].payslip_line_ids" t-as="p"
+											style="page-break-inside:avoid; page-break-after:auto;">
+											<td class="text-center">
+												<span t-field="p.date_from" />
+											</td>
+											<td class="text-center">
+												<span t-field="p.date_to" />
+											</td>
+											<td class="text-center">
+												<span t-field="p.days_worked" />
+											</td>
+											<td class="text-right">
+												<span t-field="p.amount" />
+											</td>
+											<td class="text-right">
+												<span t-field="p.total" />
+											</td>
+										</tr>
+										<tr t-if="v[0].difference != 0">
+											<td class="text-right" colspan="4">AJUSTE:</td>
+											<td class="text-right">
+												<span t-field="v[0].difference" />
+											</td>
+										</tr>
+									</tbody>
+									<tfoot>
+										<tr>
+											<td colspan="4" class="text-right">TOTAL:</td>
+											<td class="text-right">
+												<span t-field="v[0].amount" />
+											</td>
+										</tr>
+									</tfoot>
+								</table>
+							</t>
+
+							<!-- Descuentos Pendientes -->
+							<t t-if="d">
+								<br />
+								<h3 style="text-align: center;font-weight: bolder;">
+									DESCUENTOS PENDIENTES
+								</h3>
+								<table class="table table-condensed table-striped">
+									<thead>
+										<tr>
+											<th class="text-center">DESCRIPCION:</th>
+											<th class="text-center">MONTO:</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr t-foreach="d" t-as="l"
+											style="page-break-inside:avoid; page-break-after:auto;">
+											<td class="text-center">
+												<span t-field="l.name" />
+											</td>
+											<td class="text-right">
+												<span t-field="l.amount" />
+											</td>
+										</tr>
+									</tbody>
+									<tfoot>
+										<tr>
+											<td class="text-right">TOTAL:</td>
+											<td class="text-right">
+												<span t-field="doc.total_pending_discounts" />
+											</td>
+										</tr>
+									</tfoot>
+								</table>
+							</t>
+
+							<!-- Otros -->
+							<t t-if="b">
+								<br />
+								<h3 style="text-align: center;font-weight: bolder;">
+									OTROS RUBROS
+								</h3>
+								<table class="table table-condensed table-striped">
+									<thead>
+										<tr>
+											<th class="text-center">DESCRIPCION:</th>
+											<th class="text-center">MONTO:</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr t-foreach="b" t-as="l"
+											style="page-break-inside:avoid; page-break-after:auto;">
+											<td class="text-center">
+												<span t-field="l.name" />
+											</td>
+											<td class="text-right">
+												<span t-field="l.amount" />
+											</td>
+										</tr>
+									</tbody>
+									<tfoot>
+										<tr>
+											<td class="text-right">TOTAL:</td>
+											<td class="text-right">
+												<span t-field="doc.total_other" />
+											</td>
+										</tr>
+									</tfoot>
+								</table>
+							</t>
+
+							<br />
+							<h3 style="text-align: center;font-weight: bolder;">
+								RESUMEN
+							</h3>
+							<table class="table">
+								<tr t-if="doc.total_d13 != 0">
+									<td class="text-right">TOTAL D. TERCERO</td>
+									<td class="text-right">
+										<span t-field="doc.total_d13" />
+									</td>
+								</tr>
+								<tr t-if="doc.total_d14 != 0">
+									<td class="text-right">TOTAL D. CUARTO</td>
+									<td class="text-right">
+										<span t-field="doc.total_d14" />
+									</td>
+								</tr>
+								<tr t-if="doc.total_vacation != 0">
+									<td class="text-right">TOTAL VACACIONES</td>
+									<td class="text-right">
+										<span t-field="doc.total_vacation" />
+									</td>
+								</tr>
+								<tr t-if="doc.total_pending_discounts != 0">
+									<td class="text-right">TOTAL DESCUENTO PENDIENTES</td>
+									<td class="text-right">
+										<span t-field="doc.total_pending_discounts" />
+									</td>
+								</tr>
+								<tr t-if="doc.total_other != 0">
+									<td class="text-right">TOTAL OTROS RUBROS</td>
+									<td class="text-right">
+										<span t-field="doc.total_other" />
+									</td>
+								</tr>
+								<tr t-if="doc.total_iess != 0">
+									<td class="text-right">APORTE PERSONAL IESS</td>
+									<td class="text-right">
+										<span t-field="doc.total_iess" />
+									</td>
+								</tr>
+								<tr t-if="doc.total_fondo_reserva != 0">
+									<td class="text-right">FONDOS DE RESERVA</td>
+									<td class="text-right">
+										<span t-field="doc.total_fondo_reserva" />
+									</td>
+								</tr>
+								<tr t-if="doc.total_last_wage != 0">
+									<td class="text-right">SUELDO PARCIAL</td>
+									<td class="text-right">
+										<span t-field="doc.total_last_wage" />
+									</td>
+								</tr>
+								<tr t-if="doc.total_compensation != 0">
+									<td class="text-right">TOTAL INDEMNIZACIÓN</td>
+									<td class="text-right">
+										<span t-field="doc.total_compensation" />
+									</td>
+								</tr>
+								<tr t-if="doc.total_eviction != 0">
+									<td class="text-right">TOTAL DESHAUCIO</td>
+									<td class="text-right">
+										<span t-field="doc.total_eviction" />
+									</td>
+								</tr>
+								<tr>
+									<td class="text-right">
+										<strong>TOTAL LIQUIDACIÓN</strong>
+									</td>
+									<td class="text-right">
+										<strong>
+											<span t-field="doc.total" />
+										</strong>
+									</td>
+								</tr>
+							</table>
+
+							<br />
+							<br />
+							<br />
+							<table class="table">
+								<tbody>
+									<tr>
+										<td class="text-center">
+											<strong>________________________</strong>
+										</td>
+										<td class="text-center">
+											<strong>________________________</strong>
+										</td>
+									</tr>
+									<tr>
+										<td class="text-center">
+											<strong>Elaborado por</strong>
+										</td>
+										<td class="text-center">
+											<strong>Recibi Conforme</strong>
+										</td>
+									</tr>
+									<tr>
+										<td></td>
+										<td class="text-center">
+											<span t-field="doc.employee_id" />
+										</td>
+									</tr>
+									<tr>
+										<td></td>
+										<td class="text-center">
+											<span t-field="doc.employee_id.identification_id" />
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</t>
+				</t>
+			</t>
+		</template>
+
+		<report id="action_report_hr_liquidation"
+			string="Liquidación de Empleados" model="hr.liquidation"
+			report_type="qweb-pdf" file="ec_payroll.report_hr_liquidation"
+			name="ec_payroll.report_hr_liquidation" />
+
+	</data>
+</odoo>

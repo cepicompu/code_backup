@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+		<record model="ir.ui.view" id="request_loan_payment_tree_view">
+			<field name="name">request.loan.payment.tree</field>
+			<field name="model">request.loan.payment</field>
+			<field name="arch" type="xml">
+				<tree string="Anticipos">
+					<field name="number" />
+					<field name="communication" />
+					<field name="employee_id" />
+					<field name="request_date" />
+					<field name="state" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="action_request_loan_line_tree" model="ir.actions.act_window">
+			<field name="name">Anticipos</field>
+			<field name="res_model">account.payment</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[]</field>
+			<field name="context">{}</field>
+		</record>
+
+		<record model="ir.ui.view" id="ec_request_loan_payment_form_view">
+			<field name="name">ec.request.loan.payment.form</field>
+			<field name="model">request.loan.payment</field>
+			<field name="arch" type="xml">
+				<form string="Anticipos">
+					<header>
+						<button name="action_request" type="object"
+								string="Solicitar" states="draft" class="oe_highlight" />
+						<button name="action_get_employee" type="object" states="draft" string="Cargar empleados" />
+						<button name="action_clean_employee" type="object" states="draft" string="Limpiar empleados" />
+						<!--					<button name="generar_reporte_quincena" type="object"-->
+						<!--								attrs="{'invisible': [('state','=','draft')]}"-->
+						<!--								string="Descargar Excel" class="oe_highlight" />-->
+						<button name="create_payment" type="object"
+								attrs="{'invisible': [('state','!=','requested')]}"
+								string="Crear Pago" class="oe_highlight" />
+						<button name="set_draft" type="object"
+								string="Regresar a Borrador" states="requested" class="oe_highlight" />
+						<button name="print_antic_xls" type="object"
+								string="Reporte XLS" states="requested" class="oe_highlight" />
+						<button name="set_cancel" type="object"
+								string="Cancelar" states="done" class="oe_highlight" />
+						<field name="state" widget="statusbar" />
+					</header>
+					<sheet>
+						<div class="oe_button_box" name="button_box">
+							<button
+									name="action_view_request_loan_lines"
+									type="object"
+									class="oe_stat_button"
+									icon="fa-archive"
+									attrs="{'invisible': [('line_ids', '=', False)]}">
+								<field name="line_ids" widget="statinfo" string="Anticipos"/>
+							</button>
+
+
+							<field name="payment_ids" invisible="1" />
+							<button type="object" name="action_view_payment"
+									attrs="{'invisible': [('payment_count', '&lt;=', 0)]}"
+									class="oe_stat_button" icon="fa-money"
+									groups="base.group_user,account.group_account_manager,account.group_account_user,account.group_account_invoice">
+								<field name="payment_count" widget="statinfo"
+									   string="Pago" />
+							</button>
+							<button
+									type="object"
+									name="action_view_lines"
+									class="oe_stat_button"
+									attrs="{'invisible':[('line_count', '=', 0)]}"
+									icon="fa-random">
+								<field name="line_count"
+									   widget="statinfo"
+									   string=""/>
+							</button>
+						</div>
+						<div class="oe_title">
+							<h1>
+								<field name="number" />
+							</h1>
+						</div>
+						<group>
+							<group>
+								<field name="hr_structure"/>
+								<field name="type_advance" />
+								<field name="rule_id" options="{'no_create': True, 'no_open': True}" domain="[('struct_id','=',hr_structure)]"/>
+								<field name="request_date" />
+
+								<!--								<field name="payment_account_id" attrs="{'required': [('state', '=', 'requested')], 'readonly': [('state', '=', 'done')], 'invisible': [('state', '!=', 'requested')]}"/>-->
+
+								<field name="is_accountant" invisible="1" />
+							</group>
+							<group>
+								<field name="accountant_id" options="{'no_create': True, 'no_open': True}"/>
+								<field name="tipo_anticipo"/>
+								<field name="monto_asignado" required="1"/>
+								<field name="forma_pago_id" invisible="1" required="1"/>
+								<field name="request_user_id" options="{'no_create': True, 'no_open': True}" />
+							</group>
+							<separator string="Información de Pago" attrs="{'invisible': [('state', '!=', 'requested')]}"/>
+							<group attrs="{'invisible': [('state', '!=', 'requested')]}">
+								<field name="communication"
+									   placeholder="Orden/Referencia de Pago"
+									   attrs="{'required': [('state', '=', 'requested')], 'readonly': [('state', '=', 'done')], 'invisible': [('state', '!=', 'requested')]}"/>
+
+								<field name="payment_date" attrs="{'required': [('state', '=', 'requested')], 'readonly': [('state', '=', 'done')], 'invisible': [('state', '!=', 'requested')]}"/>
+							</group>
+							<group attrs="{'invisible': [('state', '!=', 'requested')]}">
+								<field name="payment_journal_id" attrs="{'required': [('state', '=', 'requested')], 'readonly': [('state', '=', 'done')], 'invisible': [('state', '!=', 'requested')]}"/>
+								<field name="available_payment_method_line_ids" invisible="1"/>
+								<field name="payment_method_line_id"
+									   attrs="{'required': [('state', '=', 'requested')], 'readonly': [('state', '=', 'done')], 'invisible': [('state', '!=', 'requested')]}"
+									   domain="[('id', 'in', available_payment_method_line_ids)]"/>
+							</group>
+						</group>
+						<notebook colspan="4">
+							<page string="Detalle de Pago">
+								<field name="line_ids" nolabel="1">
+									<tree editable="button">
+										<field name="employee_id" readonly="1"/>
+										<field name="observation" />
+										<field name="amount_pending" force_save="1" />
+										<field name="amount" sum="Total Pagado" />
+									</tree>
+									<form>
+										<group>
+											<field name="employee_id" readonly="1" required="1"/>
+											<field name="transaction_id" readonly="1" />
+											<field name="amount_pending" readonly="1" />
+											<field name="amount" readonly="1" />
+										</group>
+									</form>
+								</field>
+							</page>
+						</notebook>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" />
+						<field name="activity_ids" widget="mail_activity" />
+						<field name="message_ids" widget="mail_thread" />
+					</div>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.ui.view"
+				id="request_loan_payment_search_view">
+			<field name="name">request.loan.payment.search</field>
+			<field name="model">request.loan.payment</field>
+			<field name="arch" type="xml">
+				<search string="Anticipos">
+					<field name="number" />
+					<field name="employee_id" />
+					<field name="request_date" />
+					<field name="state" />
+					<filter name="state_done" string="Por Pagar" domain="[('state','=','requested')]"/>
+				</search>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window"
+				id="action_request_loan_payment_tree_view">
+			<field name="name">Anticipos</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">request.loan.payment</field>
+			<!-- <field name="view_type">form</field> -->
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="request_loan_payment_tree_view" />
+		</record>
+
+		<record model="ir.actions.act_window" id="action_request_loan_payment_tree_account_view">
+			<field name="name">Solicitud de Pago Anticipo</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">request.loan.payment</field>
+			<field name="domain">[('state', '!=', 'draft')]</field>
+			<field name="view_mode">tree,form</field>
+			<field name="context">{'search_default_state_done': 0}</field>
+			<field name="view_id" ref="request_loan_payment_tree_view" />
+		</record>
+
+		<menuitem id="request_loan_payment_menu"
+				  name="Anticipos"
+				  parent="hr_payroll.menu_hr_payroll_payslips"
+				  sequence='110'
+				  action="action_request_loan_payment_tree_view" />
+
+		<menuitem id="request_loan_payment_account_talent_menu"
+				  name="Solicitud de Pago Anticipo"
+				  parent="ec_payroll.hr_account_menu"
+				  action="action_request_loan_payment_tree_account_view" />
+
+
+
+		<record model="ir.ui.view" id="ec_lineas_anticipo_tree">
+			<field name="name">request.loan.payment.line.tree</field>
+			<field name="model">request.loan.payment.line</field>
+			<field name="priority">0</field>
+			<field name="arch" type="xml">
+				<tree string="Líneas de Anticipo" limit="200" editable="bottom">
+					<field name="employee_id" readonly="1" required="1"/>
+					<field name="observation"/>
+					<field name="amount_pending" force_save="1"/>
+					<field name="amount" sum="Total Pagado"/>
+
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="ec_lineas_anticipo_search">
+			<field name="name">request.loan.payment.line.search</field>
+			<field name="model">request.loan.payment.line</field>
+			<field name="arch" type="xml">
+				<search string="Empleado">
+					<field name="employee_id" />
+				</search>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="action_ec_lineas_anticipo_tree">
+			<field name="name">Líneas de Anticipo</field>
+			<field name="res_model">request.loan.payment.line</field>
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="ec_lineas_anticipo_tree" />
+			<field name="search_view_id" ref="ec_lineas_anticipo_search" />
+		</record>
+
+
+	</data>
+</odoo>

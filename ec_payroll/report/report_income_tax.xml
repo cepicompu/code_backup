@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_report_income_tax" model="ir.actions.report">
+            <field name="name">Reporte de Impuesto a la Renta</field>
+            <field name="model">report.ec_payroll.report_income_tax</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ec_payroll.report_income_tax</field>
+        </record>
+
+        <template id="report_income_tax">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-size:10px">
+                        <h2 class="text-center">Reporte de Impuesto a la Renta Acumulado</h2>
+                        <br/><br/><br/>
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th class="col-xs-1; text-lefth">Empleado</th>
+                                    <th class="col-xs-1; text-lefth">F. Contrato </th>
+                                    <th class="col-xs-1; text-lefth">I.R.</th>
+                        
+
+                                    
+                                </tr>
+                            </thead>
+                            <tbody style="border-bottom: 1px solid;margin-bottom:9px">
+                                <tr t-foreach="vals" t-as='l'>
+                                    <td class="text-lefth"><t t-esc="l['contract_id'].employee_id.name" /></td>
+                                    <td class="text-lefth"><t t-esc="l['contract_id'].date_start" /></td>
+                                    <td class="text-right"><t t-esc="l['amount_ir']" /></td>                
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+
+
+        <record id="action_report_income_tax_month" model="ir.actions.report">
+            <field name="name">Reporte de Impuesto a la Renta Mensual</field>
+            <field name="model">report.ec_payroll.report_income_tax_month</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ec_payroll.report_income_tax_month</field>
+        </record>
+
+        <template id="report_income_tax_month">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-size:10px">
+                        <h2 class="text-center">Reporte de Impuesto a la Renta Mensual</h2>
+                        <br/><br/><br/>
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th class="col-xs-1">Empleado</th>
+                                    <th class="col-xs-1">F. Contrato </th>
+                                    <th class="col-xs-1">Mes</th>
+                                    <th class="col-xs-1">I.R.</th>
+
+                                    
+                                </tr>
+                            </thead>
+                            <tbody style="border-bottom: 1px solid;margin-bottom:9px">
+                                <tr class="text-center" t-foreach="vals" t-as='l'>
+                                    <td><t t-esc="l['contract_id'].employee_id.name" /></td>
+                                    <td><t t-esc="l['contract_id'].date_start" /></td>
+                                    <td><t t-esc="l['month']" /></td>
+                                    <td class="text-right"><t t-esc="l['amount_ir']" /></td>                               
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+
+</odoo>

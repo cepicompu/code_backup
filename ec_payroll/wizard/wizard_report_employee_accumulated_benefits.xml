@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="ec_payroll_wizard_report_employee_accumulated_benefits_form" model="ir.ui.view">
+            <field name="name">report.employee.accumulated.benefits.wizard.form</field>
+            <field name="model">report.employee.accumulated.benefits.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Reporte de Beneficios Sociales">
+                    <group  col="4">
+                        <field name="select_tenth" required="1"/>
+                        <field name="year_acum"  options="{'no_create': True, 'no_open': True}" required="1"/>
+
+                    </group>
+
+                    <footer>
+                        <button type="object" name="print_pdf_report" string="PDF"
+                                class="btn-primary"/>
+                         <button type="object" name="print_xls_report" string="XLS"
+                                class="btn-primary"/>
+                        <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_wiz_report_employee_accumulated_benefits" model="ir.actions.act_window">
+            <field name="name">Reporte de Beneficios Sociales</field>
+            <field name="res_model">report.employee.accumulated.benefits.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+                id="menu_report_accumulated_benefits"
+                name="Reporte de Beneficios Sociales"
+                parent="hr_payroll.menu_hr_payroll_report"
+                action="ec_payroll.action_wiz_report_employee_accumulated_benefits"
+                sequence="15"/>
+    </data>
+</odoo>

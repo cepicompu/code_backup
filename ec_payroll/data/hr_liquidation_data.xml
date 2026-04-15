@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data noupdate="1">
+
+		<record model="hr.liquidation.category"
+			id="periodo_prueba">
+			<field name="name">TÉRMINO DE PERÍODO DE PRUEBA</field>
+			<field name="percentage_compensation" eval="0.0" />
+			<field name="percentage_eviction" eval="0.0" />
+		</record>
+
+		<record model="hr.liquidation.category"
+			id="termino_plazo_fijo">
+			<field name="name">NO RENOVACIÓN O TÉRMINO DE PLAZO FIJO</field>
+			<field name="percentage_compensation" eval="0.0" />
+			<field name="percentage_eviction" eval="25.0" />
+		</record>
+
+		<record model="hr.liquidation.category"
+			id="renuncia_voluntaria">
+			<field name="name">RENUNCIA VOLUNTARIA</field>
+			<field name="percentage_compensation" eval="0" />
+			<field name="percentage_eviction" eval="25.0" />
+		</record>
+
+		<record model="hr.liquidation.category"
+			id="despido_intespestivo">
+			<field name="name">DESPIDO INTESPESTIVO</field>
+			<field name="percentage_compensation" eval="100.0" />
+			<field name="percentage_eviction" eval="25.0" />
+		</record>
+
+		<record model="hr.liquidation.category"
+			id="deshaucio">
+			<field name="name">DESHAUCIO</field>
+			<field name="percentage_compensation" eval="0.0" />
+			<field name="percentage_eviction" eval="25.0" />
+		</record>
+		
+		<record model="hr.liquidation.category"
+			id="visto_bueno">
+			<field name="name">VISTO BUENO</field>
+			<field name="percentage_compensation" eval="0.0" />
+			<field name="percentage_eviction" eval="25.0" />
+		</record>
+
+		<record model="hr.liquidation.category"
+			id="acuerdo_entre_partes">
+			<field name="name">ACUERDO ENTRE PARTES</field>
+			<field name="percentage_compensation" eval="25.0" />
+			<field name="percentage_eviction" eval="25.0" />
+		</record>
+	</data>
+</odoo>

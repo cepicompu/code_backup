@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+		<record model="ir.ui.view" id="cen_expense_load_wizard_form_view">
+			<field name="name">cen.expense.load.wizard.form</field>
+			<field name="model">cen.expense.load.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Carga de Egresos">
+					<sheet>
+						<separator string="Seleccione el Archivo Para Cargar en Formato EXCEL" colspan="4" />
+						<field name="name" invisible="1"/>
+						<br/>
+						<field name="file" filename="name" placeholder="Seleccionar archivo..."/>
+					</sheet>
+					<footer>
+						<button string="Procesar" name="action_import" type="object" class="oe_highlight"/>
+						<button string="Cancel" special="cancel" type="object"
+							icon="fa-close" class="oe_link" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+
+		<record model="ir.actions.act_window" id="action_cen_expense_load_wizard">
+			<field name="name">Carga de Egresos</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">cen.expense.load.wizard</field>
+			<field name="view_mode">tree,form</field>
+			<field name="target">new</field>
+			<field name="view_id" ref="cen_expense_load_wizard_form_view" />
+		</record>
+
+
+
+		<menuitem id="cen_expense_load_wizard_menu"
+			name="Carga de Egresos" parent="hr_payroll.menu_hr_payroll_payslips"
+			action="action_cen_expense_load_wizard" sequence="130" />
+
+	</data>
+</odoo>

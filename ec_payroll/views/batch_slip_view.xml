@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+		<record model="ir.ui.view" id="hr_payslip_run_account_tree_inherit_view">
+			<field name="name">hr.payslip.run.tree.inherit</field>
+			<field name="model">hr.payslip.run</field>
+			<field name="inherit_id" ref="hr_payroll.hr_payslip_run_tree" />
+			<field name="arch" type="xml">
+				<field name="state" position="before">
+
+					<field name="type_slip_pay" />
+					<field name="structure_type_id" />
+
+				</field>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="hr_payslip_run_form_view">
+			<field name="name">hr.payslip.run.form</field>
+			<field name="model">hr.payslip.run</field>
+			<field name="inherit_id" ref="hr_payroll.hr_payslip_run_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//div[@class='oe_button_box']" position="inside">
+					<button class="oe_stat_button" icon="fa-book" type="object"
+							name="action_open_move_ids" string="Asientos Contables"
+							attrs="{'invisible': [('account_move_count', '=', 0)]}">
+						<div class="o_field_widget o_stat_info">
+							<span class="o_stat_value">
+								<field name="account_move_count"/>
+							</span>
+							<span class="o_stat_text">Asientos Contables</span>
+						</div>
+					</button>
+					<button class="oe_stat_button" icon="fa-money" type="object"
+							name="action_open_payment_ids" string="Pagos"
+							attrs="{'invisible': [('payment_count', '=', 0)]}">
+						<div class="o_field_widget o_stat_info">
+							<span class="o_stat_value">
+								<field name="payment_count"/>
+							</span>
+							<span class="o_stat_text">Pagos</span>
+						</div>
+					</button>
+				</xpath>
+				<xpath expr="//label[@for='date_start']" position="before">
+					<field name="structure_type_id" required="1"/>
+					<field name="structure_id" required="1"/>
+				</xpath>
+				<xpath expr="//sheet/group" position="after">
+					<notebook colspan="4">
+						<page string="Nóminas">
+							<field name="slip_ids" nolabel="1" >
+								<tree>
+									<field name="number"/>
+									<field name="employee_id" />
+									<field name="days_worked"/>
+									<field name="inputs" sum="Total"/>
+									<field name="other_inputs" sum="Total"/>
+									<field name="other_inputsn" sum="Total"/>
+									<field name="outputs" sum="Total"/>
+									<field name="payslip_net" sum="Total"/>
+									<field name="company_contributions" sum="Total"/>
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</xpath>
+				<xpath expr="//button[@name='action_validate']" position="attributes">
+					<attribute name="string">Marcar como Hecho</attribute>
+				</xpath>
+				<xpath expr="//button[last()]" position="before" >
+					<button name="action_create_account_move_draft" type="object"
+							string="Crear Asiento Contable" states="verify" icon="fa-gear"
+							confirm="Esto acción creará asientos en borrador, seguro que desea continuar?" />
+					<button name="recalc_payslip_run" type="object" string="Recalcular Nóminas"
+							states="verify" icon="fa-gear"
+							confirm="Esta acción borrara cualquier dato manual ingresado en las nóminas, seguro que desea continuar?" />
+					<button name="action_verify" type="object" string="Verificar"
+							states="draft" class="oe_highlight"
+							confirm="Esta seguro que desea continuar?" />
+					<button name="action_post" type="object" groups="account.group_account_manager,account.group_account_user"
+							string="Contabilizar" states="close" class="oe_highlight" />
+					<button name="%(action_wizard_pay_batch_slip_view)d" type="action"
+							string="Generar Pagos" states="posted" icon="fa-usd" />
+					<button name="print_slips" type="object" icon="fa-print"
+							string="Imprimir Roles de Pagos" class="oe_highlight" />
+					<!--					<button name="rebuild_account" type="object" icon="fa-gear" states="posted"-->
+					<!--							string="Reconstruir Movimiento Contable" confirm="Esta accion puede dejar los pagos desvinculados, y deberá asociar manualmente, seguro que desea continuar"/>-->
+					<button name="%(ec_payroll.action_report_nomina_departamentos_1)d"
+							type="action" icon="fa-print" string="ROL GENERAL FORMATOS A3-A4" />
+					<!-- <button name="%(ec_payroll.action_report_nomina_departamentos_a3)d"
+                        type="action" icon="fa-print" string="ROL GENERAL FORMATO A3" /> -->
+					<button name="cancel_payslip_run" type="object" string="Cancelar" states="posted" groups="base.group_system"/>
+					<button name="send_mail_rol" type="object" string="Enviar Roles por Correo" states="paid" />
+					<button name="clean_payroll" type="object" string="Limpiar Nóminas"
+							confirm="¿Está seguro que desea limpiar las nóminas creadas?"
+							attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+				</xpath>
+			</field>
+		</record>
+
+		<record id="action_hr_payslip_run_tree_view" model="ir.actions.act_window">
+			<field name="name">Payslips Batches</field>
+			<field name="res_model">hr.payslip.run</field>
+			<field name="domain">[('state','!=','draft')]</field>
+			<field name="view_mode">tree,kanban,form</field>
+			<field name="search_view_id" ref="hr_payroll.hr_payslip_run_filter"/>
+		</record>
+
+		<menuitem id="payslip_contabilization_submenu" name="Nóminas Contabilizadas"
+				  parent="ec_payroll.hr_account_menu" action="action_hr_payslip_run_tree_view"/>
+	</data>
+</odoo>

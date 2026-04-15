@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data noupdate="0">
+
+
+		<record model="hr.tabla.ir.deducible" id="vivienda">
+			<field name="fiscalyear_id" search="[('name', '=', '2022')]" />
+			<field name="tipo_gasto">Enf_raras</field>
+			<field name="monto_maximo">22424</field>
+			<field name="porcentaje">2</field>
+		</record>
+		<record model="hr.tabla.ir.deducible" id="turismo">
+			<field name="fiscalyear_id" search="[('name', '=', '2022')]" />
+			<field name="tipo_gasto">Turismo</field>
+			<field name="monto_maximo">3643.90</field>
+			<field name="porcentaje">0.325</field>
+		</record>
+		<record model="hr.tabla.ir.deducible" id="alimentacion">
+			<field name="fiscalyear_id" search="[('name', '=', '2022')]" />
+			<field name="tipo_gasto">Alimentacion</field>
+			<field name="monto_maximo">3643.90</field>
+			<field name="porcentaje">0.325</field>
+		</record>
+		<record model="hr.tabla.ir.deducible" id="vestimenta">
+			<field name="fiscalyear_id" search="[('name', '=', '2022')]" />
+			<field name="tipo_gasto">Vestimenta</field>
+			<field name="monto_maximo">3643.90</field>
+			<field name="porcentaje">0.325</field>
+		</record>
+		<record model="hr.tabla.ir.deducible" id="salud">
+			<field name="fiscalyear_id" search="[('name', '=', '2022')]" />
+			<field name="tipo_gasto">Salud</field>
+			<field name="monto_maximo">14575.60</field>
+			<field name="porcentaje">1.3</field>
+		</record>
+		<record model="hr.tabla.ir.deducible" id="educacion">
+			<field name="fiscalyear_id" search="[('name', '=', '2022')]" />
+			<field name="tipo_gasto">Educacion</field>
+			<field name="monto_maximo">3643.90</field>
+			<field name="porcentaje">0.325</field>
+		</record>
+		<record model="hr.tabla.ir.deducible" id="vivienda">
+			<field name="fiscalyear_id" search="[('name', '=', '2022')]" />
+			<field name="tipo_gasto">Vivienda</field>
+			<field name="monto_maximo">3643.90</field>
+			<field name="porcentaje">0.325</field>
+		</record>
+
+
+
+		<record model="hr.impuesto.renta.referencia" id="0x100">
+			<field name="fiscalyear_id" search="[('name', '=', '2022')]" />
+			<field name="percentage">0</field>
+			<field name="desde">0</field>
+			<field name="hasta">11310</field>
+			<field name="impuesto_fraccion">0</field>
+		</record>
+
+		<record model="hr.impuesto.renta.referencia" id="5x100">
+			<field name="fiscalyear_id" search="[('name', '=', '2022')]" />
+			<field name="percentage">5</field>
+			<field name="desde">11310</field>
+			<field name="hasta">14410</field>
+			<field name="impuesto_fraccion">0</field>
+		</record>
+
+		<record model="hr.impuesto.renta.referencia" id="10x100">
+			<field name="fiscalyear_id" search="[('name', '=', '2022')]" />
+			<field name="percentage">10</field>
+			<field name="desde">14410</field>
+			<field name="hasta">18010</field>
+			<field name="impuesto_fraccion">155</field>
+		</record>
+
+		<record model="hr.impuesto.renta.referencia" id="12x100">
+			<field name="fiscalyear_id" search="[('name', '=', '2022')]" />
+			<field name="percentage">12</field>
+			<field name="desde">18010</field>
+			<field name="hasta">21630</field>
+			<field name="impuesto_fraccion">515</field>
+		</record>
+
+		<record model="hr.impuesto.renta.referencia" id="15x100">
+			<field name="fiscalyear_id" search="[('name', '=', '2022')]" />
+			<field name="percentage">15</field>
+			<field name="desde">21630</field>
+			<field name="hasta">31630</field>
+			<field name="impuesto_fraccion">949.4</field>
+		</record>
+
+		<record model="hr.impuesto.renta.referencia" id="20x100">
+			<field name="fiscalyear_id" search="[('name', '=', '2022')]" />
+			<field name="percentage">20</field>
+			<field name="desde">31630</field>
+			<field name="hasta">41630</field>
+			<field name="impuesto_fraccion">2449.40</field>
+		</record>
+
+		<record model="hr.impuesto.renta.referencia" id="25x100">
+			<field name="fiscalyear_id" search="[('name', '=', '2022')]" />
+			<field name="percentage">25</field>
+			<field name="desde">41630</field>
+			<field name="hasta">51630</field>
+			<field name="impuesto_fraccion">4449.39</field>
+		</record>
+
+		<record model="hr.impuesto.renta.referencia" id="30x100">
+			<field name="fiscalyear_id" search="[('name', '=', '2022')]" />
+			<field name="percentage">30</field>
+			<field name="desde">51630</field>
+			<field name="hasta">61630</field>
+			<field name="impuesto_fraccion">6949.39</field>
+		</record>
+
+		<record model="hr.impuesto.renta.referencia" id="35x100">
+			<field name="fiscalyear_id" search="[('name', '=', '2022')]" />
+			<field name="percentage">35</field>
+			<field name="desde">61630</field>
+			<field name="hasta">100000</field>
+			<field name="impuesto_fraccion">9949.39</field>
+		</record>
+
+		<record model="hr.impuesto.renta.referencia" id="37x100">
+			<field name="fiscalyear_id" search="[('name', '=', '2022')]" />
+			<field name="percentage">37</field>
+			<field name="desde">100000</field>
+			<field name="hasta">9999999</field>
+			<field name="impuesto_fraccion">23378.88</field>
+		</record>
+
+
+
+
+
+
+
+</data>
+</odoo>

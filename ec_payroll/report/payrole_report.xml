@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="report_paysliprole">
+		<t t-call="web.html_container">
+			<div class="page">
+				<t t-foreach="docs" t-as="o">
+					<t t-call="web.external_layout">
+					<table class="table table-bordered">
+						<tr>
+							<td>
+								<strong t-esc="document_string"></strong>
+							</td>
+						</tr>
+					</table>
+
+					<table class="table table-bordered">
+						<tr>
+							<td>  
+								<strong>ROL DE PAGOS - </strong>
+								<strong  t-esc="o.period_rol"></strong>
+							
+							</td>
+							<td>
+								<strong>PERIODO: </strong>
+								<strong  t-esc="o.date_from"></strong>
+								<strong> - </strong>
+								<strong  t-esc="o.date_to"></strong>
+
+
+							</td>
+						</tr>
+					</table>
+					<table class="table table-bordered" style="font-size: 10px;">
+						<tr>
+							<td style="padding: 4px;">
+								<strong>Nombre</strong>
+							</td>
+							<td style="padding: 4px;">
+								<span t-field="o.employee_id" />
+							</td>
+							<td style="padding: 4px;">
+								<strong>Cargo</strong>
+							</td>
+							<td style="padding: 4px;">
+								<span t-field="o.contract_id.job_id" />
+							</td>
+						</tr>
+						<tr>
+							<td style="padding: 4px;">
+								<strong>Nº identificación </strong>
+							</td>
+							<td style="padding: 4px;">
+								<span t-field="o.employee_id.identification_id" />
+							</td>
+							<td style="padding: 4px;">
+								<strong>Fecha Ingreso</strong>
+							</td>
+							<td style="padding: 4px;">
+								<span t-field="o.contract_id.date_start" />
+							</td>
+						</tr>
+						<tr>
+							<td style="padding: 4px;">
+								<strong>Email</strong>
+							</td>
+							<td style="padding: 4px;">
+								<span t-field="o.employee_id.email_private" />
+							</td>
+							<td style="padding: 4px;">
+								<strong>Nº identificación </strong>
+							</td>
+							<td style="padding: 4px;">
+								<span t-field="o.employee_id.identification_id" />
+							</td>
+						</tr>
+						<tr>
+							<td style="padding: 4px;">
+								<strong>Sueldo Base </strong>
+							</td>
+							<t t-if="o.contract_id.type_day=='complete'">
+								<td style="padding: 4px;">								
+									<span t-field="o.contract_id.wage" />
+								</td>
+							</t>
+							<t t-if="o.contract_id.type_day=='partial'">
+								<td style="padding: 4px;">								
+									<span t-field="o.contract_id.value_for_parcial" />
+								</td>
+							</t>
+							<td style="padding: 4px;">
+								<strong>Cuenta bancaria</strong>
+							</td>
+							<td style="padding: 4px;">
+								<span t-field="o.employee_id.bank_account_id" />
+							</td>
+						</tr>
+						<tr>
+							<td style="padding: 4px;">
+								<strong>Tipo de Contrato </strong>
+							</td>
+							<td style="padding: 4px;">
+								<span t-field="o.contract_id.contract_type_id" />
+							</td>
+							<td style="padding: 4px;">
+								<strong>Tipo de Jornada</strong>
+							</td>
+							<td style="padding: 4px;">
+								<span t-field="o.contract_id.type_day" />
+							</td>
+						</tr>
+					</table>
+					<t t-if="o.line_ids">
+						<table width="100%" style="font-size: 10px;">
+							<tr>
+								<td width="48%">
+									<table class="table table-bordered">
+										<tr>
+											<th style="padding: 4px;" colspan="2" class="text-center">
+												<strong>INGRESOS</strong>
+											</th>
+										</tr>
+										<t t-foreach="o.line_ids" t-as="line">
+											<tr>
+												<t
+													t-if="line.salary_rule_id.appears_on_payslip==True and line.category_id.type == 'input' and line.category_id.code in ('INGR', 'OINGR','OINGRN')">
+													<td style="padding: 4px; width: 74%;" class="text-left">
+														<span t-field="line.salary_rule_id.name" />
+													</td>
+													<td style="padding: 4px;" class="text-right text-nowrap">
+														
+														<span t-field="line.total" />
+													</td>
+												</t>
+											</tr>
+										</t>
+
+									</table>
+								</td>
+								<td width="4%">
+								</td>
+								<td width="48%">
+									<table class="table table-bordered">
+										<tr>
+											<th style="padding: 4px;width: 74%;" colspan="2" class="text-center">
+												<strong>EGRESOS</strong>
+											</th>
+										</tr>
+										<t t-foreach="o.line_ids" t-as="line">
+											<tr>
+												<t t-if="line.salary_rule_id.appears_on_payslip==True and line.category_id.type == 'output' ">
+													<td style="padding: 4px; width: 74%;" class="text-left">
+														<span t-field="line.salary_rule_id.name" />
+													</td>
+													<td style="padding: 4px;" class="text-right text-nowrap">
+														
+														<span t-field="line.total" />
+													</td>
+												</t>
+											</tr>
+										</t>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</t>
+					<t t-if="o.line_ids">
+						<table width="100%" style="font-size: 10px;">
+							<tr>
+								<td width="48%">
+									<table class="table table-bordered">
+										<tr>
+											<td style="padding: 4px;width: 74%;" class="text-left">
+												<strong>Suma de Ingresos</strong>
+											</td>
+											<td style="padding: 4px;" class="text-right text-nowrap">
+												
+												<span t-esc="round((o.inputs + o.other_inputs  + o.other_inputsn),2)" />
+											</td>
+										</tr>
+									</table>
+								</td>
+								<td width="4%">
+								</td>
+								<td width="48%">
+									<table class="table table-bordered">
+										<tr>
+											<td style="padding: 4px;width: 74%;" class="text-left">
+												<strong>Suma de Egresos</strong>
+											</td>
+											<td style="padding: 4px;" class="text-right text-nowrap">
+												
+												<span t-esc="round(o.outputs,2)" />
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</t>
+					<strong></strong>
+					<br />
+					<t t-if="o.line_ids">
+						<table width="100%" style="font-size: 10px;">
+							<tr>
+								<td width="48%">
+									<table class="table table-bordered">
+										<tr>
+											<td colspan="3" style="padding: 4px;width: 74%;" class="text-left">
+												<strong>Detalle de Horas Extras</strong>
+											</td>
+										</tr>
+										<tr class="text-center">
+											<td style="padding: 4px; width: 74%;" class="text-left">Tipo</td>										
+											<td style="padding: 4px; width: 74%;" class="text-left">Horas</td>
+											<td style="padding: 4px; width: 74%;" class="text-left">Total</td>
+										</tr>
+										<t t-foreach="o.line_ids.filtered(lambda x: x.transaction_id.hours > 0)" t-as="line">
+											<tr style="padding: 2px;width: 100%;" class="text-left">
+												<td style="padding: 4px; width: 74%;" class="text-center"><span t-field="line.transaction_id.rule_id.name" /></td>
+												<td style="padding: 4px; width: 74%;" class="text-center"><span t-field="line.transaction_id.hours" /></td>
+												<td style="padding: 4px; width: 74%;" class="text-center"><span t-esc="round(line.transaction_id.amount,2)" /></td>
+											</tr>
+										</t>
+
+									</table>
+								</td>
+								<td width="4%">
+								</td>
+								<td width="48%">
+									<table >
+										<tr>
+											<td style="padding: 0px;width: 100%;" class="text-left">
+												<strong></strong>
+											</td>
+											
+										</tr>
+										<tr>
+											<td style="padding: 0px;width: 74%;" class="text-left">
+												<strong></strong>
+											</td>
+											<td style="padding: 0px;" class="text-right text-nowrap">
+												
+											
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</t>
+
+					<strong></strong>
+					<br />
+					<table class="table table-bordered" weight="100%" style="font-size: 10px;">
+						<tr>
+							<td style="padding-top: 6%;" weight="50%" rowspan="3"
+								class="text-center">
+								<span>_________________________________</span>
+								<br />
+								<strong>RECIBI CONFORME</strong>
+								<br />
+								<strong>
+								
+									<span t-field="o.employee_id.name" />
+								</strong>
+								<br />
+								<strong>
+									C.I:
+									<span t-field="o.employee_id.identification_id" />
+								</strong>
+							</td>
+							<td style="padding-top: 5%;" weight="25%" rowspan="3"
+								class="text-center">
+								<strong class="text-left">NETO A RECIBIR: </strong>
+							</td>
+							<td style="padding-top: 5%;" weight="25%" rowspan="3"
+								class="text-center">
+								
+								<span class="text-right text-nowrap" t-esc="round(o.payslip_net,2)" />
+							</td>
+						</tr>
+					</table>
+					<br />
+				
+					<span>
+					</span>
+					<strong></strong>
+					<br />
+					<table class="table table-bordered" weight="100%" style="font-size: 10px;">
+						<tr>
+							<td style="padding-top: 6%;" weight="50%" rowspan="3"
+								class="text-center">
+								<span>_________________________________</span>
+								<br />
+								<strong>ELABORADO POR:</strong>
+								<br />
+								<strong>
+									<span t-field="o.create_uid.partner_id.name" />
+								</strong>
+							</td>
+							
+						</tr>
+					</table>
+					<br />
+					
+				
+					<table class="table table-bordered">
+						<tr>
+							<td>
+								<strong t-esc="o.note_roll"></strong>
+							
+							</td>
+						</tr>
+					</table>
+		
+					<p style="page-break-after:always;" />
+				</t>
+				</t>
+			</div>
+		</t>
+	</template>
+	
+	<report id="payslip_rol_report" model="hr.payslip" string="Roles"
+		report_type="qweb-pdf" name="ec_payroll.report_paysliprole" file="ec_payroll.report_paysliprole" />
+
+	<record id="payslip_rol_report" model="ir.actions.report">
+		<field name="paperformat_id" ref="role_paperformats" />
+	</record>
+</odoo>

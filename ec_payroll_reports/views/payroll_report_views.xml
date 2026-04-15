@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ================================================================== -->
+    <!-- VISTAS: ec.payroll.report                                           -->
+    <!-- ================================================================== -->
+
+    <!-- Formulario principal del reporte -->
+    <record id="view_ec_payroll_report_form" model="ir.ui.view">
+        <field name="name">ec.payroll.report.form</field>
+        <field name="model">ec.payroll.report</field>
+        <field name="arch" type="xml">
+            <form string="Reporte de Nómina Ministerio">
+                <header>
+                    <button name="action_calculate"
+                            string="Calcular"
+                            type="object"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"
+                            class="btn-primary"/>
+                    <button name="action_export_csv"
+                            string="Exportar CSV"
+                            type="object"
+                            attrs="{'invisible': [('state', '=', 'draft')]}"
+                            class="btn-primary"/>
+                    <button name="action_export_cash_management"
+                            string="Cash Management"
+                            type="object"
+                            attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                    <button name="action_reset_to_draft"
+                            string="Recalcular"
+                            type="object"
+                            attrs="{'invisible': [('state', '!=', 'calculated')]}"
+                            confirm="¿Está seguro de que desea recalcular? Se eliminarán todas las líneas actuales."/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,calculated,exported"/>
+                </header>
+
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <!-- Parámetros del reporte -->
+                    <group>
+                        <group string="Configuración">
+                            <field name="report_type"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="fiscalyear_config_id"
+                                   options="{'no_create': True, 'no_open': True}"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="company_id"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                        <group string="Período">
+                            <field name="date_start" readonly="1"/>
+                            <field name="date_end" readonly="1"/>
+                            <field name="sbu_used"
+                                   attrs="{'invisible': [('sbu_used', '=', 0.0)]}"
+                                   readonly="1"/>
+                        </group>
+                    </group>
+
+                    <!-- KPIs: visibles solo cuando está calculado o exportado -->
+                    <group attrs="{'invisible': [('state', '=', 'draft')]}"
+                           string="Resumen">
+                        <group>
+                            <field name="total_employees"/>
+                            <field name="total_excluded"/>
+                        </group>
+                        <group>
+                            <field name="total_amount"/>
+                            <field name="total_cash_management"/>
+                        </group>
+                    </group>
+
+                    <!-- Cash Management -->
+                    <group string="Datos para Cash Management">
+                        <group>
+                            <field name="company_partner_bank_id"
+                                   options="{'no_create': True, 'no_open': True}"
+                                   domain="[('company_id', 'in', [company_id, False])]"/>
+                            <field name="payment_date"/>
+                        </group>
+                        <group/>
+                    </group>
+
+                    <!-- Líneas del reporte -->
+                    <notebook>
+                        <page string="Empleados Incluidos"
+                              name="page_included">
+                            <field name="included_line_ids"
+                                   mode="tree"
+                                   readonly="1">
+                                <tree string="Empleados Incluidos"
+                                      decoration-warning="warning != False and warning != ''"
+                                      default_order="apellidos,nombres">
+                                    <field name="cedula"/>
+                                    <field name="apellidos"/>
+                                    <field name="nombres"/>
+                                    <field name="sexo"/>
+                                    <field name="contract_date_start" string="Contrato desde"/>
+                                    <field name="contract_date_end" string="Contrato hasta"
+                                           optional="show"/>
+                                    <field name="dias"/>
+                                    <field name="horas_sem" string="Horas Mensuales"/>
+                                    <field name="jorred" widget="boolean_toggle"/>
+                                    <field name="mensualiza" widget="boolean_toggle"/>
+                                    <field name="discapc" widget="boolean_toggle"/>
+                                    <field name="ingresos" sum="Total Ingresos"/>
+                                    <field name="valor_teorico" sum="Total Teórico"/>
+                                    <field name="valor_acumulado" sum="Total Acumulado"/>
+                                    <field name="valor_pago" sum="Total a Pagar"/>
+                                    <field name="valor_cash_management" sum="Total Cash Management"/>
+                                    <field name="warning"
+                                           attrs="{'invisible': [('warning', '=', False)]}"/>
+                                    <field name="included" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Empleados Excluidos"
+                              name="page_excluded">
+                            <field name="excluded_line_ids"
+                                   mode="tree"
+                                   readonly="1">
+                                <tree string="Empleados Excluidos"
+                                      default_order="apellidos,nombres">
+                                    <field name="cedula"/>
+                                    <field name="apellidos"/>
+                                    <field name="nombres"/>
+                                    <field name="contract_date_start" string="Contrato desde"/>
+                                    <field name="contract_date_end" string="Contrato hasta"/>
+                                    <field name="exclusion_reason"/>
+                                    <field name="included" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+
+                    <group>
+                        <field name="notes" placeholder="Observaciones adicionales..."/>
+                    </group>
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista lista (tree) de reportes -->
+    <record id="view_ec_payroll_report_tree" model="ir.ui.view">
+        <field name="name">ec.payroll.report.tree</field>
+        <field name="model">ec.payroll.report</field>
+        <field name="arch" type="xml">
+            <tree string="Reportes de Nómina"
+                  decoration-muted="state == 'draft'"
+                  decoration-success="state == 'exported'"
+                  default_order="create_date desc">
+                <field name="name"/>
+                <field name="report_type"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="total_employees"/>
+                <field name="total_excluded"/>
+                <field name="total_amount" sum="Total"/>
+                <field name="state" widget="badge"
+                       decoration-warning="state == 'draft'"
+                       decoration-info="state == 'calculated'"
+                       decoration-success="state == 'exported'"/>
+                <field name="create_uid"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista búsqueda -->
+    <record id="view_ec_payroll_report_search" model="ir.ui.view">
+        <field name="name">ec.payroll.report.search</field>
+        <field name="model">ec.payroll.report</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Reportes de Nómina">
+                <field name="name"/>
+                <field name="report_type"/>
+                <field name="fiscalyear_config_id"/>
+                <field name="company_id"/>
+                <separator/>
+                <filter string="Borrador" name="filter_draft"
+                        domain="[('state', '=', 'draft')]"/>
+                <filter string="Calculados" name="filter_calculated"
+                        domain="[('state', '=', 'calculated')]"/>
+                <filter string="Exportados" name="filter_exported"
+                        domain="[('state', '=', 'exported')]"/>
+                <separator/>
+                <filter string="Décimo Tercero" name="filter_13th"
+                        domain="[('report_type', '=', '13th')]"/>
+                <filter string="Décimo Cuarto Sierra" name="filter_14th_sierra"
+                        domain="[('report_type', '=', '14th_sierra')]"/>
+                <filter string="Décimo Cuarto Costa" name="filter_14th_costa"
+                        domain="[('report_type', '=', '14th_costa')]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Tipo de Reporte" name="group_report_type"
+                            context="{'group_by': 'report_type'}"/>
+                    <filter string="Estado" name="group_state"
+                            context="{'group_by': 'state'}"/>
+                    <filter string="Compañía" name="group_company"
+                            context="{'group_by': 'company_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- ACCIONES                                                            -->
+    <!-- ================================================================== -->
+
+    <!-- Acción lista de reportes -->
+    <record id="action_ec_payroll_report" model="ir.actions.act_window">
+        <field name="name">Reportes Ministerio</field>
+        <field name="res_model">ec.payroll.report</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_ec_payroll_report_search"/>
+        <field name="context">{'search_default_filter_calculated': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No hay reportes generados aún
+            </p>
+            <p>
+                Use el asistente "Nuevo Reporte" para generar el primer reporte de nómina.
+            </p>
+        </field>
+    </record>
+
+    <!-- Acción abrir wizard -->
+    <record id="action_wizard_ministry_report" model="ir.actions.act_window">
+        <field name="name">Nuevo Reporte de Nómina</field>
+        <field name="res_model">wizard.ministry.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- MENÚS                                                               -->
+    <!-- ================================================================== -->
+
+    <!-- Listado de todos los reportes generados -->
+    <menuitem id="menu_ec_payroll_report_list"
+              name="Reportes Ministerio"
+              parent="hr_payroll.menu_hr_payroll_report"
+              action="action_ec_payroll_report"
+              sequence="25"/>
+
+    <!-- Asistente para crear nuevo reporte -->
+    <menuitem id="menu_ec_payroll_report_new"
+              name="Nuevo Reporte Ministerio"
+              parent="hr_payroll.menu_hr_payroll_report"
+              action="action_wizard_ministry_report"
+              sequence="26"/>
+
+</odoo>

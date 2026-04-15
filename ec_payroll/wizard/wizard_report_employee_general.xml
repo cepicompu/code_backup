@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="ec_payroll_wizard_report_employee_account_bank_form" model="ir.ui.view">
+            <field name="name">report.employee.account.general.wizard.form</field>
+            <field name="model">report.employee.account.general.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Reporte de Empleados">
+                    <group col="2">
+                      <separator string="Seleccione el tipo de empleados que desea imprimir" colspan="4" />
+                        <field name="selected_employee" />
+                    </group>
+                    <footer>
+                        <button type="object" name="print_pdf_report" string="PDF"
+                                class="btn-primary"/>
+                        <button type="object" name="print_xls_report" string="XLS"
+                                class="btn-primary"/>
+                        <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_wiz_report_employee_general" model="ir.actions.act_window">
+            <field name="name">Reporte de Empleados</field>
+            <field name="res_model">report.employee.account.general.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+                id="menu_report_employee_general"
+                name="Reporte de Empleados"
+                parent="hr_payroll.menu_hr_payroll_report"
+                action="ec_payroll.action_wiz_report_employee_general"
+                sequence="22"/>
+    </data>
+</odoo>

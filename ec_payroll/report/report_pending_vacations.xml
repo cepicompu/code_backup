@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_report_pending_vacations" model="ir.actions.report">
+            <field name="name">Reporte de Vacaciones Pendientes</field>
+            <field name="model">report.ec_payroll.report_pending_vacations</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ec_payroll.report_pending_vacations</field>
+        </record>
+
+        <template id="report_pending_vacations">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-size:10px">
+                        <h2 class="text-center">Reporte de Vacaciones Pendientes</h2>
+                        <br/><br/><br/>
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th class="col-xs-1">Empleado</th>
+                                    <th class="col-xs-1">F.Contrato</th>
+                                    <th class="col-xs-1">F.Inicio</th>
+                                    <th class="col-xs-1">F.Fin</th>
+                                    <th class="col-xs-1">Dias</th>
+                                    
+                                 
+                                </tr>
+                            </thead>
+                            <tbody style="border-bottom: 1px solid;margin-bottom:9px">
+                                <tr class="text-center" t-foreach="vals" t-as='l'>
+                                    <td><t t-esc="l['contract_id'].employee_id.name" /></td>
+                                    <td><t t-esc="l['contract_id'].date_start" /></td>
+                                    <td><t t-esc="l['date_start']" /></td>
+                                    <td><t t-esc="l['date_end']" /></td>                                     
+                                    <td><t t-esc="l['days_vacations']" /></td>                       
+
+                                 
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+
+</odoo>

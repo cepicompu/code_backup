@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="paperformat_account_standard" model="report.paperformat">
+            <field name="name">A4 Landscape Account</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">23</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+
+        <record id="action_report_employee_accumulated_benefits" model="ir.actions.report">
+            <field name="name">Reporte de Acumulaciones de Décimos</field>
+            <field name="model">report.ec_payroll.report_employee_accumulated_benefits</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ec_payroll.report_employee_accumulated_benefits</field>
+            <field name="paperformat_id" ref="paperformat_account_standard"/>
+        </record>
+
+        <template id="report_employee_accumulated_benefits">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div>
+                        <h6 class="text-right" t-esc="current_date"/>
+                    </div>
+                    <div class="page" style="font-size:10px">
+                        <t t-if="d_type == 'thirt'">
+                            <h2 class="text-center">Reporte de Acumulaciones de Décimo Tercero</h2>
+                        </t>
+                        <t t-if="d_type == 'fourt'">
+                            <h2 class="text-center">Reporte de Acumulaciones de Décimo Cuarto</h2>
+                        </t>
+                        <t t-if="d_type == 'reserve_funds'">
+                            <h2 class="text-center">Reporte de Acumulaciones de Fondos de Reserva</h2>
+                        </t>
+                        <h2 class="text-center">Periodo 1/12/<t t-esc="period_year_ant" /> - 31/11/<t t-esc="period_year" /></h2>
+                        <br/><br/><t t-set="currency" t-value="currency_id"/>
+                        <t t-if="d_type == 'fourt'">
+                            <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th class="col-xs-1"></th>
+                                    <th class="col-xs-1"></th>
+                                    <th class="col-xs-1"></th>
+                                    <th class="col-xs-1"></th>
+                                    <th colspan="2" class="col-xs-1">Diciembre</th>
+                                    <th  colspan="2" class="col-xs-1">Enero</th>
+                                    <th colspan="2"  class="col-xs-1">Febrero</th>
+                                    <th colspan="2"  class="col-xs-1">Marzo</th>
+                                    <th  colspan="2" class="col-xs-1">Abril</th>
+                                    <th  colspan="2" class="col-xs-1">Mayo</th>
+                                    <th  colspan="2" class="col-xs-1">Junio</th>
+                                    <th  colspan="2" class="col-xs-1">Julio</th>
+                                    <th  colspan="2" class="col-xs-1">Agosto</th>
+                                    <th  colspan="2" class="col-xs-1">Septiembre</th>
+                                    <th colspan="2"  class="col-xs-1">Octubre</th>
+                                    <th  colspan="2" class="col-xs-1">Noviembre</th>
+                                    <th  colspan="2" class="col-xs-1">Total Anual</th>
+                                    <th class="col-xs-1"></th>
+                                    <th class="col-xs-1"></th>
+                                </tr>
+                                <tr>
+                                    <th class="col-xs-1">Empleado</th>
+                                    <th class="col-xs-1">Identificación</th>
+                                    <th class="col-xs-1">Clasificación</th>
+                                    <th class="col-xs-1">Departamento</th>
+                                    <th class="col-xs-1">Monto</th>
+                                    <th class="col-xs-1">Días</th>
+                                    <th class="col-xs-1">Monto</th>
+                                    <th class="col-xs-1">Días</th>
+                                    <th class="col-xs-1">Monto</th>
+                                    <th class="col-xs-1">Días</th>
+                                    <th class="col-xs-1">Monto</th>
+                                    <th class="col-xs-1">Días</th>
+                                    <th class="col-xs-1">Monto</th>
+                                    <th class="col-xs-1">Días</th>
+                                    <th class="col-xs-1">Monto</th>
+                                    <th class="col-xs-1">Días</th>
+                                    <th class="col-xs-1">Monto</th>
+                                    <th class="col-xs-1">Días</th>
+                                    <th class="col-xs-1">Monto</th>
+                                    <th class="col-xs-1">Días</th>
+                                    <th class="col-xs-1">Monto</th>
+                                    <th class="col-xs-1">Días</th>
+                                    <th class="col-xs-1">Monto</th>
+                                    <th class="col-xs-1">Días</th>
+                                    <th class="col-xs-1">Monto</th>
+                                    <th class="col-xs-1">Días</th>
+                                    <th class="col-xs-1">Monto</th>
+                                    <th class="col-xs-1">Días</th>
+                                    <th class="col-xs-1">Monto</th>
+                                    <th class="col-xs-1">Días</th>
+                                    <th class="col-xs-1">Anticipos</th>
+                                    <th class="col-xs-1">Líquido</th>
+                                </tr>
+                            </thead>
+                            <tbody style="border-bottom: 1px solid;margin-bottom:9px">
+                                <tr class="text-center" t-foreach="vals" t-as='l'>
+                                    <td><t t-esc="l['employee']" /></td>
+                                    <td><t t-esc="l['identification']" /></td>
+                                    <td><t t-esc="l['department']" /></td>
+                                    <td><t t-esc="l['dic']" /></td>
+                                    <td><t t-esc="l['daydic']" /></td>
+                                    <td><t t-esc="l['ene']" /></td>
+                                    <td><t t-esc="l['dayene']" /></td>
+                                    <td><t t-esc="l['feb']" /></td>
+                                    <td><t t-esc="l['dayfeb']" /></td>
+                                    <td><t t-esc="l['marz']" /></td>
+                                    <td><t t-esc="l['daymarz']" /></td>
+                                    <td><t t-esc="l['abr']" /></td>
+                                    <td><t t-esc="l['dayabr']" /></td>
+                                    <td><t t-esc="l['may']" /></td>
+                                    <td><t t-esc="l['daymay']" /></td>
+                                    <td><t t-esc="l['jun']" /></td>
+                                    <td><t t-esc="l['dayjun']" /></td>
+                                    <td><t t-esc="l['jul']" /></td>
+                                    <td><t t-esc="l['dayjul']" /></td>
+                                    <td><t t-esc="l['ago']" /></td>
+                                    <td><t t-esc="l['dayago']" /></td>
+                                    <td><t t-esc="l['sep']" /></td>
+                                    <td><t t-esc="l['daysep']" /></td>
+                                    <td><t t-esc="l['oct']" /></td>
+                                    <td><t t-esc="l['dayoct']" /></td>
+                                    <td><t t-esc="l['nov']" /></td>
+                                    <td><t t-esc="l['daynov']" /></td>
+                                    <td><t t-esc="l['total_year']" /></td>
+                                    <td><t t-esc="l['total_days']" /></td>
+                                    <td><t t-esc="l['anticipo']" /></td>
+                                    <td><t t-esc="l['liquido']" /></td>
+
+                                </tr>
+                            </tbody>
+                             <tfoot>
+                                <tr>
+                                    <th colspan="4" class="col-xs-1">TOTALES</th>
+                                    <th colspan="2" t-esc="total_dic"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th  colspan="2" t-esc="total_ene"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th  colspan="2" t-esc="total_feb"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th  colspan="2" t-esc="total_marz"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th  colspan="2" t-esc="total_abr"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th  colspan="2" t-esc="total_may"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th  colspan="2" t-esc="total_jun"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th  colspan="2" t-esc="total_jul"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th  colspan="2" t-esc="total_ago"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th  colspan="2" t-esc="total_sep"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th  colspan="2" t-esc="total_oct"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th  colspan="2" t-esc="total_nov"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th  colspan="2" t-esc="total_val"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th t-esc="total_ant"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th t-esc="total_liq"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                </tr>
+                            </tfoot>
+
+                        </table>
+                        </t>
+                        <t t-if="d_type != 'fourt'">
+                            <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th class="col-xs-1">Empleado</th>
+                                    <th class="col-xs-1">Identificación</th>
+                                    <th class="col-xs-1">Clasificación</th>
+                                    <th class="col-xs-1">Departamento</th>
+                                    <th class="col-xs-1">Diciembre</th>
+                                    <th class="col-xs-1">Enero</th>
+                                    <th class="col-xs-1">Febrero</th>
+                                    <th class="col-xs-1">Marzo</th>
+                                    <th class="col-xs-1">Abril</th>
+                                    <th class="col-xs-1">Mayo</th>
+                                    <th class="col-xs-1">Junio</th>
+                                    <th class="col-xs-1">Julio</th>
+                                    <th class="col-xs-1">Agosto</th>
+                                    <th class="col-xs-1">Septiembre</th>
+                                    <th class="col-xs-1">Octubre</th>
+                                    <th class="col-xs-1">Noviembre</th>
+                                    <th class="col-xs-1">Total Anual</th>
+                                    <th class="col-xs-1">Anticipos</th>
+                                    <th class="col-xs-1">Líquido</th>
+                                </tr>
+                            </thead>
+                            <tbody style="border-bottom: 1px solid;margin-bottom:9px">
+                                <tr class="text-center" t-foreach="vals" t-as='l'>
+                                    <td><t t-esc="l['employee']" /></td>
+                                    <td><t t-esc="l['identification']" /></td>
+                                    <td><t t-esc="l['department']" /></td>
+                                    <td><t t-esc="l['dic']" /></td>
+                                    <td><t t-esc="l['ene']" /></td>
+                                    <td><t t-esc="l['feb']" /></td>
+                                    <td><t t-esc="l['marz']" /></td>
+                                    <td><t t-esc="l['abr']" /></td>
+                                    <td><t t-esc="l['may']" /></td>
+                                    <td><t t-esc="l['jun']" /></td>
+                                    <td><t t-esc="l['jul']" /></td>
+                                    <td><t t-esc="l['ago']" /></td>
+                                    <td><t t-esc="l['sep']" /></td>
+                                    <td><t t-esc="l['oct']" /></td>
+                                    <td><t t-esc="l['nov']" /></td>
+                                    <td><t t-esc="l['total_year']" /></td>
+                                    <td><t t-esc="l['anticipo']" /></td>
+                                    <td><t t-esc="l['liquido']" /></td>
+
+                                </tr>
+                            </tbody>
+                             <tfoot>
+                                <tr>
+                                    <th colspan="4" class="col-xs-1">TOTALES</th>
+                                    <th t-esc="total_dic"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th t-esc="total_ene"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th t-esc="total_feb"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th t-esc="total_marz"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th t-esc="total_abr"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th t-esc="total_may"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th t-esc="total_jun"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th t-esc="total_jul"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th t-esc="total_ago"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th t-esc="total_sep"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th t-esc="total_oct"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th t-esc="total_nov"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th t-esc="total_val"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th t-esc="total_ant"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th t-esc="total_liq"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                </tr>
+                            </tfoot>
+
+                        </table>
+                        </t>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+
+</odoo>

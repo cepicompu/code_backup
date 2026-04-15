@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <record id="sequence_request_overtime" model="ir.sequence">
+            <field name="name">Solicitud de Horas extras</field>
+            <field name="code">request.overtime</field>
+            <field name="prefix">HEX/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="False" name="use_date_range"/>
+            <field eval="False" name="company_id"/>
+            <field name="padding">4</field>
+        </record>
+        
+        <record id="sequence_request_egress" model="ir.sequence">
+            <field name="name">Solicitud de Egreso</field>
+            <field name="code">request.egress</field>
+            <field name="prefix">PRE/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="False" name="use_date_range"/>
+            <field eval="False" name="company_id"/>
+            <field name="padding">4</field>
+        </record>
+        
+        <record id="sequence_request_loan_payment" model="ir.sequence">
+            <field name="name">Solicitud de Pago de Anticipo / Prestamo</field>
+            <field name="code">request.loan.payment</field>
+            <field name="prefix">ANT/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="False" name="use_date_range"/>
+            <field eval="False" name="company_id"/>
+            <field name="padding">4</field>
+        </record>
+
+        <record id="sequence_request_vacations" model="ir.sequence">
+            <field name="name">Solicitud de Vacaciones</field>
+            <field name="code">hr.request.vacations</field>
+            <field name="prefix">VAC/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="False" name="use_date_range"/>
+            <field eval="False" name="company_id"/>
+            <field name="padding">4</field>
+        </record>
+
+         <record id="sequence_request_subsidy" model="ir.sequence">
+            <field name="name">Solicitud de Subsidio</field>
+            <field name="code">hr.request.subsidy</field>
+            <field name="prefix">SUB/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="False" name="use_date_range"/>
+            <field eval="False" name="company_id"/>
+            <field name="padding">4</field>
+        </record>
+    
+        <record id="sequence_hr_liquidation" model="ir.sequence">
+            <field name="name">Liquidacion de Empleados</field>
+            <field name="code">hr.liquidation</field>
+            <field name="prefix">LIQ/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="False" name="use_date_range"/>
+            <field eval="False" name="company_id"/>
+            <field name="padding">4</field>
+        </record>
+        
+        <record forcecreate="True" id="payroll_daily_account" model="decimal.precision">
+            <field name="name">Payroll Daily</field>
+            <field name="digits">6</field>
+        </record>
+
+    </data>
+</odoo>

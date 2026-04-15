@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="report_nomina_departamentos_a3">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div>
+                        <h6 class="text-right" t-esc="current_date"/>
+                    </div>
+                    <div class="page" style="font-size:x-small">
+
+                        <h2 class="text-center">ROL DE PAGOS - PERIODO: <t t-esc="period"/></h2>
+                        <t t-set="currency" t-value="currency_id"/>
+
+                        <br/><br/>
+                       <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th style="background-color: #0F1570; color: white" class="col-xs-1 text-left">
+                                        Empleado</th>
+                                    <th style="background-color: #0F1570; color: white" class="col-xs-1 text-left">
+                                        Identificación</th>
+                                    <th style="background-color: #0F1570; color: white" class="col-xs-1 text-left">
+                                        Clasificación</th>
+                                    <th style="background-color: #0F1570; color: white" class="col-xs-1 text-left">
+                                        Departamento</th>
+                                    <th style="background-color: #0F1570; color: white" class="col-xs-1 text-left">Fecha
+                                        de Ingreso</th>
+                                    <th style="background-color: #0F1570; color: white" class="col-xs-1 text-left">Días
+                                        Trabajados</th>
+                                    <th style="background-color: #0F1570; color: white" class="col-xs-1 text-left">Horas
+                                        Trabajadas</th>
+                                    <t t-foreach="cabecera" t-as="cab">
+                                        <th style="background-color: #0F1570; color: white"
+                                            class="col-xs-1 text-left"><t t-esc="cab['name']"/></th>
+                                    </t>
+
+                                    <th style="background-color: #0F1570; color: white" class="col-xs-1 text-left">
+                                        Ingresos</th>
+                                    <th style="background-color: #0F1570; color: white" class="col-xs-1 text-left">Otros
+                                        Ingresos</th>
+                                    <th style="background-color: #0F1570; color: white" class="col-xs-1 text-left">
+                                        Ingresos no Descontables</th>
+                                    <th style="background-color: #0F1570; color: white" class="col-xs-1 text-left">
+                                        Egresos</th>
+                                    <th style="background-color: #0F1570; color: white" class="col-xs-1 text-left">
+                                        Contribuciones Adicionales</th>
+                                    <th style="background-color: #0F1570; color: white" class="col-xs-1 text-left">Pago
+                                        Neto</th>
+                                    <th style="background-color: #0F1570; color: white" class="col-xs-1 text-left">
+                                        Sueldo Nómina</th>
+
+                                </tr>
+                            </thead>
+                            <tbody style="border-bottom: 1px solid;margin-bottom:9px">
+                                <tr class="text-left" t-foreach="vals" t-as='l'>
+                                    <td><t t-esc="l['employee']"/></td>
+                                    <td><t t-esc="l['identification']"/></td>
+                                    <td><t t-esc="l['department']"/></td>
+                                    <td><t t-esc="l['begin_date']"/></td>
+                                    <td><t t-esc="l['word_days']"/></td>
+                                    <td><t t-esc="l['word_hours']"/></td>
+                                    <t t-foreach="l['datos']" t-as="dat">
+                                        <td><t t-esc="dat['total']"
+                                               t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                                    </t>
+                                    <td><t t-esc="l['ingresos']"
+                                           t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                                    <td><t t-esc="l['otros_ingresos']"
+                                           t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                                    <td><t t-esc="l['ingresos_no']"
+                                           t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                                    <td><t t-esc="l['egresos']"
+                                           t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                                    <td><t t-esc="l['contributions']"
+                                           t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                                    <td><t t-esc="l['pago_neto']"
+                                           t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                                    <td><t t-esc="l['sueldo_nomina']"
+                                           t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr t-foreach="totales" t-as="tot">
+                                    <th colspan="7" style="background-color: #0F1570; color: white" class="col-xs-1 text-center">TOTALES</th>
+                                    <t t-foreach="cabecera" t-as="cab">
+                                        <th t-esc="cab['total']" t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    </t>
+                                    <th  t-esc="tot['tingresos']"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th  t-esc="tot['totros_ingresos']"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th  t-esc="tot['tingresos_no']"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th  t-esc="tot['tegresos']"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th  t-esc="tot['tcontributions']"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th  t-esc="tot['tpago_neto']"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                    <th  t-esc="tot['tsueldo_nomina']"  t-options='{"widget": "monetary", "display_currency": currency}'></th>
+                                </tr>
+                            </tfoot>
+
+                        </table>
+                        <p style="page-break-after:always;"/>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+
+
+        <record id="action_report_nomina_departamentos_a3" model="ir.actions.report">
+            <field name="name">Nomina por Departamentos A3</field>
+            <field name="model">report.ec_payroll.report_nomina_departamentos_a3</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ec_payroll.report_nomina_departamentos_a3</field>
+            <field name="paperformat_id" ref="ec_payroll.payslip_run_paperformats_a3"/>
+        </record>
+
+    </data>
+</odoo>

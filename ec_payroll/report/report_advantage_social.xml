@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_report_advantage_social" model="ir.actions.report">
+            <field name="name">Reporte de Beneficios Sociales</field>
+            <field name="model">report.ec_payroll.report_advantage_social</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ec_payroll.report_advantage_social</field>
+        </record>
+
+        <template id="report_advantage_social">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-size:10px">
+                        <h2 class="text-center">Reporte de Beneficios Sociales Provisionados</h2>
+                        <br/><br/><br/>
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th class="col-xs-1">Empleado</th>
+                                    <th class="col-xs-1">F. Contrato </th>
+                                    <th class="col-xs-1">Décimo Tercero</th>
+                                    <th class="col-xs-1">Décimo Cuarto</th>
+                                    <th class="col-xs-1">Vacaciones</th>
+
+                                    
+                                </tr>
+                            </thead>
+                            <tbody style="border-bottom: 1px solid;margin-bottom:9px">
+                                <tr class="text-center" t-foreach="vals" t-as='l'>
+                                    <td><t t-esc="l['contract_id'].employee_id.name" /></td>
+                                    <td><t t-esc="l['contract_id'].date_start" /></td>
+                                    <td class="text-right"><t t-esc="l['amount_13']" /></td>
+                                    <td class="text-right"><t t-esc="l['amount_14']" /></td>
+                                    <td class="text-right"><t t-esc="l['amount_vacations']" /></td>
+                
+                                  
+                               
+
+
+                                 
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+
+</odoo>

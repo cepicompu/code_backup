@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+
+
+        <record id="hr_fiscalyear_config_rule" model="ir.rule">
+            <field name="name">Configuración de Recursos Humanos por Año</field>
+            <field name="model_id" ref="model_hr_fiscalyear_config"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+            <field name="global" eval="True"/>
+        </record>
+
+
+        <record id="hr_scheduled_transaction_rule" model="ir.rule">
+			<field name="name">Transacciones Programadas</field>
+			<field name="model_id" ref="model_hr_scheduled_transaction"/>
+			<field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+			<field name="global" eval="True"/>
+		</record>
+
+
+    </data>
+</odoo>

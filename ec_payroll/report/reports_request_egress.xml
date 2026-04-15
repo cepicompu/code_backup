@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>    
+         <template id="report_request_egress">
+	        <t t-call="web.html_container">
+	            <t t-foreach="docs" t-as="doc">
+	                <t t-call="web.external_layout">
+	                    <div class="page">	                    
+	                     	<div class="oe_structure"/>
+	                     	<br/>
+	                     	<br/>
+	                     	<h3 style="text-align: center;font-weight: bolder;">SOLICITUD EGRESOS <span  t-field="doc.number" /></h3>
+		                    <br/>
+                     		<table class="table table-bordered">
+						    	<tbody>
+								      <tr>
+								        <td><strong>Fecha Inicial: </strong></td>
+								        <td><span  t-field="doc.request_date" /></td>
+								        <td><strong>Tipo Descuento: </strong></td>
+								        <td><span  t-field="doc.type_discount" /></td>
+								      </tr>
+								     <tr>
+								        <td><strong>Empleado </strong></td>
+								        <td colspan="3"><span t-field="doc.employee_id.display_name" /></td>								        
+								     </tr>
+								     <tr>
+								     	<td><strong>Usuario Solicitante </strong></td>
+								        <td><span  t-field="doc.user_applicant_id.display_name" /></td>
+								     </tr>
+								     <tr>
+								        <td><strong>Numero de Descuento: </strong></td>
+								        <td>
+									        <t t-if="doc.type_discount == 'multi_payment'">
+									        	<span  t-field="doc.numbers_discount" />
+									        </t>
+								        </td>
+								        <td><strong>Rubro: </strong></td>
+								        <td><span  t-field="doc.rubro_id" /></td>
+								      </tr>
+							    </tbody>
+				   			</table>
+				   			<t t-if="doc.request_egress_detail_ids or doc.type_discount == 'multi_payments'">
+							     <table width="100%" class="table table-bordered">
+							     	<thead>
+				                       	 <tr>
+											<th scope="col" class="text-center">
+												<strong>Fecha</strong>
+											</th>
+											<th scope="col" class="text-center">
+												<strong>Monto</strong>
+											</th>
+											<th scope="col" class="text-center">
+												<strong>Descripcion</strong>
+											</th>
+										 </tr>
+									</thead>
+									<t t-foreach="doc.request_egress_detail_ids" t-as="line">
+										 <tbody>
+											<tr>
+												<td class="text-left">
+													<span t-field="line.date" />
+												</td>
+												<td class="text-center">
+													<span t-field="line.monto" />
+												</td>
+												<td class="text-left">
+													<span t-field="line.description" />
+												</td>
+											</tr>
+										</tbody>
+									</t>
+							    </table>
+						   </t>	
+						<table class="table">
+							<tbody>
+								      <tr>
+								       <td class="text-center"><strong>________________________</strong></td>
+								       <td class="text-center"><strong>________________________</strong></td>
+								      </tr>
+								       <tr>
+								       <td class="text-center"><strong>Elaborado por</strong></td>
+								       <td class="text-center"><strong>Aprobado por</strong></td>
+								      </tr>
+							</tbody>
+						</table>              						                	
+	                    </div>
+	                </t>
+	            </t>
+	        </t>           	                 
+	    </template>
+	    
+	    <report 
+            id="action_report_request_egress"
+            string="Reporte Solicitud de Egresos"
+            model="request.egress"
+            report_type="qweb-pdf"
+            file="ec_payroll.report_request_egress" 
+            name="ec_payroll.report_request_egress"
+         />         
+         <record 
+         	id="action_report_request_egress" 
+         	model="ir.actions.report">
+			<field name="paperformat_id" ref="request_egress_paperformats" />
+ 		</record>
+    </data>
+</odoo>

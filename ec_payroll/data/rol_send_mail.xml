@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data >
+
+
+            <record id="mail_template_send_rol_new_" model="mail.template">
+            <field name="name">Rol- Send by Email</field>
+            <field name="subject">Ref ${object.name or 'n/a' })</field>
+            <field name="partner_to">${object.contract_id.employee_id.address_home_id.id}</field>
+            <field name="model_id" ref="model_hr_payslip"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="report_template" ref="payslip_rol_report"/>
+            <field name="report_name">${(object.name or '').replace('/','-')}</field>
+            <!-- <field name="lang">${object.hr.payslip.lang}</field> -->
+            <field name="body_html" type="xml">
+<p>Estimado/a ${object.contract_id.employee_id.name},</p>
+
+<p>Se adjunta sol rol mensual.</p>
+
+</field>
+        </record>
+
+        <act_window name="Enviar Rol por email"
+                res_model="mail.compose.message"
+                src_model="hr.payslip"
+                view_mode="form"
+                multi="True"
+                target="new"
+                key2="client_action_multi"
+                id="action_send_rol_email"
+                context="{
+                            'default_template_id': ref('mail_template_send_rol_new_'),
+                           
+                        }"
+                />
+
+     <!--    <act_window name="Send Rol By Email"
+            res_model="mail.compose.message"
+            src_model="hr.payslip"
+            view_mode="form"
+            target="new"
+            key2="client_action_relate"
+            id="ec_payroll_send_rol_by_email_action"
+            context="{
+                'default_model': 'hr_payslip',
+                'mail_post_autofollow': True,
+                'default_composition_mode': 'comment',
+                'default_use_template': True,
+                'default_res_id': active_id,
+                'default_template_id': ref('mail_template_send_rol_new'),
+                'force_email': True,
+            }"
+        /> -->
+
+
+         <!-- 'default_composition_mode': 'mass_mail', -->
+                            <!-- 'default_email_to':'{($object.email or \'\')|safe}', -->
+    </data>
+
+</odoo>
+
+
+

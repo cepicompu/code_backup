@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+		<record model="ir.ui.view" id="hr_payslip_form_view">
+			<field name="name">hr.payslip.form</field>
+			<field name="model">hr.payslip</field>
+			<field name="inherit_id" ref="hr_payroll.view_hr_payslip_form" />
+			<field name="arch" type="xml">
+
+				<xpath expr="//notebook/page[@name='salary_computation']" position="attributes">
+					<attribute name="string">Detalles del Cálculo del Salario</attribute>
+				</xpath>
+				<xpath expr="//notebook/page[@name='salary_computation']" position="before">
+					<page string="Calculo de Salario" name="income_deductions" class="o_hr_payroll_salary_computation">
+<!--						<group string="Ingresos" name="income_group">-->
+						<separator string="Ingresos"/>
+							<field name="income_line_ids" colspan="4" nolabel="1">
+								<tree string="Ingresos" editable="bottom" create="0" delete="0">
+									<field name="name"/>
+									<field name="code" readonly="1" force_save="1" optional="hide"/>
+									<field name="category_id" readonly="1" force_save="1"/>
+									<field name="sequence" invisible="1" readonly="1" force_save="1"/>
+<!--									<field name="amount" readonly="1" force_save="1" sum="Total"/>-->
+									<field name="total" readonly="1" force_save="1" sum="Total"/>
+									<field name="currency_id" invisible="1"/>
+								</tree>
+								<form string="Línea de Ingreso">
+									<group col="4">
+										<field name="name"/>
+										<field name="code"/>
+										<field name="category_id"/>
+										<field name="sequence"/>
+<!--										<field name="amount"/>-->
+										<field name="total"/>
+										<field name="currency_id" invisible="1"/>
+									</group>
+								</form>
+							</field>
+<!--						</group>-->
+<!--						<group string="Deducciones" name="deductions_group">-->
+							<field name="deduction_line_ids" colspan="4" nolabel="1">
+								<tree string="Deducciones" editable="bottom" create="0" delete="0">
+									<field name="name"/>
+									<field name="code" readonly="1" force_save="1" optional="hide"/>
+									<field name="category_id" readonly="1" force_save="1"/>
+									<field name="sequence" invisible="1" readonly="1" force_save="1"/>
+<!--									<field name="amount" readonly="1" force_save="1" sum="Total"/>-->
+									<field name="total" readonly="1" force_save="1" sum="Total"/>
+									<field name="currency_id" invisible="1"/>
+								</tree>
+								<form string="Línea de Deducción">
+									<group col="4">
+										<field name="name"/>
+										<field name="code"/>
+										<field name="category_id"/>
+										<field name="sequence"/>
+<!--										<field name="amount"/>-->
+										<field name="total"/>
+										<field name="currency_id" invisible="1"/>
+									</group>
+								</form>
+							</field>
+<!--						</group>-->
+						<group class="oe_subtotal_footer">
+							<field name="total_ingresos" widget="monetary" class="text-right"/>
+							<field name="total_deducciones" widget="monetary" class="text-right"/>
+							<field name="salario_neto" widget="monetary" class="oe_subtotal_footer_separator"/>
+						</group>
+					</page>
+				</xpath>
+
+
+
+				<xpath expr="/form/sheet/notebook/page[last()]" position="after">
+					<!--					<page string="Details By Salary Rule Category" invisible="1">-->
+					<!--						<field name="details_by_salary_rule_category" context="{'group_by':'category_id'}"-->
+					<!--							   domain="[('appears_on_payslip', '=', True)]">-->
+					<!--							<tree string="Payslip Lines" decoration-info="total == 0">-->
+					<!--								<field name="category_id" />-->
+					<!--								<field name="name" />-->
+					<!--								<field name="code" />-->
+					<!--								<field name="total" />-->
+					<!--							</tree>-->
+					<!--						</field>-->
+					<!--					</page>-->
+					<page string="Información Contable">
+						<group>
+							<group string="Miscelanea">
+								<field name="company_id" groups="base.group_multi_company" />
+								<field name="payslip_run_id" domain="[('state','=','draft')]" />
+								<field name="pay_with_check" />
+								<field name="type_slip" />
+								<field name="days_worked" />
+								<field name="contract_date_start" />
+								<field name="continuidad_fondos_reserva" />
+							</group>
+							<group name="accounting" string="Contabilidad">
+								<field name="paid" readonly="1" />
+							</group>
+						</group>
+						<group>
+							<field name="payment_ids" nolabel="1" />
+						</group>
+						<div colspan="4">
+							<field name="note" placeholder="Agregue una nota interna..." />
+						</div>
+					</page>
+				</xpath>
+
+
+
+				<!--				<xpath-->
+				<!--					expr="/form/sheet/notebook//page//field[@name='line_ids']/tree//field[@name='salary_rule_id']"-->
+				<!--					position="replace">-->
+				<!--					<field name="salary_rule_id" invisible="0" />-->
+				<!--					<field name="transaction_id" invisible="1" />-->
+				<!--				</xpath>-->
+				<xpath expr="//button[@name='action_payslip_done']" position="after">
+					<button string='Crear Asiento en Borrador' type="object"
+							class="oe_highlight" name="action_create_account_move_draft" />
+					<button string='Imprimir Rol de Pago' type="object"
+							class="oe_highlight" name="print_slip" />
+					<button string='Imprimir Rol de Pago' type="object"
+							class="oe_highlight" name="print_slip" />
+					<button name="send_mail" type="object"
+							string="Enviar Rol por Correo" />
+				</xpath>
+				<xpath expr="//button[@name='action_print_payslip']" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+				<!--				<xpath expr="/form/sheet/notebook/page[last()]" position="after">-->
+				<!--					<page string="Líneas de Nómina">-->
+				<!--						<field name="line_ids" colspan="4" nolabel="1">-->
+				<!--							<tree string="Salary Structure"-->
+				<!--								  decoration-info="total == 0">-->
+
+				<!--								<field name="name" />-->
+				<!--								<field name="code" optional="hide" />-->
+				<!--								<field name="category_id" />-->
+				<!--								<field name="quantity" optional="hide"  />-->
+				<!--								<field name="rate" optional="hide" />-->
+				<!--								<field name="salary_rule_id" optional="hide" />-->
+				<!--								<field name="amount" optional="hide" />-->
+				<!--								<field name="total" />-->
+				<!--								&lt;!&ndash; 	<field name="sequence" optional="hide" /> &ndash;&gt;-->
+				<!--							</tree>-->
+				<!--							<form string="Payslip Line">-->
+				<!--								<group col="4">-->
+				<!--									<field name="name" />-->
+				<!--									<field name="code" />-->
+				<!--									<field name="category_id" />-->
+				<!--									<field name="sequence" />-->
+				<!--									<field name="quantity" />-->
+				<!--									<field name="rate" />-->
+				<!--									<field name="amount" />-->
+				<!--									<field name="total" />-->
+				<!--									<field name="salary_rule_id" />-->
+				<!--								</group>-->
+				<!--							</form>-->
+				<!--						</field>-->
+				<!--					</page>-->
+				<!--					&lt;!&ndash; <page string="Details By Salary Rule Category" invisible="1">-->
+				<!--                        <field name="details_by_salary_rule_category" context="{'group_by':'category_id'}"-->
+				<!--                            domain="[('appears_on_payslip', '=', True)]">-->
+				<!--                            <tree string="Payslip Lines" decoration-info="total == 0">-->
+				<!--                                <field name="category_id" />-->
+				<!--                                <field name="name" />-->
+				<!--                                <field name="code" />-->
+				<!--                                <field name="total" />-->
+				<!--                            </tree>-->
+				<!--                        </field>-->
+				<!--                    </page> &ndash;&gt;-->
+				<!--					<page string="Días Laborados">-->
+				<!--						<separator string="Worked Days" />-->
+				<!--						<field name="worked_days_line_ids">-->
+				<!--							<tree string="Worked Days" editable="bottom">-->
+				<!--								<field name="name" invisible="1"/>-->
+				<!--								&lt;!&ndash; <field name="holiday_status" readonly="1" force_save="1"/> &ndash;&gt;-->
+				<!--								<field name="work_entry_type_id" readonly="0" force_save="1"/>-->
+				<!--								<field name="code" readonly="0" force_save="1"/>-->
+				<!--								<field name="number_of_days" readonly="0" force_save="1"/>-->
+				<!--								<field name="number_of_hours" readonly="0" force_save="1"/>-->
+				<!--								<field name="contract_id" readonly="0" force_save="1"/>-->
+				<!--								<field name="sequence" invisible="True" />-->
+				<!--							</tree>-->
+				<!--							<form string="Worked Day">-->
+				<!--								<group col="4">-->
+				<!--									<field name="name" invisible="1"/>-->
+				<!--									&lt;!&ndash; <field name="holiday_status" readonly="1" force_save="1"/> &ndash;&gt;-->
+				<!--									<field name="code" readonly="1" force_save="1"/>-->
+				<!--									<field name="sequence" readonly="1" force_save="1"/>-->
+				<!--									<field name="number_of_days" readonly="1" force_save="1"/>-->
+				<!--									<field name="number_of_hours" readonly="1" force_save="1"/>-->
+				<!--									<field name="contract_id" readonly="1" force_save="1" invisible="1"/>-->
+				<!--								</group>-->
+				<!--							</form>-->
+				<!--						</field>-->
+				<!--						<field name="input_line_ids" colspan="4" nolabel="1"-->
+				<!--							   invisible="1">-->
+				<!--							<tree string="Input Data" editable="bottom">-->
+				<!--								<field name="name" />-->
+				<!--								<field name="code" />-->
+				<!--								<field name="amount" />-->
+				<!--								<field name="contract_id" />-->
+				<!--								<field name="sequence" invisible="True" />-->
+				<!--							</tree>-->
+				<!--							<form string="Payslip Line">-->
+				<!--								<group col="4">-->
+				<!--									<field name="name" />-->
+				<!--									<field name="code" />-->
+				<!--									<field name="sequence" />-->
+				<!--									<field name="amount" />-->
+				<!--									<field name="contract_id" />-->
+				<!--								</group>-->
+				<!--							</form>-->
+				<!--						</field>-->
+				<!--					</page>-->
+				<!--					<page string="Información Contable">-->
+				<!--						<group>-->
+				<!--							<group string="Miscelanea">-->
+				<!--								<field name="company_id" groups="base.group_multi_company" />-->
+				<!--								<field name="payslip_run_id" domain="[('state','=','draft')]" />-->
+				<!--								<field name="pay_with_check" />-->
+				<!--								<field name="type_slip" />-->
+				<!--								<field name="days_worked" />-->
+				<!--								<field name="contract_date_start" />-->
+				<!--								<field name="continuidad_fondos_reserva" />-->
+				<!--							</group>-->
+				<!--							<group name="accounting" string="Contabilidad">-->
+				<!--								<field name="paid" readonly="1" />-->
+				<!--							</group>-->
+				<!--						</group>-->
+				<!--						<group>-->
+				<!--							<field name="payment_ids" nolabel="1" />-->
+				<!--						</group>-->
+				<!--						<div colspan="4">-->
+				<!--							<field name="note" placeholder="Agregue una nota interna..." />-->
+				<!--						</div>-->
+				<!--					</page>-->
+
+				<!--				</xpath>-->
+				<xpath expr="/form/sheet/notebook/page[@name='salary_computation']/field[@name='line_ids']" position="after">
+					<group col="8">
+						<field name="inputs" />
+						<field name="other_inputs" />
+						<field name="other_inputsn" />
+						<field name="outputs" />
+						<field name="payslip_net" />
+						<field name="company_contributions" />
+						<field name="payslip_undiscount"
+							   attrs="{'invisible': [('payslip_undiscount', '=', 0.0)]}" />
+					</group>
+				</xpath>
+
+				<!--				<xpath expr="/form/sheet/notebook//page//field[@name='line_ids']/form//field[@name='salary_rule_id']"-->
+				<!--						position="after">-->
+				<!--					<field name="transaction_id" />-->
+				<!--				</xpath>-->
+				<!--				<field name="credit_note" position="attributes">-->
+				<!--					<attribute name="invisible">1</attribute>-->
+				<!--				</field>-->
+				<!--				<button name="action_payslip_cancel" position="attributes">-->
+				<!--					<attribute name="states">draft,hr_check,confirm,verify,done</attribute>-->
+				<!--				</button>-->
+				<!--				<button name="refund_sheet" position="attributes">-->
+				<!--					<attribute name="states"></attribute>-->
+				<!--					<attribute name="invisible">1</attribute>-->
+				<!--				</button>-->
+				<!--				<field name="paid" position="after">-->
+				<!--					<field name="pay_with_check" />-->
+				<!--				</field>-->
+				<!--				<field name="struct_id" position="after">-->
+				<!--					<field name="type_day" invisible="1"/>-->
+				<!--					<field name="wage" string="Sueldo Nómina" attrs="{'invisible':[('type_day','=','partial')]}"/>-->
+				<!--					<field name="value_for_parcial" string="Sueldo Nómina" attrs="{'invisible':[('type_day','=','complete')]}"/>-->
+				<!--				</field>-->
+
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="hr_payslip_tree_view">
+			<field name="name">hr.payslip.tree</field>
+			<field name="model">hr.payslip</field>
+			<field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree" />
+			<field name="arch" type="xml">
+				<!-- <field name="name" position="after">
+					<field name="analytic_account_id"/>
+				</field> -->
+				<field name="date_to" position="after">
+					<field name="inputs" sum="Ingresos"/>
+					<field name="other_inputs" sum="Otros Ingresos"/>
+					<field name="other_inputsn" sum="Ingresos no Descontables"/>
+					<field name="outputs" sum="Egresos"/>
+					<field name="payslip_net" sum="Pago Neto"/>
+					<field name="payslip_undiscount" sum="Valores no Descontados"/>
+					<field name="company_contributions" sum="Contribuciones Adicionales"/>
+				</field>
+			</field>
+		</record>
+	</data>
+</odoo>
